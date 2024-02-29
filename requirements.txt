@@ -1,2 +1,5 @@
-django==2.1.5
-pillow==5.4.1
+bcrypt==4.1.2
+coverage==7.4.3
+Django==2.1.5
+Pillow==5.4.1
+requests==2.31.0
