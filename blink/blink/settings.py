@@ -25,7 +25,7 @@ SECRET_KEY = 'btdd)1!yclbcat_ba(hmo)tqag(4pn%^=kx6)-y3@a)&j^p8xg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['blinkwad2.eu.pythonanywhere.com']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blink_app',
 ]
 
 MIDDLEWARE = [
