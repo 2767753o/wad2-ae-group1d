@@ -24,6 +24,7 @@
 			{% block sidebar_block %}
 				<a href="{% url 'blink:index' %}">Home</a>
 				Friends
+				<a href="{% url 'blink:create' %}">Create Post</a>
 			{% endblock %}
 		</div>
 		<hr />
@@ -31,6 +32,7 @@
 			{% block footer_block %}
 				<a href="{% url 'blink:help' %}">Help</a>
 				<a href="{% url 'blink:about' %}">About us</a>
+				<a href="{% url 'blink:settings' %}">Settings</a>
             {% endblock %}
 		</div>
 	</body>
