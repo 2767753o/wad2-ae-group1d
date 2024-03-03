@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.urls import include
 from blink_app import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('blink/', include('blink_app.urls')),
 
     path('admin/', admin.site.urls),
 ]
