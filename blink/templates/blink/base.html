@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+	<head lang="en">
+		<title>
+			Blink - 
+			{% block title_block %}
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<div class="header">
+			{% block header_block %}
+			{% endblock %}
+		</div>
+		<div>
+		    {% block body_block %}
+		    {% endblock %}
+		</div>
+		<div class="sidebar">
+			{% block sidebar_block %}
+			{% endblock %}
+		</div>
+		<hr />
+		<div class="footer">
+			{% block footer_block %}
+            {% endblock %}
+		</div>
+	</body>
+</html>
