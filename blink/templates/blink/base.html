@@ -12,21 +12,24 @@
 	<body>
 		<div class="header">
 			{% block header_block %}
+				Profile
+				Friends
 			{% endblock %}
 		</div>
-		<div>
+		<div class="body">
 		    {% block body_block %}
 		    {% endblock %}
 		</div>
 		<div class="sidebar">
 			{% block sidebar_block %}
+				<a href="{% url 'blink:index' %}">Home</a>
+				Friends
 			{% endblock %}
 		</div>
 		<hr />
 		<div class="footer">
 			{% block footer_block %}
-				<!-- link to help and about us -->
-				Help
+				<a href="{% url 'blink:help' %}">Help</a>
 				<a href="{% url 'blink:about' %}">About us</a>
             {% endblock %}
 		</div>
