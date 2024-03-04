@@ -12,7 +12,7 @@ Ticking time bomb’ posts are designed to increase user engagement.
 
 ## Getting Started
 
-The [BLINK](blinkwad2.eu.pythonanywhere.com) project is hosted using [eu.pythonanywhere.com](https://eu.pythonanywhere.com/)
+The [BLINK](http://blinkwad2.eu.pythonanywhere.com/) project is hosted using [eu.pythonanywhere.com](https://eu.pythonanywhere.com/)
 
 The app can also be run locally.
 Clone the repository, install the dependencies and then from the 'blink' directory run
