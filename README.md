@@ -1,6 +1,6 @@
 # BLINK
 
-A social media platform in which users may only post once a day
+A social media platform in which users may only post once a day.
 
 ## Description
 
