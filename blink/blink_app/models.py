@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Post(models.Model):
     PostID = models.AutoField(primary_key=True)
     ReleaseDate = models.DateTimeField()
@@ -21,3 +20,4 @@ class Comment(models.Model):
 
 class Like(models.Model):
     LikeID = models.CharField(primary_key=True, max_length=8)
+
