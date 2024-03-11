@@ -1,23 +1,35 @@
 from django.db import models
+from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Post(models.Model):
-    PostID = models.AutoField(primary_key=True)
-    ReleaseDate = models.DateTimeField()
-    Views = models.IntegerField(default=0)
-    Content = models.CharField(max_length=280)
-    HasImages = models.BooleanField(default=False)
-    Image = models.ImageField(upload_to='post_images', null=True, blank=True)
+    postID = models.AutoField(primary_key=True)
+    releaseDate = models.DateTimeField()
+    views = models.IntegerField(default=0)
+    content = models.CharField(max_length=280)
+    hasImages = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='post_images', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
 
 class User(models.Model):
-    UserID = models.AutoField(primary_key=True)
-    Name = models.CharField(max_length=128)
-    Posted = models.BooleanField(default=False)
-
+    userID = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    posted = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.user.username
+    
 class Comment(models.Model):
-    CommentID = models.AutoField(primary_key=True)
-    CommentTime = models.DateTimeField()
-    Content = models.CharField(max_length=280)
+    commentID = models.AutoField(primary_key=True)
+    commentTime = models.DateTimeField()
+    content = models.CharField(max_length=280)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    post = models.ForeignKey(Post, on_delete= models.CASCADE)
 
 class Like(models.Model):
-    LikeID = models.CharField(primary_key=True, max_length=8)
+    likeID = models.CharField(primary_key=True, max_length=8)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    post = models.ForeignKey(Post, on_delete= models.CASCADE, null = True, blank = True)
+    comment = models.ForeignKey(Comment, on_delete= models.CASCADE, null = True, blank = True)
+    
