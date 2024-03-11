@@ -2,7 +2,6 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-# Create your models here.
 class Post(models.Model):
     postID = models.AutoField(primary_key=True)
     releaseDate = models.DateTimeField()
@@ -32,4 +31,3 @@ class Like(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     post = models.ForeignKey(Post, on_delete= models.CASCADE, null = True, blank = True)
     comment = models.ForeignKey(Comment, on_delete= models.CASCADE, null = True, blank = True)
-    
