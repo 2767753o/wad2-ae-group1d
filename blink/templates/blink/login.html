@@ -12,7 +12,7 @@
         {% csrf_token %}
         <input type="text" name="username" value="Email or Username" /><br />
         <input type="text" name="Password" value="Password..." /><br />
-        <a href="{% url 'blink:resetPassword' %}">Forgotten Password?</a>
+        <a href="{% url 'blink:reset_password' %}">Forgotten Password?</a>
         <input type="submit" value="Log In">
     </form>
     <a href="{% url 'blink:register' %}">New Member?</a>

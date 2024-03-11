@@ -1,12 +1,16 @@
 from django.urls import path
 from blink_app import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'blink'
 
 urlpatterns = [
         path('', views.index, name='index'),
         path('login/', views.login, name='login'),
-        path('resetPassword/', views.resetPassword, name='resetPassword'),
+        path('reset_password/', views.reset_password, name='reset_password'),
+        path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name='reset_password_done'),
+        path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='reset_password_confirm'),
+        path('reste_password_complete', auth_views.PasswordResetCompleteView.as_view(), name='reset_password_complete'),
         path('register/', views.register, name='register'),
         path('friends/', views.friends, name='friends'),
         # path('post/<id:postId>/', views.view_post, name='view_post'),

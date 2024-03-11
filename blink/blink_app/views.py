@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 
@@ -11,8 +13,24 @@ def index(request):
 def login(request):
     return render(request, 'blink/login.html')
 
-def resetPassword(request):
-    return render(request, 'blink/resetPassword.html')
+def reset_password(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name='registration/password_reset_email.html',
+                subject_template_name='registration/password_reset_subject.txt',
+                from_email=None,
+                html_email_template_name=None,
+                extra_email_context=None,
+            )
+            return render(request, 'blink/reset_password_sent.html.html')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'blink/reset_password.html', {'form': form})
+
 
 def register(request):
     return render(request, 'blink/register.html')
