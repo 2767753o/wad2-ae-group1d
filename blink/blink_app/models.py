@@ -7,11 +7,10 @@ class Post(models.Model):
     releaseDate = models.DateTimeField()
     views = models.IntegerField(default=0)
     content = models.CharField(max_length=280)
-    hasImages = models.BooleanField(default=False)
     image = models.ImageField(upload_to='post_images', null=True, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
 
-class User(models.Model):
+class UserProfile(models.Model):
     userID = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     posted = models.BooleanField(default=False)
@@ -31,3 +30,7 @@ class Like(models.Model):
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     post = models.ForeignKey(Post, on_delete= models.CASCADE, null = True, blank = True)
     comment = models.ForeignKey(Comment, on_delete= models.CASCADE, null = True, blank = True)
+
+class Friendship(models.Model):
+    user = models.ForeignKey(User, related_name= 'friends_of', on_delete= models.CASCADE)
+    friend = models.ForeignKey(User, related_name= 'friends', on_delete= models.CASCADE)
