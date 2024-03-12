@@ -26,7 +26,7 @@ def reset_password(request):
                 html_email_template_name=None,
                 extra_email_context=None,
             )
-            return render(request, 'blink/reset_password_sent.html.html')
+            return render(request, 'blink/reset_password_sent.html')
     else:
         form = PasswordResetForm()
     return render(request, 'blink/reset_password.html', {'form': form})
