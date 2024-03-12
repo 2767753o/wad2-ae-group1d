@@ -6,12 +6,39 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 
+from blink_app.forms import UserForm, UserProfileForm
+from blink_app.models import Post
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def index(request):
-    return render(request, 'blink/index.html')
+    # get all posts
+    post_list = Post.objects.order_by('-releaseDate')
+    context_dict = {'posts': post_list}
 
-def login(request):
-    return render(request, 'blink/login.html')
+    return render(request, 'blink/index.html', context=context_dict)
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return redirect('index')
+            else:
+                return HttpResponse("Your account is disabled.")
+            
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied.")
+    
+    else:
+        return render(request, 'blink/login.html')
 
 def reset_password(request):
     if request.method == 'POST':
@@ -26,14 +53,55 @@ def reset_password(request):
                 html_email_template_name=None,
                 extra_email_context=None,
             )
-            return render(request, 'blink/reset_password_sent.html.html')
+            return render(request, 'blink/reset_password_done.html')
     else:
         form = PasswordResetForm()
     return render(request, 'blink/reset_password.html', {'form': form})
 
 
 def register(request):
-    return render(request, 'blink/register.html')
+    registered = False
+
+    if request.method == "POST":
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            if 'profilePicture' in request.FILES:
+                profile.profilePicture = request.FILES['profilePicture']
+
+            profile.save()
+
+            registered = True
+
+        else:
+            print(user_form.errors)
+
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    return render(
+        request,
+        'blink/register.html',
+        context={
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'registered': registered
+        }
+    )
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('blink:login'))
 
 def friends(request):
     return render(request, 'blink/friends.html')
@@ -70,6 +138,3 @@ def user_followed_by(request):
 
 def user_following(request):
     return render(request, 'blink/following.html')
-
-def user_logout(request):
-    return render(request, 'blink/logout.html')
