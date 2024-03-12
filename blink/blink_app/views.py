@@ -7,7 +7,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from blink_app.forms import UserForm, UserProfileForm
-from blink_app.models import Post
+from blink_app.models import Post, UserProfile
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 
@@ -29,7 +30,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect('index')
+                return redirect(reverse('blink:index'))
             else:
                 return HttpResponse("Your account is disabled.")
             
@@ -103,6 +104,28 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('blink:login'))
 
+@login_required
+def view_user(request, username):
+    # get user data of user currently logged in
+    try:
+        userData = User.objects.get(username=username)
+        userProfileData = UserProfile.objects.get(user=userData)
+        postData = Post.objects.order_by('-releaseDate')
+    except User.DoesNotExist:
+        userData = None
+
+    if userData is None:
+        return redirect(reverse('blink:index'))
+
+    return render(
+        request, 'blink/user.html', 
+        context={
+            'userData': userData,
+            'userProfileData': userProfileData,
+            'postData': postData
+        }
+    )
+
 def friends(request):
     return render(request, 'blink/friends.html')
 
@@ -126,9 +149,6 @@ def about(request):
 
 def help(request):
     return render(request, 'blink/help.html')
-
-def view_user(request):
-    return render(request, 'blink/user.html')
 
 def user_analytics(request):
     return render(request, 'blink/analytics.html')
