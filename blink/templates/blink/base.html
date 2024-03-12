@@ -13,7 +13,7 @@
 		<div class="header">
 			{% block header_block %}
 				{% if user.is_authenticated %}
-					Profile
+					<a href="{% url 'blink:user' user.username %}">Profile</a>
 					Friends
 				{% endif %}
 			{% endblock %}
