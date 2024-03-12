@@ -8,4 +8,19 @@
 
 {% block body_block %}
 	<h1>Feed</h1>
+
+	<div>
+		{% if posts %}
+			{% for post in posts %}
+				<div>
+					<h3>{{ post.title }}</h3>
+					<p>{{ post.text }}</p>
+					<p>{{ post.date }}</p>
+					<p>{{ post.user }}</p>
+				</div>
+			{% endfor %}
+		{% else %}
+			<p>There are no posts in the feed.</p>
+		{% endif %}
+	</div>
 {% endblock %}
