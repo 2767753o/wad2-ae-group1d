@@ -1,0 +1,153 @@
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgb(255, 255, 255) 0%, rgb(175, 214, 214) 30%, rgb(9, 110, 121) 60%, rgb(7, 6, 96) 80%, rgb(2, 0, 36) 90%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgb(175, 214, 214) 0%, rgba(255, 255, 255, 0.5) 80%);
+  color: #000;
+  padding: 0 2rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+.navbar__menu {
+  position: relative;
+  display: flex;
+  list-style: none;
+}
+.navbar__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 10rem;
+  color: #000;
+  text-decoration: none;
+  width: 10rem;
+  text-transform: uppercase;
+}
+.navbar__link img {
+  width: 24px;
+  height: 24px;
+}
+.navbar__link:hover {
+  color: #C4151C;
+}
+.navbar__link:hover img {
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(95%) contrast(88%);
+}
+.navbar:not(:hover) .navbar__link:focus span, .navbar__link:hover span {
+  opacity: 1;
+  transform: translate(0);
+}
+
+.header-logo {
+  width: 180px;
+  height: 90px;
+  background-image: url("../../images/logo/fullyOpenEye.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(2, 0, 36);
+  background: linear-gradient(0deg, rgba(2, 0, 36, 0.5) 0%, rgba(2, 0, 36, 0.5) 70%, rgba(2, 0, 36, 0) 100%);
+  color: #edebeb;
+  letter-spacing: 1px;
+  text-align: left;
+  padding: 10px 20px;
+  font-size: 25px;
+}
+
+.foot-link {
+  color: #edebeb;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 350;
+  letter-spacing: 1px;
+  margin: 0 10px;
+}
+
+#feed {
+  display: block;
+  margin: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 100px 0;
+  text-align: center;
+}
+
+#feed h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+#feed p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+@keyframes changeLogo {
+  0% {
+    background-image: url("../../images/logo/fullyOpenEye.png");
+  }
+  25% {
+    background-image: url("../../images/logo/halfClosedEye.png");
+  }
+  50% {
+    background-image: url("../../images/logo/fullyClosedEye.png");
+  }
+  75% {
+    background-image: url("../../images/logo/halfClosedEye.png");
+  }
+  100% {
+    background-image: url("../../images/logo/fullyOpenEye.png");
+  }
+}
+.loading-logo {
+  width: 180px;
+  height: 90px;
+  background-image: url("../../images/logo/fullyOpenEye.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  animation: changeLogo 3.5s infinite;
+}/*# sourceMappingURL=styles.css.map */

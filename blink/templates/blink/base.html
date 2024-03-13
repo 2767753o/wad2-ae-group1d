@@ -2,38 +2,91 @@
 {% load staticfiles %}
 
 <html>
-	<head lang="en">
-		<title>
-			Blink - 
-			{% block title_block %}
-			{% endblock %}
-		</title>
-	</head>
-	<body>
-		<div class="header">
-			{% block header_block %}
-				Profile
-				Friends
-			{% endblock %}
+<head lang="en">
+    <title>
+        Blink -
+        {% block title_block %}
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dark/styles.css' %}">
+		<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/light/lightStyles.css' %}"> -->
+
+</head>
+<body>
+<div class="container">
+	<div class="header">
+		{% block header_block %}
+		<div class="header-logo">
+			
 		</div>
-		<div class="body">
-		    {% block body_block %}
-		    {% endblock %}
-		</div>
-		<div class="sidebar">
-			{% block sidebar_block %}
-				<a href="{% url 'blink:index' %}">Home</a>
-				Friends
-				<a href="{% url 'blink:create' %}">Create Post</a>
-			{% endblock %}
-		</div>
-		<hr />
-		<div class="footer">
-			{% block footer_block %}
-				<a href="{% url 'blink:help' %}">Help</a>
-				<a href="{% url 'blink:about' %}">About us</a>
-				<a href="{% url 'blink:settings' %}">Settings</a>
+		<nav class="navbar">
+			<ul class="navbar__menu">
+				{% url 'blink:index' as index_url %}
+				{% url 'blink:create' as create_url %}
+
+				{% if request.get_full_path == index_url %}
+					<li class="navbar__item">
+						<a href="{{ index_url }}" class="navbar__link">
+							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
+							<span>Home</span> </a>
+					</li>
+
+					<li class="navbar__item">
+						<a href="{{ create_url }}" class="navbar__link">
+							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
+							<span>Create Post</span></a>        
+					</li>
+
+
+				{% elif request.get_full_path == create_url %}
+					<li class="navbar__item">
+						<a href="{{ index_url }}" class="navbar__link">
+							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
+							<span>Home</span> </a>
+					</li>
+
+					<li class="navbar__item">
+						<a href="{{ create_url }}" class="navbar__link">
+							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
+							<span>Create Post</span></a>        
+					</li>
+
+				{% else %}
+
+				<li class="navbar__item">
+					<a href="{{ index_url }}" class="navbar__link">
+						<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
+						<span>Home</span> </a>
+				</li>
+
+				<li class="navbar__item">
+					<a href="{{ create_url }}" class="navbar__link">
+						<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
+						<span>Create Post</span></a>        
+				</li>
+				{% endif %}
+			</ul>
+
+		</nav>
+		{% endblock %}
+	</div>
+
+    <div class="main-content">
+        <div class="posts-container">
+            {% block body_block %}
+
             {% endblock %}
-		</div>
-	</body>
+        </div>
+    </div>
+    <div class="footer">
+        {% block footer_block %}
+            <nav>
+                <a href="{% url 'blink:help' %}" class="foot-link">Help</a>
+                <a href="{% url 'blink:about' %}" class="foot-link">About us</a>
+                <a href="{% url 'blink:settings' %}" class="foot-link">Settings</a>
+            </nav>
+        {% endblock %}
+    </div>
+</div>
+</body>
 </html>
