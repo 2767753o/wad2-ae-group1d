@@ -26,7 +26,7 @@
 
 				{% if request.get_full_path == index_url %}
 					<li class="navbar__item">
-						<a href="{{ index_url }}" class="navbar__link">
+						<a href="#" class="navbar__link active">
 							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
 							<span>Home</span> </a>
 					</li>
@@ -46,7 +46,7 @@
 					</li>
 
 					<li class="navbar__item">
-						<a href="{{ create_url }}" class="navbar__link">
+						<a href="#" class="navbar__link active">
 							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
 							<span>Create Post</span></a>        
 					</li>
