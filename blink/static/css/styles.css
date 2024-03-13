@@ -75,7 +75,7 @@ body {
 .header-logo {
   width: 180px;
   height: 90px;
-  background-image: url("../../images/logo/fullyOpenEye.png");
+  background-image: url("../images/logo/fullyOpenEye.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -125,25 +125,25 @@ body {
 
 @keyframes changeLogo {
   0% {
-    background-image: url("../../images/logo/fullyOpenEye.png");
+    background-image: url("../images/logo/fullyOpenEye.png");
   }
   25% {
-    background-image: url("../../images/logo/halfClosedEye.png");
+    background-image: url("../images/logo/halfClosedEye.png");
   }
   50% {
-    background-image: url("../../images/logo/fullyClosedEye.png");
+    background-image: url("../images/logo/fullyClosedEye.png");
   }
   75% {
-    background-image: url("../../images/logo/halfClosedEye.png");
+    background-image: url("../images/logo/halfClosedEye.png");
   }
   100% {
-    background-image: url("../../images/logo/fullyOpenEye.png");
+    background-image: url("../images/logo/fullyOpenEye.png");
   }
 }
 .loading-logo {
   width: 180px;
   height: 90px;
-  background-image: url("../../images/logo/fullyOpenEye.png");
+  background-image: url("../images/logo/fullyOpenEye.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin-left: auto;
