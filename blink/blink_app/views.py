@@ -1,4 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz # timezones
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
@@ -30,6 +32,17 @@ def user_login(request):
 
         if user:
             if user.is_active:
+                # update posted by checking when user last posted
+                user_data = User.objects.get(username=username)
+                user_profile_data = UserProfile.objects.get(user=user_data)
+                user_post_data = Post.objects.filter(user=user_data).order_by('-releaseDate')
+
+                # check if user has posted in the last 24 hours
+                utc = pytz.UTC
+                if len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+                    user_profile_data.posted = False
+                    user_profile_data.save()
+
                 login(request, user)
                 return redirect(reverse('blink:index'))
             else:
