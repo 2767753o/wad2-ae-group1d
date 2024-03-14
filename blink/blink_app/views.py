@@ -216,6 +216,3 @@ def user_followed_by(request):
 
 def user_following(request):
     return render(request, 'blink/following.html')
-
-def user_logout(request):
-    return render(request, 'blink/logout.html')
