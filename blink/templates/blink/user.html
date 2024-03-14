@@ -1,0 +1,34 @@
+{% extends 'blink/base.html' %}
+{% load staticfiles %}
+
+
+{% block title_block %}
+	User Profile
+{% endblock %}
+
+{% block body_block %}
+	{% if userProfileData %}
+        <h1>{{ userData.username }}</h1>
+        {% if userProfileData.profilePicture %}
+            <img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+        {% else %}
+            <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+        {% endif %}    
+        <div>
+            <h2>Posts</h2>
+            {% if posts %}
+                {% for post in posts %}
+                    {% if post.user == userData %}
+                        <div>
+                            <h3>{{ post.title }}</h3>
+                            <p>{{ post.text }}</p>
+                            <p>{{ post.date }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>There are no posts.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
