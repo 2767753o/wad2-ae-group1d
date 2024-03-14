@@ -20,12 +20,41 @@
 		</div>
 		<nav class="navbar">
 			<ul class="navbar__menu">
-				{% url 'blink:index' as index_url %}
-				{% url 'blink:create' as create_url %}
+				{% if user.is_authenticated %}
+					{% url 'blink:index' as index_url %}
+					{% url 'blink:create' as create_url %}
 
-				{% if request.get_full_path == index_url %}
+					{% if request.get_full_path == index_url %}
+						<li class="navbar__item">
+							<a href="#" class="navbar__link active">
+								<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
+								<span>Home</span> </a>
+						</li>
+
+						<li class="navbar__item">
+							<a href="{{ create_url }}" class="navbar__link">
+								<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
+								<span>Create Post</span></a>        
+						</li>
+
+
+					{% elif request.get_full_path == create_url %}
+						<li class="navbar__item">
+							<a href="{{ index_url }}" class="navbar__link">
+								<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
+								<span>Home</span> </a>
+						</li>
+
+						<li class="navbar__item">
+							<a href="#" class="navbar__link active">
+								<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
+								<span>Create Post</span></a>        
+						</li>
+
+					{% else %}
+
 					<li class="navbar__item">
-						<a href="#" class="navbar__link active">
+						<a href="{{ index_url }}" class="navbar__link">
 							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
 							<span>Home</span> </a>
 					</li>
@@ -35,34 +64,7 @@
 							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
 							<span>Create Post</span></a>        
 					</li>
-
-
-				{% elif request.get_full_path == create_url %}
-					<li class="navbar__item">
-						<a href="{{ index_url }}" class="navbar__link">
-							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-							<span>Home</span> </a>
-					</li>
-
-					<li class="navbar__item">
-						<a href="#" class="navbar__link active">
-							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-							<span>Create Post</span></a>        
-					</li>
-
-				{% else %}
-
-				<li class="navbar__item">
-					<a href="{{ index_url }}" class="navbar__link">
-						<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-						<span>Home</span> </a>
-				</li>
-
-				<li class="navbar__item">
-					<a href="{{ create_url }}" class="navbar__link">
-						<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-						<span>Create Post</span></a>        
-				</li>
+					{% endif %}
 				{% endif %}
 			</ul>
 
