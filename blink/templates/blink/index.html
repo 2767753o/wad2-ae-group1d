@@ -1,14 +1,16 @@
 {% extends 'blink/base.html' %}
-{% load staticfiles %}
-
+{% load static %}
 
 {% block title_block %}
-	Feed
+    Feed
 {% endblock %}
 
 {% block body_block %}
+<section id="feed">
+      <h1>Feed</h1>
+      <div class="loading-logo">
+      </div>
 	<h1>Feed</h1>
-
 	<div>
 		{% if posts %}
 			{% for post in posts %}
@@ -23,4 +25,5 @@
 			<p>There are no posts in the feed.</p>
 		{% endif %}
 	</div>
+</section>
 {% endblock %}
