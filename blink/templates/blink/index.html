@@ -17,6 +17,9 @@
 					<p>{{ post.content }}</p>
 					<p>{{ post.releaseDate }}</p>
 					<p>{{ post.user }}</p>
+					{% if post.image %}
+						<img src="{{ post.image.url }}" alt="Post Image">
+					{% endif %}
 				</div>
 			{% endfor %}
 		{% else %}
