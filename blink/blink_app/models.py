@@ -7,7 +7,7 @@ class Post(models.Model):
     releaseDate = models.DateTimeField()
     views = models.IntegerField(default=0)
     content = models.CharField(max_length=280)
-    image = models.ImageField(upload_to='post_images', null=True, blank=True)
+    image = models.ImageField(upload_to='Posts/Images', null=True, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
 
 class UserProfile(models.Model):
