@@ -13,6 +13,7 @@ from blink_app.forms import UserForm, UserProfileForm, CreateForm
 from blink_app.models import Post, UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 @login_required
@@ -187,6 +188,29 @@ def create(request):
         }
     )
 
+@login_required
+def search(request):
+    # search posts and users
+    query = request.GET.get('search')
+    if query != "":
+        post_results = Post.objects.filter(Q(content__icontains=query)).order_by('-releaseDate')
+        user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
+        user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
+        user_data = zip(user_results, user_profile_results)
+
+        return render(
+            request,
+            'blink/search.html',
+            context={
+                'post_results': post_results,
+                'user_data': user_data,
+                'query': query
+            }
+        )
+    
+    else:
+        return redirect(reverse('blink:index'))
+
 def friends(request):
     return render(request, 'blink/friends.html')
 
@@ -195,9 +219,6 @@ def view_post(request):
 
 def view_likes(request):
     return render(request, 'blink/likes.html')
-
-def search(request):
-    return render(request, 'blink/search.html')
 
 def settings(request):
     return render(request, 'blink/settings.html')

@@ -16,13 +16,15 @@
         {% endif %}    
         <div>
             <h2>Posts</h2>
-            {% if posts %}
-                {% for post in posts %}
+            {% if postData %}
+                {% for post in postData %}
                     {% if post.user == userData %}
                         <div>
-                            <h3>{{ post.title }}</h3>
-                            <p>{{ post.text }}</p>
-                            <p>{{ post.date }}</p>
+                            <p>{{ post.content }}</p>
+                            <p>{{ post.releaseDate }}</p>
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="Post Image">
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endfor %}
