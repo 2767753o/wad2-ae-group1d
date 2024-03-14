@@ -70,6 +70,14 @@
 						<a href="{% url 'blink:logout' %}" class="navbar__link">
 							<span>Logout</span></a>        
 					</li>
+
+					<li class="navbar__item">
+						<form id="search_form" method="get" action="{% url 'blink:search' %}">
+							{% csrf_token %}
+							<input type="text" placeholder="Search.." name="search">
+							<button type="submit">Submit</button>
+						</form>
+					</li>
 				{% endif %}
 			</ul>
 
