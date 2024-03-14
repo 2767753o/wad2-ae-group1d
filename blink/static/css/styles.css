@@ -71,11 +71,40 @@ body {
   opacity: 1;
   transform: translate(0);
 }
+.navbar__link.active {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 10rem;
+  color: #C4151C;
+  text-decoration: none;
+  width: 10rem;
+  text-transform: uppercase;
+}
+.navbar__link.active img {
+  width: 24px;
+  height: 24px;
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(95%) contrast(88%);
+}
+.navbar__link.active:hover {
+  color: #cb3b3f;
+}
+.navbar__link.active:hover img {
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(100%) contrast(88%);
+}
+.navbar:not(:hover) .navbar__link.active:focus span, .navbar__link.active:hover span {
+  opacity: 1;
+  transform: translate(0);
+}
 
 .header-logo {
   width: 180px;
   height: 90px;
-  background-image: url("../../images/logo/fullyOpenEye.png");
+  background-image: url("../images/logo/fullyOpenEye.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -125,25 +154,25 @@ body {
 
 @keyframes changeLogo {
   0% {
-    background-image: url("../../images/logo/fullyOpenEye.png");
+    background-image: url("../images/logo/fullyOpenEye.png");
   }
   25% {
-    background-image: url("../../images/logo/halfClosedEye.png");
+    background-image: url("../images/logo/halfClosedEye.png");
   }
   50% {
-    background-image: url("../../images/logo/fullyClosedEye.png");
+    background-image: url("../images/logo/fullyClosedEye.png");
   }
   75% {
-    background-image: url("../../images/logo/halfClosedEye.png");
+    background-image: url("../images/logo/halfClosedEye.png");
   }
   100% {
-    background-image: url("../../images/logo/fullyOpenEye.png");
+    background-image: url("../images/logo/fullyOpenEye.png");
   }
 }
 .loading-logo {
   width: 180px;
   height: 90px;
-  background-image: url("../../images/logo/fullyOpenEye.png");
+  background-image: url("../images/logo/fullyOpenEye.png");
   background-size: contain;
   background-repeat: no-repeat;
   margin-left: auto;
