@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
@@ -6,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from blink_app.forms import UserForm, UserProfileForm
+from blink_app.forms import UserForm, UserProfileForm, CreateForm
 from blink_app.models import Post, UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -126,6 +127,53 @@ def view_user(request, username):
         }
     )
 
+@login_required
+def create(request):
+    if request.method == "POST":
+        create_form = CreateForm(request.POST)
+
+        # check if user has already posted
+        try:
+            user_data = User.objects.get(username=request.user.get_username())
+            user_profile_data = UserProfile.objects.get(user=user_data)
+        except User.DoesNotExist:
+            user_data = None
+
+        if user_data is None or user_profile_data.posted:
+            return redirect(reverse('blink:index'))
+        
+        if create_form.is_valid():
+            post_form = create_form.save(commit=False)
+
+            if 'image' in request.FILES:
+                post_form.image = request.FILES['image']
+
+            post_form.releaseDate = datetime.now()
+            post_form.user = user_data
+            print("lksjldsjlkj")
+            print(user_data)
+            print(user_profile_data)
+
+            post_form.save()
+            user_profile_data.posted = True
+            user_profile_data.save()
+
+            return redirect(reverse('blink:index')) 
+
+        else:
+            print(post_form.errors)
+
+    else:
+        post_form = CreateForm()
+
+    return render(
+        request,
+        'blink/create.html',
+        context={
+            'post_form': post_form,
+        }
+    )
+
 def friends(request):
     return render(request, 'blink/friends.html')
 
@@ -137,9 +185,6 @@ def view_likes(request):
 
 def search(request):
     return render(request, 'blink/search.html')
-
-def create(request):
-    return render(request, 'blink/create.html')
 
 def settings(request):
     return render(request, 'blink/settings.html')

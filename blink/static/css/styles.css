@@ -152,6 +152,30 @@ body {
   color: #fff;
 }
 
+#create {
+  display: block;
+  margin: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 100px 0;
+  text-align: center;
+}
+
+#create h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+#create input {
+  width: 20%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+
 @keyframes changeLogo {
   0% {
     background-image: url("../images/logo/fullyOpenEye.png");
