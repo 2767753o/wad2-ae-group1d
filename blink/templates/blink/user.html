@@ -19,13 +19,15 @@
             {% if postData %}
                 {% for post in postData %}
                     {% if post.user == userData %}
-                        <div>
-                            <p>{{ post.content }}</p>
-                            <p>{{ post.releaseDate }}</p>
-                            {% if post.image %}
-                                <img src="{{ post.image.url }}" alt="Post Image">
-                            {% endif %}
-                        </div>
+                        <a href="{% url 'blink:view_post' post.postID %}">
+                            <div>
+                                <p>{{ post.content }}</p>
+                                <p>{{ post.releaseDate }}</p>
+                                {% if post.image %}
+                                    <img src="{{ post.image.url }}" alt="Post Image">
+                                {% endif %}
+                            </div>
+                        </a>
                     {% endif %}
                 {% endfor %}
             {% else %}

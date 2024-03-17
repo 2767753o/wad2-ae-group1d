@@ -1,0 +1,37 @@
+{% extends 'blink/base.html' %}
+{% load staticfiles %}
+
+
+{% block title_block %}
+	User Profile
+{% endblock %}
+
+{% block body_block %}
+	{% if postData %}
+        <p>{{ postData.content }}</p>
+        <p>{{ postData.releaseDate }}</p>
+        <a href="{% url 'blink:user' postData.user.username %}">{{ postData.user }}</a><br />
+        {% if postData.image %}
+            <img src="{{ postData.image.url }}" alt="Post Image"><br />
+        {% endif %}
+        <a href="{% url 'blink:like_post' postData.postID %}">
+            {% if userLiked %}
+                <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
+            {% else %}
+                <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
+            {% endif %}
+        </a>
+        <a href="{% url 'blink:view_likes' postData.postID %}">{{ likeCount }}
+        {% if likeCount == 1 %}
+            like
+        {% else %}
+            likes
+        {% endif %}
+        </a>
+        {% comment %} <form action="{% url 'blink:comment' postData.postID %}" method="post">
+            {% csrf_token %}
+            <textarea name="comment" rows="4" cols="50"></textarea><br />
+            <input type="submit" value="Comment">
+        </form> {% endcomment %}
+    {% endif %}
+{% endblock %}

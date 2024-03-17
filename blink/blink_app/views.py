@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from blink_app.forms import UserForm, UserProfileForm, CreateForm
-from blink_app.models import Post, UserProfile
+from blink_app.models import Post, UserProfile, Like, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -19,10 +19,20 @@ from django.db.models import Q
 @login_required
 def index(request):
     # get all posts
-    post_list = Post.objects.order_by('-releaseDate')
-    context_dict = {'posts': post_list}
+    postData = Post.objects.order_by('-releaseDate')
+    likeData = []
+    userLikeData = []
+    for post in postData:
+        likeData.append(len(Like.objects.filter(post=post)))    
+        userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
 
-    return render(request, 'blink/index.html', context=context_dict)
+    return render(
+        request,
+        'blink/index.html',
+        context={
+            'postAndLikeData': zip(postData, likeData, userLikeData)
+        }
+    )
 
 def user_login(request):
     if request.method == "POST":
@@ -208,14 +218,71 @@ def search(request):
     else:
         return redirect(reverse('blink:index'))
 
+@login_required
+def view_post(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+        likeData = Like.objects.filter(post=postData).filter(user=request.user)
+        likeCount = len(Like.objects.filter(post=postData))
+    except Post.DoesNotExist:
+        postData = None
+
+    if postData is None:
+        return redirect(reverse('blink:index'))
+
+    return render(
+        request, 'blink/post.html', 
+        context={
+            'postData': postData,
+            'userLiked': len(likeData) > 0,
+            'likeCount': likeCount
+        }
+    )
+
+@login_required
+def like_post(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+        user_data = User.objects.get(username=request.user.get_username())
+    except Post.DoesNotExist:
+        postData = None
+    except User.DoesNotExist:
+        user_data = None
+
+    if postData is None or user_data is None:
+        return redirect(reverse('blink:index'))
+    
+    likeData = Like.objects.filter(post=postData).filter(user=user_data)
+    if len(likeData) > 0:
+        likeInstance = Like.objects.get(post=postData, user=user_data)
+        likeInstance.delete()
+    else:
+        like = Like(user=user_data, post=postData)
+        like.save()
+
+    return redirect(request.META["HTTP_REFERER"])
+
+@login_required
+def view_likes(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+        likeData = Like.objects.filter(post=postData)
+    except Post.DoesNotExist:
+        postData = None
+
+    if postData is None:
+        return redirect(reverse('blink:index'))
+    
+    return render(
+        request, 'blink/likes.html',
+        context={
+            'postData': postData,
+            'likeData': likeData
+        }
+    )
+
 def friends(request):
     return render(request, 'blink/friends.html')
-
-def view_post(request):
-    return render(request, 'blink/post.html')
-
-def view_likes(request):
-    return render(request, 'blink/likes.html')
 
 def settings(request):
     return render(request, 'blink/settings.html')
