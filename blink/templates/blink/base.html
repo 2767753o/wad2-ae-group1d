@@ -78,6 +78,11 @@
 							<button type="submit">Submit</button>
 						</form>
 					</li>
+
+					<li class="navbar__item">
+						<a href="{% url 'blink:user' user.username %}" class="navbar__link">
+							<span>Profile</span></a>
+					</li>
 				{% endif %}
 			</ul>
 
