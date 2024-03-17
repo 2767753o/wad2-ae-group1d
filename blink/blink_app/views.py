@@ -224,6 +224,14 @@ def view_post(request, postID):
         postData = Post.objects.get(postID=postID)
         commentData = Comment.objects.filter(post=postData).order_by('-commentTime')
         likeData = Like.objects.filter(post=postData).filter(user=request.user)
+        
+        likeDataComments = [
+            len(Like.objects.filter(comment=comment)) for comment in commentData
+        ]
+        userLikedComments = [
+            len(Like.objects.filter(comment=comment).filter(user=request.user)) > 0 for comment in commentData
+        ]
+        
         likeCount = len(Like.objects.filter(post=postData))
     except Post.DoesNotExist:
         postData = None
@@ -235,7 +243,7 @@ def view_post(request, postID):
         request, 'blink/post.html', 
         context={
             'postData': postData,
-            'commentData': commentData,
+            'commentData': zip(commentData, likeDataComments, userLikedComments),
             'userLiked': len(likeData) > 0,
             'likeCount': likeCount
         }
@@ -265,7 +273,30 @@ def like_post(request, postID):
     return redirect(request.META["HTTP_REFERER"])
 
 @login_required
-def view_likes(request, postID):
+def like_comment(request, postID, commentID):
+    try:
+        commentData = Comment.objects.get(commentID=commentID)
+        userData = User.objects.get(username=request.user.get_username())
+    except Post.DoesNotExist:
+        commentData = None
+    except User.DoesNotExist:
+        userData = None
+
+    if commentData is None or userData is None:
+        return redirect(reverse('blink:index'))
+    
+    likeData = Like.objects.filter(comment=commentData).filter(user=userData)
+    if len(likeData) > 0:
+        likeInstance = Like.objects.get(comment=commentData, user=userData)
+        likeInstance.delete()
+    else:
+        like = Like(user=userData, comment=commentData)
+        like.save()
+
+    return redirect(reverse('blink:view_post', args=(postID, )))
+
+@login_required
+def view_likes_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
         likeData = Like.objects.filter(post=postData)
@@ -279,7 +310,28 @@ def view_likes(request, postID):
         request, 'blink/likes.html',
         context={
             'postData': postData,
-            'likeData': likeData
+            'likeData': likeData,
+            'postID': postID
+        }
+    )
+
+@login_required
+def view_likes_comment(request, commentID):
+    try:
+        commentData = Comment.objects.get(commentID=commentID)
+        likeData = Like.objects.filter(comment=commentData)
+    except Comment.DoesNotExist:
+        commentData = None
+
+    if commentData is None:
+        return redirect(reverse('blink:index'))
+    
+    return render(
+        request, 'blink/likes.html',
+        context={
+            'commentData': commentData,
+            'likeData': likeData,
+            'postID': commentData.post.postID
         }
     )
 
