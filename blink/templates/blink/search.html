@@ -7,8 +7,11 @@
 
 {% block body_block %}
 <section id="feed">
+    {% comment %} SEARCH RESULTS {% endcomment %}
 	<h1>Search results for: <em>{{ query }}</em></h1>
-	<div>
+	
+    {% comment %} POST RESULTS {% endcomment %}
+    <div>
         {% if post_results %}
 		    {% for post in post_results %}
                 <div>
@@ -24,6 +27,8 @@
             <p>No posts found.</p>
         {% endif %}
 	</div>
+
+    {% comment %} USER RESULTS {% endcomment %}
     <div>
         {% if user_data %}
             {% for user in user_data %}
