@@ -222,6 +222,7 @@ def search(request):
 def view_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
+        commentData = Comment.objects.filter(post=postData).order_by('-commentTime')
         likeData = Like.objects.filter(post=postData).filter(user=request.user)
         likeCount = len(Like.objects.filter(post=postData))
     except Post.DoesNotExist:
@@ -234,6 +235,7 @@ def view_post(request, postID):
         request, 'blink/post.html', 
         context={
             'postData': postData,
+            'commentData': commentData,
             'userLiked': len(likeData) > 0,
             'likeCount': likeCount
         }
@@ -243,21 +245,21 @@ def view_post(request, postID):
 def like_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
-        user_data = User.objects.get(username=request.user.get_username())
+        userData = User.objects.get(username=request.user.get_username())
     except Post.DoesNotExist:
         postData = None
     except User.DoesNotExist:
-        user_data = None
+        userData = None
 
-    if postData is None or user_data is None:
+    if postData is None or userData is None:
         return redirect(reverse('blink:index'))
     
-    likeData = Like.objects.filter(post=postData).filter(user=user_data)
+    likeData = Like.objects.filter(post=postData).filter(user=userData)
     if len(likeData) > 0:
-        likeInstance = Like.objects.get(post=postData, user=user_data)
+        likeInstance = Like.objects.get(post=postData, user=userData)
         likeInstance.delete()
     else:
-        like = Like(user=user_data, post=postData)
+        like = Like(user=userData, post=postData)
         like.save()
 
     return redirect(request.META["HTTP_REFERER"])
@@ -280,6 +282,26 @@ def view_likes(request, postID):
             'likeData': likeData
         }
     )
+
+@login_required
+def comment(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+    except Post.DoesNotExist:
+        postData = None
+
+    if postData is None:
+        return redirect(reverse('blink:index'))
+
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        if len(comment) > 0:
+            # comment must be non-empty
+            userData = User.objects.get(username=request.user.get_username())
+            commentInstance = Comment(user=userData, post=postData, content=comment, commentTime=datetime.now())
+            commentInstance.save()
+        
+    return redirect(reverse('blink:view_post', args=(postID, )))
 
 def friends(request):
     return render(request, 'blink/friends.html')
