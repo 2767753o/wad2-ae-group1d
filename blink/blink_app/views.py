@@ -164,9 +164,6 @@ def create(request):
 
             post_form.releaseDate = datetime.now()
             post_form.user = user_data
-            print("lksjldsjlkj")
-            print(user_data)
-            print(user_profile_data)
 
             post_form.save()
             user_profile_data.posted = True
