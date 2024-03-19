@@ -10,7 +10,7 @@
 	<h1>Register</h1>
 	{% if registered %}
 		Thank you for registering!
-		<a href="{% url 'blink:index' %}">Return to the homepage.</a><br />
+		<a href="{% url 'blink:login' %}">Return to the homepage.</a><br />
 	{% else %}
 		<form id="user_form" method="post" action="{% url 'blink:register' %}"
 							enctype="multipart/form-data">
