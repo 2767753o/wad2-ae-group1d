@@ -16,8 +16,8 @@
 <div class="container">
 	<div class="header">
 		{% block header_block %}
-		<div class="header-logo">
-		</div>
+		<a href="{% url 'blink:index' %}"><div class="header-logo">
+		</div></a>
 		<nav class="navbar">
 			<ul class="navbar__menu">
 				{% if user.is_authenticated %}
