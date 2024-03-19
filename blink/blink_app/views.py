@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+import pytz # timezones
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
@@ -6,19 +9,35 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from blink_app.forms import UserForm, UserProfileForm
-from blink_app.models import Post, UserProfile
+from blink_app.forms import UserForm, UserProfileForm, CreateForm
+from blink_app.models import Post, UserProfile, Like, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 @login_required
 def index(request):
     # get all posts
-    post_list = Post.objects.order_by('-releaseDate')
-    context_dict = {'posts': post_list}
+    postData = Post.objects.order_by('-releaseDate')
+    likeData = []
+    userLikeData = []
+    for post in postData:
+        # check if post is within 24h
+        utc = pytz.UTC
+        if post.releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+            post.delete()
+        else:
+            likeData.append(len(Like.objects.filter(post=post)))    
+            userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
 
-    return render(request, 'blink/index.html', context=context_dict)
+    return render(
+        request,
+        'blink/index.html',
+        context={
+            'postAndLikeData': zip(postData, likeData, userLikeData)
+        }
+    )
 
 def user_login(request):
     if request.method == "POST":
@@ -29,6 +48,17 @@ def user_login(request):
 
         if user:
             if user.is_active:
+                # update posted by checking when user last posted
+                user_data = User.objects.get(username=username)
+                user_profile_data = UserProfile.objects.get(user=user_data)
+                user_post_data = Post.objects.filter(user=user_data).order_by('-releaseDate')
+
+                # check if user has posted in the last 24 hours
+                utc = pytz.UTC
+                if len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+                    user_profile_data.posted = False
+                    user_profile_data.save()
+
                 login(request, user)
                 return redirect(reverse('blink:index'))
             else:
@@ -126,20 +156,212 @@ def view_user(request, username):
         }
     )
 
+@login_required
+def create(request):
+    if request.method == "POST":
+        create_form = CreateForm(request.POST)
+
+        # check if user has already posted
+        try:
+            user_data = User.objects.get(username=request.user.get_username())
+            user_profile_data = UserProfile.objects.get(user=user_data)
+        except User.DoesNotExist:
+            user_data = None
+
+        if user_data is None or user_profile_data.posted:
+            return redirect(reverse('blink:index'))
+        
+        if create_form.is_valid():
+            post_form = create_form.save(commit=False)
+
+            if 'image' in request.FILES:
+                post_form.image = request.FILES['image']
+
+            post_form.releaseDate = datetime.now()
+            post_form.user = user_data
+
+            post_form.save()
+            user_profile_data.posted = True
+            user_profile_data.save()
+
+            return redirect(reverse('blink:index')) 
+
+        else:
+            print(post_form.errors)
+
+    else:
+        post_form = CreateForm()
+
+    return render(
+        request,
+        'blink/create.html',
+        context={
+            'post_form': post_form,
+        }
+    )
+
+@login_required
+def search(request):
+    # search posts and users
+    query = request.GET.get('search')
+    if query != "":
+        post_results = Post.objects.filter(Q(content__icontains=query)).order_by('-releaseDate')
+        user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
+        user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
+        user_data = zip(user_results, user_profile_results)
+
+        return render(
+            request,
+            'blink/search.html',
+            context={
+                'post_results': post_results,
+                'user_data': user_data,
+                'query': query
+            }
+        )
+    
+    else:
+        return redirect(reverse('blink:index'))
+
+@login_required
+def view_post(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+        commentData = Comment.objects.filter(post=postData).order_by('-commentTime')
+        likeData = Like.objects.filter(post=postData).filter(user=request.user)
+        
+        likeDataComments = [
+            len(Like.objects.filter(comment=comment)) for comment in commentData
+        ]
+        userLikedComments = [
+            len(Like.objects.filter(comment=comment).filter(user=request.user)) > 0 for comment in commentData
+        ]
+        
+        likeCount = len(Like.objects.filter(post=postData))
+    except Post.DoesNotExist:
+        postData = None
+
+    if postData is None:
+        return redirect(reverse('blink:index'))
+
+    return render(
+        request, 'blink/post.html', 
+        context={
+            'postData': postData,
+            'commentData': zip(commentData, likeDataComments, userLikedComments),
+            'userLiked': len(likeData) > 0,
+            'likeCount': likeCount
+        }
+    )
+
+@login_required
+def like_post(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+        userData = User.objects.get(username=request.user.get_username())
+    except Post.DoesNotExist:
+        postData = None
+    except User.DoesNotExist:
+        userData = None
+
+    if postData is None or userData is None:
+        return redirect(reverse('blink:index'))
+    
+    likeData = Like.objects.filter(post=postData).filter(user=userData)
+    if len(likeData) > 0:
+        likeInstance = Like.objects.get(post=postData, user=userData)
+        likeInstance.delete()
+    else:
+        like = Like(user=userData, post=postData)
+        like.save()
+
+    return redirect(request.META["HTTP_REFERER"])
+
+@login_required
+def like_comment(request, postID, commentID):
+    try:
+        commentData = Comment.objects.get(commentID=commentID)
+        userData = User.objects.get(username=request.user.get_username())
+    except Post.DoesNotExist:
+        commentData = None
+    except User.DoesNotExist:
+        userData = None
+
+    if commentData is None or userData is None:
+        return redirect(reverse('blink:index'))
+    
+    likeData = Like.objects.filter(comment=commentData).filter(user=userData)
+    if len(likeData) > 0:
+        likeInstance = Like.objects.get(comment=commentData, user=userData)
+        likeInstance.delete()
+    else:
+        like = Like(user=userData, comment=commentData)
+        like.save()
+
+    return redirect(reverse('blink:view_post', args=(postID, )))
+
+@login_required
+def view_likes_post(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+        likeData = Like.objects.filter(post=postData)
+    except Post.DoesNotExist:
+        postData = None
+
+    if postData is None:
+        return redirect(reverse('blink:index'))
+    
+    return render(
+        request, 'blink/likes.html',
+        context={
+            'postData': postData,
+            'likeData': likeData,
+            'postID': postID
+        }
+    )
+
+@login_required
+def view_likes_comment(request, commentID):
+    try:
+        commentData = Comment.objects.get(commentID=commentID)
+        likeData = Like.objects.filter(comment=commentData)
+    except Comment.DoesNotExist:
+        commentData = None
+
+    if commentData is None:
+        return redirect(reverse('blink:index'))
+    
+    return render(
+        request, 'blink/likes.html',
+        context={
+            'commentData': commentData,
+            'likeData': likeData,
+            'postID': commentData.post.postID
+        }
+    )
+
+@login_required
+def comment(request, postID):
+    try:
+        postData = Post.objects.get(postID=postID)
+    except Post.DoesNotExist:
+        postData = None
+
+    if postData is None:
+        return redirect(reverse('blink:index'))
+
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        if len(comment) > 0:
+            # comment must be non-empty
+            userData = User.objects.get(username=request.user.get_username())
+            commentInstance = Comment(user=userData, post=postData, content=comment, commentTime=datetime.now())
+            commentInstance.save()
+        
+    return redirect(reverse('blink:view_post', args=(postID, )))
+
 def friends(request):
     return render(request, 'blink/friends.html')
-
-def view_post(request):
-    return render(request, 'blink/post.html')
-
-def view_likes(request):
-    return render(request, 'blink/likes.html')
-
-def search(request):
-    return render(request, 'blink/search.html')
-
-def create(request):
-    return render(request, 'blink/create.html')
 
 def settings(request):
     return render(request, 'blink/settings.html')
@@ -158,6 +380,3 @@ def user_followed_by(request):
 
 def user_following(request):
     return render(request, 'blink/following.html')
-
-def user_logout(request):
-    return render(request, 'blink/logout.html')

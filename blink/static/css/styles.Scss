@@ -40,6 +40,53 @@ body {
   margin: 0;
   overflow: hidden;
 
+  &__search {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: center;
+    height: 3.5rem; 
+    width: 10rem;
+    color: #000; 
+    text-decoration: none;
+    width: 10rem;
+    text-transform: uppercase;
+    margin: auto;
+    padding: 0 9rem;
+    
+    input {
+        flex: 1;
+        padding: 0 2rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        background: rgba(101, 22, 239, 0.1);
+        color: #000;
+        transition: background 0.3s ease;
+        z-index: 1;
+        height: 3.5rem;
+        
+        &:focus {
+            background: rgba(196, 21, 28, 0.4);
+        }
+    }
+
+    img {
+      width: 30px; 
+      height: 30px;
+    }
+
+    button {
+        background-color: transparent; /* Set background to transparent */
+        color: inherit; /* Inherit text color */
+        border: none; /* Remove border */
+        border-radius: 5px;
+        cursor: pointer;
+    }
+  }
+
   &__menu {
     position: relative;
     display: flex;
@@ -64,6 +111,7 @@ body {
       width: 24px; 
       height: 24px; 
     }
+    
 
     &:hover {
       color: #C4151C; 
@@ -172,6 +220,33 @@ body {
   color: #fff;
 }
 
+
+#create {
+  display: block;
+  margin: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 100px 0;
+  text-align: center;
+}
+
+#create h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+#create input {
+  width: 20%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+
 @keyframes changeLogo {
   0% {
     background-image: url("../images/logo/fullyOpenEye.png");
@@ -201,4 +276,3 @@ body {
   position: relative; 
   animation: changeLogo 3.5s infinite;
 }
-

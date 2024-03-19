@@ -1,14 +1,16 @@
+from datetime import datetime
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 class Post(models.Model):
     postID = models.AutoField(primary_key=True)
-    releaseDate = models.DateTimeField()
+    releaseDate = models.DateTimeField(default=datetime.now)
     views = models.IntegerField(default=0)
     content = models.CharField(max_length=280)
     image = models.ImageField(upload_to='post_pictures', null=True, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
+
 
 class UserProfile(models.Model):
     userID = models.AutoField(primary_key=True)
@@ -27,7 +29,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete= models.CASCADE)
 
 class Like(models.Model):
-    likeID = models.CharField(primary_key=True, max_length=8)
+    likeID = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     post = models.ForeignKey(Post, on_delete= models.CASCADE, null = True, blank = True)
     comment = models.ForeignKey(Comment, on_delete= models.CASCADE, null = True, blank = True)
