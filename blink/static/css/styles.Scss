@@ -246,6 +246,61 @@ body {
   cursor: pointer;
 }
 
+#profile {
+  display: block;
+  margin: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 100px 0;
+  text-align: center;
+}
+
+#profile h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+#profile p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+#profile img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 20px 0;
+}
+
+
+
+
+#infoContainer {
+  display: block;
+  margin: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 100px 0;
+  text-align: center;
+}
+
+#infoContainer h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+#infoContainer p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #fff;
+  padding: 0 20%;
+}
+
+
+
 
 @keyframes changeLogo {
   0% {
