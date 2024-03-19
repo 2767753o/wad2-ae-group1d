@@ -7,13 +7,20 @@
 {% endblock %}
 
 {% block body_block %}
-	<h1>Login</h1>
-    <form id="login_form" method="post" action="{% url 'blink:login' %}">
-        {% csrf_token %}
-        <input type="text" name="username" value="" placeholder="Username" /><br />
-        <input type="password" name="password" value="" placeholder="Password" /><br />
-        <a href="{% url 'blink:reset_password' %}">Forgotten Password?</a>
-        <input type="submit" value="Log In">
-    </form>
-    <a href="{% url 'blink:register' %}">New Member?</a>
+    <section id="login">
+
+        <div class="loading-logo">
+        </div>
+    
+        <br />
+        
+        <form id="login_form" method="post" action="{% url 'blink:login' %}">
+            {% csrf_token %}
+            <input type="text" name="username" value="" placeholder="Username" /><br />
+            <input type="password" name="password" value="" placeholder="Password" /><br />
+            <input type="submit" value="Log In" class="loginButton"> <br />
+            <a href="{% url 'blink:reset_password' %}">Forgotten Password?</a>
+        </form>
+        <a href="{% url 'blink:register' %}"><h4>New Member?</h4></a>
+    </section>
 {% endblock %}

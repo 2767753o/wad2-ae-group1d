@@ -188,6 +188,52 @@ body {
   font-size: 25px;
 }
 
+#login {
+  display: block;
+  margin: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 100px 0;
+  text-align: center;
+}
+
+#login h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+#login input {
+  width: 20%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: auto;
+}
+
+#login a {
+  color: #fff;
+  font-size: 0.8rem;
+  margin: 10px 0;
+}
+
+#login [type="submit"] {
+  background: #e3e1e1;
+  color: #000;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    color: #C4151C;
+    background:#fff;
+  }
+}
+
 
 .foot-link {
   color: #edebeb;
