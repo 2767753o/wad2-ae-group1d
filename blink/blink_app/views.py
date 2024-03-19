@@ -23,8 +23,13 @@ def index(request):
     likeData = []
     userLikeData = []
     for post in postData:
-        likeData.append(len(Like.objects.filter(post=post)))    
-        userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
+        # check if post is within 24h
+        utc = pytz.UTC
+        if post.releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+            post.delete()
+        else:
+            likeData.append(len(Like.objects.filter(post=post)))    
+            userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
 
     return render(
         request,
