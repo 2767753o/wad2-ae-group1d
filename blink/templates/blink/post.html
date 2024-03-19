@@ -1,0 +1,73 @@
+{% extends 'blink/base.html' %}
+{% load staticfiles %}
+
+
+{% block title_block %}
+	User Profile
+{% endblock %}
+
+{% block body_block %}
+	{% if postData %}
+    
+        {% comment %} POST CONTENTS {% endcomment %}
+        <p>{{ postData.content }}</p>
+        <p>{{ postData.releaseDate }}</p>
+        <a href="{% url 'blink:user' postData.user.username %}">{{ postData.user }}</a><br />
+        {% if postData.image %}
+            <img src="{{ postData.image.url }}" alt="Post Image"><br />
+        {% endif %}
+
+        {% comment %} LIKE LOGIC {% endcomment %}
+        <a href="{% url 'blink:like_post' postData.postID %}">
+            {% if userLiked %}
+                <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
+            {% else %}
+                <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
+            {% endif %}
+        </a>
+
+        <a href="{% url 'blink:view_likes_post' postData.postID %}">{{ likeCount }}
+        {% if likeCount == 1 %}
+            like
+        {% else %}
+            likes
+        {% endif %}
+        </a>
+
+        {% comment %} COMMENT LOGIC {% endcomment %}
+        <form action="{% url 'blink:comment' postData.postID %}" method="post">
+            {% csrf_token %}
+            <textarea name="comment" rows="4" cols="50"></textarea><br />
+            <input type="submit" value="Comment">
+        </form>
+
+        {% if commentData %}
+            {% for comment in commentData %}
+                <div>
+                    <p>{{ comment.0.content }}</p>
+                    <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
+
+                    {% comment %} COMMENT LIKE LOGIC {% endcomment %}
+                    <a href="{% url 'blink:like_comment' postData.postID comment.0.commentID %}">
+                        {% if comment.2 %}
+                            <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
+                        {% else %}
+                            <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
+                        {% endif %}
+                    </a>
+            
+                    <a href="{% url 'blink:view_likes_comment' comment.0.commentID %}">{{ comment.1 }}
+                    {% if comment.1 == 1 %}
+                        like
+                    {% else %}
+                        likes
+                    {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>There are no comments on this post yet.</p>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}

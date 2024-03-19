@@ -28,7 +28,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete= models.CASCADE)
 
 class Like(models.Model):
-    likeID = models.CharField(primary_key=True, max_length=8)
+    likeID = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     post = models.ForeignKey(Post, on_delete= models.CASCADE, null = True, blank = True)
     comment = models.ForeignKey(Comment, on_delete= models.CASCADE, null = True, blank = True)
