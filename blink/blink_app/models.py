@@ -8,8 +8,9 @@ class Post(models.Model):
     releaseDate = models.DateTimeField(default=datetime.now)
     views = models.IntegerField(default=0)
     content = models.CharField(max_length=280)
-    image = models.ImageField(upload_to='Posts/Images', null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='post_pictures', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+
 
 class UserProfile(models.Model):
     userID = models.AutoField(primary_key=True)
