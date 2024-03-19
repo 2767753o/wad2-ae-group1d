@@ -16,7 +16,13 @@
 <div class="container">
 	<div class="header">
 		{% block header_block %}
-		<a href="{% url 'blink:index' %}"><div class="header-logo">
+		<a href="
+		{% if user.is_authenticated %}
+			{% url 'blink:index' %}
+		{% else %}
+			{% url 'blink:login' %}
+		{% endif %}
+		"><div class="header-logo">
 		</div></a>
 		<nav class="navbar">
 			<ul class="navbar__menu">
