@@ -8,6 +8,7 @@
 
 {% block body_block %}
 	{% if userProfileData %}
+    <section id="profile">
 
         {% comment %} USER CONTENTS {% endcomment %}
         <h1>{{ userData.username }}</h1>
@@ -39,4 +40,5 @@
             {% endif %}
         </div>
     {% endif %}
+    </section>
 {% endblock %}
