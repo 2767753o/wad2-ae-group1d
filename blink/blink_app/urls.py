@@ -14,7 +14,7 @@ urlpatterns = [
         path('register/', views.register, name='register'),
         path('friends/', views.friends, name='friends'),
         path('post/<int:postID>/', views.view_post, name='view_post'),
-        path('post/<int:postID>/like', views.like_post, name='like_post'),
+        path("like_post/", views.LikePostView.as_view(), name="like_post"),
         path('post/<int:postID>/likes', views.view_likes_post, name='view_likes_post'),
         path('post/<int:postID>/comment', views.comment, name='comment'),
         path('post/<int:postID>/like_comment/<int:commentID>', views.like_comment, name='like_comment'),
@@ -30,4 +30,5 @@ urlpatterns = [
         # path('user/<id:userId>/followed', views.user_followed_by, name='user_followed_by'),
         # path('user/<id:userId>/following', views.user_following, name='user_following'),
         path('logout/', views.user_logout, name='logout'),
+
 ]

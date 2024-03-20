@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from django.views import View
+from django.utils.decorators import method_decorator
 import pytz # timezones
 
 from django.shortcuts import render
@@ -254,28 +256,28 @@ def view_post(request, postID):
         }
     )
 
-@login_required
-def like_post(request, postID):
-    try:
-        postData = Post.objects.get(postID=postID)
-        userData = User.objects.get(username=request.user.get_username())
-    except Post.DoesNotExist:
-        postData = None
-    except User.DoesNotExist:
-        userData = None
+# @login_required
+# def like_post(request, postID):
+#     try:
+#         postData = Post.objects.get(postID=postID)
+#         userData = User.objects.get(username=request.user.get_username())
+#     except Post.DoesNotExist:
+#         postData = None
+#     except User.DoesNotExist:
+#         userData = None
 
-    if postData is None or userData is None:
-        return redirect(reverse('blink:index'))
+#     if postData is None or userData is None:
+#         return redirect(reverse('blink:index'))
     
-    likeData = Like.objects.filter(post=postData).filter(user=userData)
-    if len(likeData) > 0:
-        likeInstance = Like.objects.get(post=postData, user=userData)
-        likeInstance.delete()
-    else:
-        like = Like(user=userData, post=postData)
-        like.save()
+#     likeData = Like.objects.filter(post=postData).filter(user=userData)
+#     if len(likeData) > 0:
+#         likeInstance = Like.objects.get(post=postData, user=userData)
+#         likeInstance.delete()
+#     else:
+#         like = Like(user=userData, post=postData)
+#         like.save()
 
-    return redirect(request.META["HTTP_REFERER"])
+#     return redirect(request.META["HTTP_REFERER"])
 
 @login_required
 def like_comment(request, postID, commentID):
@@ -380,3 +382,29 @@ def user_followed_by(request):
 
 def user_following(request):
     return render(request, 'blink/following.html')
+
+
+class LikePostView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        post_id = request.GET['post_id']
+
+        try:
+            post = Post.objects.get(postID=post_id)
+        except Post.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        
+        userData = User.objects.get(username=request.user.get_username())
+        likeData = Like.objects.filter(post=post).filter(user=userData)
+        if len(likeData) > 0:
+            likeInstance = Like.objects.get(post=post, user=userData)
+            likeInstance.delete()
+            userLiked = False
+        else:
+            like = Like(user=userData, post=post)
+            like.save()
+            userLiked = True
+
+        return HttpResponse((len(Like.objects.filter(post=post)), userLiked))

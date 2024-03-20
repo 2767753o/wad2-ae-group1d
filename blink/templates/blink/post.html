@@ -18,20 +18,15 @@
         {% endif %}
 
         {% comment %} LIKE LOGIC {% endcomment %}
-        <a href="{% url 'blink:like_post' postData.postID %}">
+        <button class="like_button" id="like_button_{{ postData.postID }}" data-postid="{{ postData.postID }}" type="button">
             {% if userLiked %}
                 <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
             {% else %}
                 <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
             {% endif %}
-        </a>
-
-        <a href="{% url 'blink:view_likes_post' postData.postID %}">{{ likeCount }}
-        {% if likeCount == 1 %}
-            like
-        {% else %}
-            likes
-        {% endif %}
+        </button>
+        <a href="{% url 'blink:view_likes_post' postData.postID %}">
+            <strong class="like_count" id="like_count_{{ postData.postID }}">{{ likeCount }}</strong> likes.
         </a>
 
         {% comment %} COMMENT LOGIC {% endcomment %}
