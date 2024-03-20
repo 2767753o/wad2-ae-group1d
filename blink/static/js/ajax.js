@@ -25,7 +25,14 @@ $(document).ready(function () {
                 url,
                 context_dict,
                 function (data) {
-                    $("#like_count_" + id + "_" + type).html(data[0]);
+                    var likeCountData = data[0];
+                    if (data[2] == "T") {
+                        likeCountData += " likes.";
+                    } else {
+                        likeCountData += " like.";
+                    }
+                    
+                    $("#like_count_" + id + "_" + type).html(likeCountData);
                     if (data[1] == "F") {
                         $("#like_button_" + id + "_" + type).children('img').attr("src", "/static/images/icons/likeEmpty.svg");
                     } else {

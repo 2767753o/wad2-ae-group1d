@@ -366,13 +366,18 @@ class LikeView(View):
         if len(likeData) > 0:
             likeInstance = Like.objects.get(post=post, user=userData) if post else Like.objects.get(comment=comment, user=userData)
             likeInstance.delete()
-            userLiked = False
+            userLiked = "F"
         else:
             like = Like(user=userData, post=post) if post else Like(user=userData, comment=comment)
             like.save()
-            userLiked = True
+            userLiked = "T"
 
-        return len(Like.objects.filter(post=post)) if post else len(Like.objects.filter(comment=comment)), userLiked
+        numLikes = len(Like.objects.filter(post=post)) if post else len(Like.objects.filter(comment=comment))
+        if numLikes != 1:
+            plural = "T"
+        else:
+            plural = "F"
+        return numLikes, userLiked, plural
 
 
 class LikePostView(LikeView):
@@ -382,8 +387,8 @@ class LikePostView(LikeView):
         post = self.getModel(postID=post_id)
         if post is None:
             return HttpResponse(-1)
-        likeCount, userLiked = self.processLike(request, post=post)
-        return HttpResponse((likeCount, userLiked))
+        likeCount, userLiked, plural = self.processLike(request, post=post)
+        return HttpResponse((likeCount, userLiked, plural))
     
 
 class LikeCommentView(LikeView):
@@ -393,5 +398,5 @@ class LikeCommentView(LikeView):
         comment = self.getModel(commentID=comment_id)
         if comment is None:
             return HttpResponse(-1)
-        likeCount, userLiked = self.processLike(request, comment=comment)
-        return HttpResponse((likeCount, userLiked))
+        likeCount, userLiked, plural = self.processLike(request, comment=comment)
+        return HttpResponse((likeCount, userLiked, plural))

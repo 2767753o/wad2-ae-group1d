@@ -32,7 +32,13 @@
 							{% endif %}
 						</button>
 						<a href="{% url 'blink:view_likes_post' post.0.postID %}">
-							<strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}</strong> likes.
+							<strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}
+								{% if post.1 == 1 %}
+									like
+								{% else %}
+									likes
+								{% endif %}
+							</strong>
 						</a>
 					</div>
 				</a>
