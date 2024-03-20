@@ -377,6 +377,8 @@ class LikeView(View):
             plural = "T"
         else:
             plural = "F"
+
+        # passed as strings to HttpResponse, so better to not do bool
         return numLikes, userLiked, plural
 
 

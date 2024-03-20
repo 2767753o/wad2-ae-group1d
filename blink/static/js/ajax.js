@@ -8,7 +8,7 @@ $(document).ready(function () {
             var commentIdVar;
             commentIdVar = $(this).attr("data-commentid");
 
-            // either comment or post like
+            // either comment or post like, cant be both
             if (commentIdVar !== undefined && commentIdVar !== false) {
                 var id = commentIdVar;
                 var type = "comment"
@@ -26,12 +26,14 @@ $(document).ready(function () {
                 context_dict,
                 function (data) {
                     var likeCountData = data[0];
+                    // pluralisation
                     if (data[2] == "T") {
                         likeCountData += " likes.";
                     } else {
                         likeCountData += " like.";
                     }
-                    
+
+                    // like count
                     $("#like_count_" + id + "_" + type).html(likeCountData);
                     if (data[1] == "F") {
                         $("#like_button_" + id + "_" + type).children('img').attr("src", "/static/images/icons/likeEmpty.svg");
