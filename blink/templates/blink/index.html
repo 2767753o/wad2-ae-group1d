@@ -19,7 +19,7 @@
 							{% comment %} POST CONTENTS {% endcomment %}
 							<p>{{ post.0.content }}</p>
 							<p>{{ post.0.releaseDate }}</p>
-							<a href="{% url 'blink:user' post.0.user.username %}">{{ post.user }}</a><br />
+							<a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a><br />
 							{% if post.0.image %}
 								<img src="{{ post.0.image.url }}" alt="Post Image" width="25%"><br />
 							{% endif %}
