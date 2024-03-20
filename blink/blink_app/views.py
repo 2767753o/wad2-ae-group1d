@@ -256,52 +256,6 @@ def view_post(request, postID):
         }
     )
 
-# @login_required
-# def like_post(request, postID):
-#     try:
-#         postData = Post.objects.get(postID=postID)
-#         userData = User.objects.get(username=request.user.get_username())
-#     except Post.DoesNotExist:
-#         postData = None
-#     except User.DoesNotExist:
-#         userData = None
-
-#     if postData is None or userData is None:
-#         return redirect(reverse('blink:index'))
-    
-#     likeData = Like.objects.filter(post=postData).filter(user=userData)
-#     if len(likeData) > 0:
-#         likeInstance = Like.objects.get(post=postData, user=userData)
-#         likeInstance.delete()
-#     else:
-#         like = Like(user=userData, post=postData)
-#         like.save()
-
-#     return redirect(request.META["HTTP_REFERER"])
-
-@login_required
-def like_comment(request, postID, commentID):
-    try:
-        commentData = Comment.objects.get(commentID=commentID)
-        userData = User.objects.get(username=request.user.get_username())
-    except Post.DoesNotExist:
-        commentData = None
-    except User.DoesNotExist:
-        userData = None
-
-    if commentData is None or userData is None:
-        return redirect(reverse('blink:index'))
-    
-    likeData = Like.objects.filter(comment=commentData).filter(user=userData)
-    if len(likeData) > 0:
-        likeInstance = Like.objects.get(comment=commentData, user=userData)
-        likeInstance.delete()
-    else:
-        like = Like(user=userData, comment=commentData)
-        like.save()
-
-    return redirect(reverse('blink:view_post', args=(postID, )))
-
 @login_required
 def view_likes_post(request, postID):
     try:
@@ -408,3 +362,31 @@ class LikePostView(View):
             userLiked = True
 
         return HttpResponse((len(Like.objects.filter(post=post)), userLiked))
+    
+
+class LikeCommentView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        comment_id = request.GET['comment_id']
+
+        try:
+            comment = Comment.objects.get(commentID=comment_id)
+            user = User.objects.get(username=request.user.get_username())
+        except Comment.DoesNotExist:
+            return HttpResponse(-1)
+        except User.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        
+        likeData = Like.objects.filter(comment=comment).filter(user=user)
+        if len(likeData) > 0:
+            likeInstance = Like.objects.get(comment=comment, user=user)
+            likeInstance.delete()
+            userLiked = False
+        else:
+            like = Like(user=user, comment=comment)
+            like.save()
+            userLiked = True
+
+        return HttpResponse((len(Like.objects.filter(comment=comment)), userLiked))

@@ -18,7 +18,7 @@
         {% endif %}
 
         {% comment %} LIKE LOGIC {% endcomment %}
-        <button class="like_button" id="like_button_{{ postData.postID }}" data-postid="{{ postData.postID }}" type="button">
+        <button class="like_button" id="like_button_{{ postData.postID }}_post" data-postid="{{ postData.postID }}" type="button">
             {% if userLiked %}
                 <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
             {% else %}
@@ -26,7 +26,7 @@
             {% endif %}
         </button>
         <a href="{% url 'blink:view_likes_post' postData.postID %}">
-            <strong class="like_count" id="like_count_{{ postData.postID }}">{{ likeCount }}</strong> likes.
+            <strong class="like_count" id="like_count_{{ postData.postID }}_post">{{ likeCount }}</strong> likes.
         </a>
 
         {% comment %} COMMENT LOGIC {% endcomment %}
@@ -43,20 +43,15 @@
                     <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
 
                     {% comment %} COMMENT LIKE LOGIC {% endcomment %}
-                    <a href="{% url 'blink:like_comment' postData.postID comment.0.commentID %}">
+                    <button class="like_button" id="like_button_{{ comment.0.commentID }}_comment" data-commentid="{{ comment.0.commentID }}" type="button">
                         {% if comment.2 %}
                             <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
                         {% else %}
                             <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
                         {% endif %}
-                    </a>
-            
-                    <a href="{% url 'blink:view_likes_comment' comment.0.commentID %}">{{ comment.1 }}
-                    {% if comment.1 == 1 %}
-                        like
-                    {% else %}
-                        likes
-                    {% endif %}
+                    </button>
+                    <a href="{% url 'blink:view_likes_comment' comment.0.commentID %}">
+                        <strong class="like_count" id="like_count_{{ comment.0.commentID }}_comment">{{ comment.1 }}</strong> likes.
                     </a>
                 </div>
             {% endfor %}

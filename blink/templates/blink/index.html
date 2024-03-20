@@ -24,7 +24,7 @@
 						{% endif %}
 
 						{% comment %} LIKE LOGIC {% endcomment %}
-						<button class="like_button" id="like_button_{{ post.0.postID }}" data-postid="{{ post.0.postID }}" type="button">
+						<button class="like_button" id="like_button_{{ post.0.postID }}_post" data-postid="{{ post.0.postID }}" type="button">
 							{% if post.2 %}
 							<img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
 							{% else %}
@@ -32,7 +32,7 @@
 							{% endif %}
 						</button>
 						<a href="{% url 'blink:view_likes_post' post.0.postID %}">
-							<strong class="like_count" id="like_count_{{ post.0.postID }}">{{ post.1 }}</strong> likes.
+							<strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}</strong> likes.
 						</a>
 					</div>
 				</a>
