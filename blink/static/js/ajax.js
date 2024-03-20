@@ -28,9 +28,9 @@ $(document).ready(function () {
                     var likeCountData = data[0];
                     // pluralisation
                     if (data[2] == "T") {
-                        likeCountData += " likes.";
+                        likeCountData += " likes";
                     } else {
-                        likeCountData += " like.";
+                        likeCountData += " like";
                     }
 
                     // like count

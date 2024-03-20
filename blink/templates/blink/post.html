@@ -28,9 +28,9 @@
         <a href="{% url 'blink:view_likes_post' postData.postID %}">
             <strong class="like_count" id="like_count_{{ postData.postID }}_post">{{ likeCount }} 
                 {% if likeCount == 1 %}
-                    like.
+                    like
                 {% else %}
-                    likes.
+                    likes
                 {% endif %}                
             </strong>
         </a>
@@ -59,9 +59,9 @@
                     <a href="{% url 'blink:view_likes_comment' comment.0.commentID %}">
                         <strong class="like_count" id="like_count_{{ comment.0.commentID }}_comment">{{ comment.1 }}
                             {% if comment.1 == 1 %}
-                                like.
+                                like
                             {% else %}
-                                likes.
+                                likes
                             {% endif %}
                         </strong>
                     </a>
