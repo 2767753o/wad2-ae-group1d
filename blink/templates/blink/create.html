@@ -8,14 +8,16 @@
 
 {% block body_block %}
 <section id="create">
-	<h1>Create Post</h1>
-	<div>
-		<form id="create_post_form" method="post" action="{% url 'blink:create' %}" enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ post_form.as_p }}
-			<input type="submit" value="Create Post" />
-		</form>
-		<a href="{% url 'blink:index' %}">Cancel</a>
+	<div id="content">
+		<h1>Create Post</h1>
+		<div>
+			<form id="create_post_form" method="post" action="{% url 'blink:create' %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ post_form.as_p }}
+				<input type="submit" value="Create Post" />
+			</form>
+			<a href="{% url 'blink:index' %}">Cancel</a>
+		</div>
 	</div>
 </section>
 {% endblock %}

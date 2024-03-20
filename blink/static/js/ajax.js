@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     $('button').click(function () {
+        console.log("button clicked");
         if ($(this).hasClass("like_button")) {
             var postIdVar;
             postIdVar = $(this).attr("data-postid");
@@ -36,13 +37,25 @@ $(document).ready(function () {
                     // like count
                     $("#like_count_" + id + "_" + type).html(likeCountData);
                     if (data[1] == "F") {
-                        $("#like_button_" + id + "_" + type).children('img').attr("src", "/static/images/icons/likeEmpty.svg");
+                        var imageType = "likeEmpty";
                     } else {
-                        $("#like_button_" + id + "_" + type).children('img').attr("src", "/static/images/icons/likeFilled.svg");
+                        var imageType = "likeFilled";
                     }
+                    $("#like_button_" + id + "_" + type).children('img').attr("src", "/static/images/icons/" + imageType + ".svg");
                 }
             )
         }
+    });
+
+    $('#search_input').keyup(function () {
+        var query;
+        query = $(this).val();
+
+        $.get('/blink/search/',
+            { 'search_query': query },
+            function (data) {
+                $('#content').html(data);
+            })
     });
 
 });

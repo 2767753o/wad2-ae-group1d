@@ -203,29 +203,6 @@ def create(request):
     )
 
 @login_required
-def search(request):
-    # search posts and users
-    query = request.GET.get('search')
-    if query != "":
-        post_results = Post.objects.filter(Q(content__icontains=query)).order_by('-releaseDate')
-        user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
-        user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
-        user_data = zip(user_results, user_profile_results)
-
-        return render(
-            request,
-            'blink/search.html',
-            context={
-                'post_results': post_results,
-                'user_data': user_data,
-                'query': query
-            }
-        )
-    
-    else:
-        return redirect(reverse('blink:index'))
-
-@login_required
 def view_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
@@ -402,3 +379,34 @@ class LikeCommentView(LikeView):
             return HttpResponse(-1)
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
         return HttpResponse((likeCount, userLiked, plural))
+    
+
+class SearchView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        query = request.GET['search_query']
+        post_results = Post.objects.filter(Q(content__icontains=query)).order_by('-releaseDate')
+
+        post_data = post_results
+        like_data = [len(Like.objects.filter(post=post)) for post in post_data]
+        user_like_data = [len(Like.objects.filter(post=post).filter(user=request.user)) > 0 for post in post_data]
+
+        if query != "":
+            user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
+            user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
+            user_data = zip(user_results, user_profile_results)
+        else:
+            user_data = None
+
+        title = "Search results for: " + query if query != "" else "Feed"
+
+        return render(
+            request,
+            "blink/search.html",
+            context={
+                'post_results': zip(post_data, like_data, user_like_data),
+                'user_data': user_data,
+                'title': title,
+                'query': query
+            }
+        )

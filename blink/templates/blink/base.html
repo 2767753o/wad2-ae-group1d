@@ -46,9 +46,9 @@
 					</li>
 
 					<li class="navbar__item">
-						<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
+						<form id="search_form" method="get" class="navbar__search" onsubmit="return false;">
 							{% csrf_token %}
-							<input type="text" placeholder="Search.." name="search">
+							<input type="text" id="search_input" placeholder="Search..." name="search">
 							<button type="submit">
 								<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
 							</button>
