@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from django.views import View
+from django.utils.decorators import method_decorator
 import pytz # timezones
 
 from django.shortcuts import render
@@ -255,52 +257,6 @@ def view_post(request, postID):
     )
 
 @login_required
-def like_post(request, postID):
-    try:
-        postData = Post.objects.get(postID=postID)
-        userData = User.objects.get(username=request.user.get_username())
-    except Post.DoesNotExist:
-        postData = None
-    except User.DoesNotExist:
-        userData = None
-
-    if postData is None or userData is None:
-        return redirect(reverse('blink:index'))
-    
-    likeData = Like.objects.filter(post=postData).filter(user=userData)
-    if len(likeData) > 0:
-        likeInstance = Like.objects.get(post=postData, user=userData)
-        likeInstance.delete()
-    else:
-        like = Like(user=userData, post=postData)
-        like.save()
-
-    return redirect(request.META["HTTP_REFERER"])
-
-@login_required
-def like_comment(request, postID, commentID):
-    try:
-        commentData = Comment.objects.get(commentID=commentID)
-        userData = User.objects.get(username=request.user.get_username())
-    except Post.DoesNotExist:
-        commentData = None
-    except User.DoesNotExist:
-        userData = None
-
-    if commentData is None or userData is None:
-        return redirect(reverse('blink:index'))
-    
-    likeData = Like.objects.filter(comment=commentData).filter(user=userData)
-    if len(likeData) > 0:
-        likeInstance = Like.objects.get(comment=commentData, user=userData)
-        likeInstance.delete()
-    else:
-        like = Like(user=userData, comment=commentData)
-        like.save()
-
-    return redirect(reverse('blink:view_post', args=(postID, )))
-
-@login_required
 def view_likes_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
@@ -380,3 +336,69 @@ def user_followed_by(request):
 
 def user_following(request):
     return render(request, 'blink/following.html')
+
+
+class LikeView(View):
+    def getModel(self, postID=None, commentID=None):
+        if postID:
+            try:
+                return Post.objects.get(postID=postID)
+            except Post.DoesNotExist:
+                return None
+            except ValueError:
+                return None
+            
+        elif commentID:
+            try:
+                return Comment.objects.get(commentID=commentID)
+            except Comment.DoesNotExist:
+                return None
+            except ValueError:
+                return None
+            
+    def processLike(self, request, post=None, comment=None):
+        userData = User.objects.get(username=request.user.get_username())
+        if post:
+            likeData = Like.objects.filter(post=post).filter(user=userData)
+        elif comment:
+            likeData = Like.objects.filter(comment=comment).filter(user=userData)
+
+        if len(likeData) > 0:
+            likeInstance = Like.objects.get(post=post, user=userData) if post else Like.objects.get(comment=comment, user=userData)
+            likeInstance.delete()
+            userLiked = "F"
+        else:
+            like = Like(user=userData, post=post) if post else Like(user=userData, comment=comment)
+            like.save()
+            userLiked = "T"
+
+        numLikes = len(Like.objects.filter(post=post)) if post else len(Like.objects.filter(comment=comment))
+        if numLikes != 1:
+            plural = "T"
+        else:
+            plural = "F"
+
+        # passed as strings to HttpResponse, so better to not do bool
+        return numLikes, userLiked, plural
+
+
+class LikePostView(LikeView):
+    @method_decorator(login_required)
+    def get(self, request):
+        post_id = request.GET['post_id']
+        post = self.getModel(postID=post_id)
+        if post is None:
+            return HttpResponse(-1)
+        likeCount, userLiked, plural = self.processLike(request, post=post)
+        return HttpResponse((likeCount, userLiked, plural))
+    
+
+class LikeCommentView(LikeView):
+    @method_decorator(login_required)
+    def get(self, request):
+        comment_id = request.GET['comment_id']
+        comment = self.getModel(commentID=comment_id)
+        if comment is None:
+            return HttpResponse(-1)
+        likeCount, userLiked, plural = self.processLike(request, comment=comment)
+        return HttpResponse((likeCount, userLiked, plural))
