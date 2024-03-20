@@ -239,6 +239,12 @@ body {
   color: #fff;
 }
 
+#feed a {
+  color: #C4151C;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
 #create {
   display: block;
   margin: 5%;
