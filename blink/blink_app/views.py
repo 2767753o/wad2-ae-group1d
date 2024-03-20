@@ -338,55 +338,60 @@ def user_following(request):
     return render(request, 'blink/following.html')
 
 
-class LikePostView(View):
+class LikeView(View):
+    def getModel(self, postID=None, commentID=None):
+        if postID:
+            try:
+                return Post.objects.get(postID=postID)
+            except Post.DoesNotExist:
+                return None
+            except ValueError:
+                return None
+            
+        elif commentID:
+            try:
+                return Comment.objects.get(commentID=commentID)
+            except Comment.DoesNotExist:
+                return None
+            except ValueError:
+                return None
+            
+    def processLike(self, request, post=None, comment=None):
+        userData = User.objects.get(username=request.user.get_username())
+        if post:
+            likeData = Like.objects.filter(post=post).filter(user=userData)
+        elif comment:
+            likeData = Like.objects.filter(comment=comment).filter(user=userData)
+
+        if len(likeData) > 0:
+            likeInstance = Like.objects.get(post=post, user=userData) if post else Like.objects.get(comment=comment, user=userData)
+            likeInstance.delete()
+            userLiked = False
+        else:
+            like = Like(user=userData, post=post) if post else Like(user=userData, comment=comment)
+            like.save()
+            userLiked = True
+
+        return len(Like.objects.filter(post=post)) if post else len(Like.objects.filter(comment=comment)), userLiked
+
+
+class LikePostView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
         post_id = request.GET['post_id']
-
-        try:
-            post = Post.objects.get(postID=post_id)
-        except Post.DoesNotExist:
+        post = self.getModel(postID=post_id)
+        if post is None:
             return HttpResponse(-1)
-        except ValueError:
-            return HttpResponse(-1)
-        
-        userData = User.objects.get(username=request.user.get_username())
-        likeData = Like.objects.filter(post=post).filter(user=userData)
-        if len(likeData) > 0:
-            likeInstance = Like.objects.get(post=post, user=userData)
-            likeInstance.delete()
-            userLiked = False
-        else:
-            like = Like(user=userData, post=post)
-            like.save()
-            userLiked = True
-
-        return HttpResponse((len(Like.objects.filter(post=post)), userLiked))
+        likeCount, userLiked = self.processLike(request, post=post)
+        return HttpResponse((likeCount, userLiked))
     
 
-class LikeCommentView(View):
+class LikeCommentView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
         comment_id = request.GET['comment_id']
-
-        try:
-            comment = Comment.objects.get(commentID=comment_id)
-            user = User.objects.get(username=request.user.get_username())
-        except Comment.DoesNotExist:
+        comment = self.getModel(commentID=comment_id)
+        if comment is None:
             return HttpResponse(-1)
-        except User.DoesNotExist:
-            return HttpResponse(-1)
-        except ValueError:
-            return HttpResponse(-1)
-        
-        likeData = Like.objects.filter(comment=comment).filter(user=user)
-        if len(likeData) > 0:
-            likeInstance = Like.objects.get(comment=comment, user=user)
-            likeInstance.delete()
-            userLiked = False
-        else:
-            like = Like(user=user, comment=comment)
-            like.save()
-            userLiked = True
-
-        return HttpResponse((len(Like.objects.filter(comment=comment)), userLiked))
+        likeCount, userLiked = self.processLike(request, comment=comment)
+        return HttpResponse((likeCount, userLiked))
