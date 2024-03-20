@@ -55,7 +55,7 @@ def user_login(request):
 
                 # check if user has posted in the last 24 hours
                 utc = pytz.UTC
-                if len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+                if (len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now())) or len(user_post_data) == 0:
                     user_profile_data.posted = False
                     user_profile_data.save()
 
