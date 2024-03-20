@@ -4,14 +4,24 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from blink_app.models import Post
 import pytz
+import os
+
+FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
+FAILURE_FOOTER = f"{os.linesep}"
+
+f"{FAILURE_HEADER} {FAILURE_FOOTER}"
+
 
 class BlinkUnitTests(TestCase):
+    """
+    Tests to do with user authentication
+    """
     def setUp(self):
         # Set up a test user
-        self.user = User.objects.create_user(username='test', email = 'test@fake.com', password = 'password')
+        self.user = User.objects.create_user(username='tester', email = 'test@fake.com', password = 'password')
         self.client.login(username = 'testuser', password = 'password')
 
-    def testUserRegistationAndLogin(self):
+    def test_userRegistation_and_login(self):
         response = self.client.post(reverse('blink:register'), {
             'username': 'newuser',
             'email': 'newuser@fake.com',
@@ -22,8 +32,17 @@ class BlinkUnitTests(TestCase):
 
         login = self.client.login(username='newuser', password='newpassword')
         self.assertTrue(login)
-    
-    def testPostCreation(self):
+
+class BlinkPostTests(TestCase):
+    """
+    Tests to do with post creation, viewing and deletion
+    """
+    def setUp(self):
+        # Set up a test user
+        self.user = User.objects.create_user(username='tester', email = 'test@fake.com', password = 'password')
+        self.client.login(username = 'testuser', password = 'password')
+        
+    def test_post_creation(self):
         response = self.client.post(reverse('blink:create'), {
             'content': 'Test post',
         })
@@ -33,7 +52,7 @@ class BlinkUnitTests(TestCase):
             'content': 'This should not be possible',
         })
         self.assertNotEqual(response.status_code, 302)
-    
+
     def testPostDeletion(self):
         deletion_post = Post.objects.create(
             user = self.user,
