@@ -1,16 +1,8 @@
 from django.test import TestCase
 from datetime import datetime, timedelta
-from django.contrib.auth.models import User
 from django.urls import reverse
-from blink_app.models import Post
+from blink_app.models import Post, Like, Comment, User, Friendship
 import pytz
-import os
-
-FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
-FAILURE_FOOTER = f"{os.linesep}"
-
-f"{FAILURE_HEADER} {FAILURE_FOOTER}"
-
 
 class BlinkUnitTests(TestCase):
     """
@@ -28,7 +20,7 @@ class BlinkUnitTests(TestCase):
             'password1': 'newpassword',
             'password2': 'newpassword',
         })
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 302, )
 
         login = self.client.login(username='newuser', password='newpassword')
         self.assertTrue(login)
@@ -38,9 +30,9 @@ class BlinkPostTests(TestCase):
     Tests to do with post creation, viewing and deletion
     """
     def setUp(self):
-        # Set up a test user
-        self.user = User.objects.create_user(username='tester', email = 'test@fake.com', password = 'password')
-        self.client.login(username = 'testuser', password = 'password')
+        # Set up a test user for posts
+        self.user = User.objects.create_user(username='postuser', email = 'test@fake.com', password = 'password')
+        self.client.login(username = 'postuser', password = 'password')
         
     def test_post_creation(self):
         response = self.client.post(reverse('blink:create'), {
@@ -61,4 +53,49 @@ class BlinkPostTests(TestCase):
         )
         
         self.client.get(reverse('blink:index'))
-        self.assertFalse(Post.objects.filter(postId = deletion_post.id).exists())
+        self.assertFalse(Post.objects.filter(postID = deletion_post.id).exists())
+
+class UserProfileTests(TestCase):
+    """
+    Tests for user profiles
+    """
+    def setUp(self):
+        self.user = User.objects.create_user(username='viewUser', email = 'test@fake.com', password = 'password')
+        self.client.login(username='viewUser', password='password')
+    
+    def test_profile_view(self):
+        response = self.client.get(reverse('blink:user', kwargs={'username': self.user.username}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.user.username)
+
+class PostInteravtionTests(TestCase):
+    """
+    Tests for post interaction
+    """
+    def setUp(self):
+        self.user = User.objects.create_user(username='interactUser', email = 'test@fake.com', password = 'password')
+        self.client.login(username='interactUser', password='password')
+        self.post = Post.objects.create(
+            user=self.user, 
+            content="Interact with this!")
+        
+    def test_like_post(self):
+        self.client.get(reverse('blink:like_post', kwargs={'postID': self.post.postID}))
+        self.assertTrue(Like.objects.filter(user=self.user, post=self.post).exists)
+
+    def test_comment_post(self):
+        self.client.post(reverse('blink:comment', kwargs={'postID': self.post.postID}), {'comment': 'Test comment'})
+        self.assertTrue(Comment.objects.filter(user=self.user, post=self.post, content='Test comment').exists)
+
+class FreindshipTests(TestCase):
+    """
+    Tests for friendship
+    """
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='user1', email = 'user1@fake.com', password = 'friend1')
+        self.user2 = User.objects.create_user(username='user2', email = 'user2@fake.com', password = 'friend2')
+        self.client.login(username='user1', password='friend1')
+    
+    def test_create_friendship(self):
+        Friendship.objects.create(user=self.user1, friend=self.user2)
+        self.assertTrue(Friendship.objects.filter(user=self.user1, friend=self.user2).exists())
