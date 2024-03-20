@@ -253,6 +253,7 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #feed h1 {
@@ -266,6 +267,96 @@ body {
   color: #fff;
 }
 
+#feed a {
+  color: #fff;
+  font-size: 0.8rem;
+  margin: 10px 0;
+  text-decoration: none;
+}
+
+#postTop{
+  display: flex;
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: rgba(101, 22, 239, 0.3);
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  
+}
+
+#postTop img {
+  width: 75px;
+  height: 75px;
+  margin-left: 10px;
+}
+
+#postTop a {
+  font-size: 1.2rem;
+  color: #Cfff;
+  text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+  margin-left: 20px;
+}
+
+#postTop p {
+  font-size: 1rem;
+  color: #fff;
+  text-align: right;
+  margin-right: 20px;
+  margin-left: auto;
+}
+
+#postContent {
+  display: block;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: linear-gradient(180deg,rgba(101, 22, 239, 0.3)0%, rgba(175,214,214,0.3)50%, rgba(255,255,255,0.3) 80%);
+  padding: 20px;
+}
+
+#postBottom {
+  display: flex;
+  margin: 0 auto;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: rgba(255,255,255,0.3);
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#postBottom button {
+  background: transparent;
+  width: 75px;
+  height: 75px;
+  margin-left: 10px;
+  border: none;
+}
+
+#postBottom button img {
+  width: 50px;
+  height: 50px;
+}
+
+#postBottom button img:hover {
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(100%) contrast(88%);
+}
+
+#postBottom a {
+  font-size: 1rem;
+  color: #edebeb;
+  text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
+  text-align: center;
+}
+
+#postBottom a:hover {
+  color: #fff;
+}
+
 
 #create {
   display: block;
@@ -275,6 +366,7 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #create h1 {
@@ -300,6 +392,7 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #profile h1 {
@@ -331,6 +424,7 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #infoContainer h1 {
