@@ -18,7 +18,6 @@ urlpatterns = [
         path('comment/<int:commentID>/likes', views.view_likes_comment, name='view_likes_comment'),
         path('search/', views.SearchView.as_view(), name='search'),
         path('create/', views.create, name='create'),
-        path('settings/', views.settings, name='settings'),
         path('about/', views.about, name='about'),
         path('help/', views.help, name='help'),
         path('user/<str:username>/', views.view_user, name='user'),
