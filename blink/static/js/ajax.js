@@ -45,4 +45,8 @@ $(document).ready(function () {
         }
     });
 
+    $('div .like_button').click(function(event) {
+        event.stopPropagation();
+    });
+
 });
