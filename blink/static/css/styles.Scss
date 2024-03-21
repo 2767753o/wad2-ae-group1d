@@ -20,6 +20,7 @@ body {
 .header{
     $ref: &;
     position: sticky;
+    justify-content: center;
     top: 0;
     left: 0;
     right: 0;
@@ -36,6 +37,7 @@ body {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -697,4 +699,19 @@ body {
   position: relative; 
   animation: changeLogo 3.5s infinite;
   margin-top: 40px;
+}
+
+#icon {
+  img {
+    width: 30px; 
+    height: 30px;
+  }
+
+  button {
+      background-color: transparent;
+      color: inherit;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
 }
