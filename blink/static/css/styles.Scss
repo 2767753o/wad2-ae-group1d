@@ -79,9 +79,9 @@ body {
     }
 
     button {
-        background-color: transparent; /* Set background to transparent */
-        color: inherit; /* Inherit text color */
-        border: none; /* Remove border */
+        background-color: transparent;
+        color: inherit; 
+        border: none;
         border-radius: 5px;
         cursor: pointer;
     }
@@ -361,6 +361,7 @@ body {
 
 #comments {
   display: flex;
+  flex-direction: column;
   margin: 2%;
   margin-left: 8%;
   margin-right: 8%;
@@ -420,15 +421,6 @@ body {
     margin-right: 20%;
     justify-content: space-between;
     padding: auto;
-
-    img {
-      display: flex;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin: 10px 0;
-
-    }
 
     a {
       display: flex;
