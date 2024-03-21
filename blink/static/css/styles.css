@@ -172,6 +172,7 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #login h1 {
@@ -224,8 +225,9 @@ body {
   margin-left: 8%;
   margin-right: 8%;
   background: rgba(101, 22, 239, 0.3);
-  padding: 100px 0;
+  padding: 50px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #feed h1 {
@@ -240,9 +242,200 @@ body {
 }
 
 #feed a {
-  color: #C4151C;
-  font-size: 1.2rem;
+  color: #fff;
+  font-size: 0.8rem;
+  margin: 10px 0;
   text-decoration: none;
+}
+
+#postTop {
+  display: flex;
+  margin: 0 auto;
+  margin-top: 2%;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: rgba(101, 22, 239, 0.3);
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+#postTop img {
+  width: 75px;
+  height: 75px;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+#postTop a {
+  font-size: 1.2rem;
+  color: #ccffff;
+  text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+  margin-left: 20px;
+}
+
+#postTop p {
+  font-size: 1rem;
+  color: #fff;
+  text-align: right;
+  margin-right: 20px;
+  margin-left: auto;
+}
+
+#postContent {
+  display: block;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: linear-gradient(180deg, rgba(101, 22, 239, 0.3) 0%, rgba(175, 214, 214, 0.3) 50%, rgba(255, 255, 255, 0.3) 80%);
+  padding: 20px;
+}
+
+#postContent img {
+  width: 40%;
+}
+
+#postBottom {
+  display: flex;
+  margin: 0 auto;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#postBottom button {
+  background: transparent;
+  width: 75px;
+  height: 75px;
+  margin-left: 10px;
+  border: none;
+}
+
+#postBottom button img {
+  width: 50px;
+  height: 50px;
+}
+
+#postBottom button img:hover {
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(100%) contrast(88%);
+}
+
+#postBottom a {
+  font-size: 1rem;
+  color: #edebeb;
+  text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
+  text-align: center;
+}
+
+#postBottom a:hover {
+  color: #fff;
+}
+
+#comments {
+  display: block;
+  margin: 2%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(40, 26, 66, 0.3);
+  padding: 100px 0;
+  text-align: left;
+  border-radius: 20px;
+}
+#comments form {
+  margin-top: 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+#comments form textarea {
+  margin-bottom: auto;
+  margin-top: 0 auto;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+  resize: vertical;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+}
+#comments form textarea:focus {
+  background: rgb(255, 255, 255);
+}
+#comments form input[type=submit] {
+  background: #e3e1e1;
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  color: #000;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#comments form input[type=submit]:hover {
+  color: #C4151C;
+  background: #fff;
+}
+#comments div {
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  margin-left: 20%;
+  margin-right: 20%;
+  justify-content: space-between;
+  padding: auto;
+}
+#comments div a {
+  display: flex;
+  align-items: left;
+  color: #ccffff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+#comments div a:hover {
+  text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+}
+#comments div p {
+  margin: 8px 0;
+  color: #fff;
+}
+#comments div button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+#comments div button img {
+  width: 20px;
+  height: 20px;
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(80%) contrast(88%);
+}
+#comments div button img:hover {
+  filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(100%) contrast(88%);
+}
+#comments div .like_position {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+#comments div .like_count {
+  color: #edebeb;
+  text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
+  margin-left: 10px;
+}
+.commentData {
+  display: flex;
+  align-items: center;
 }
 
 #create {
@@ -253,6 +446,7 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #create h1 {
@@ -260,14 +454,47 @@ body {
   color: #fff;
 }
 
-#create input {
-  width: 20%;
-  padding: 10px;
-  margin: 10px 0;
+#createEntry {
+  display: block;
+  margin: 2%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(40, 26, 66, 0.3);
+  padding: 30px 0;
+  text-align: center;
+  border-radius: 20px;
+}
+#createEntry p {
+  font-size: 1.5rem;
+  color: #fff;
+  padding: auto;
+}
+#createEntry a {
+  font-size: 1rem;
+  color: #edebeb;
+}
+#createEntry a:hover {
+  color: #fff;
+}
+#createEntry form {
+  margin-top: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+#createEntry form input[type=submit] {
+  background: #e3e1e1;
+  margin: auto;
+  margin-bottom: 20px;
+  color: #000;
+  font-size: 1.2rem;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  font-size: 1.2rem;
   cursor: pointer;
+}
+#createEntry form input[type=submit]:hover {
+  color: #C4151C;
+  background: #fff;
 }
 
 #profile {
@@ -276,13 +503,15 @@ body {
   margin-left: 8%;
   margin-right: 8%;
   background: rgba(101, 22, 239, 0.3);
-  padding: 100px 0;
+  padding: 30px 0;
   text-align: center;
+  border-radius: 20px;
 }
 
 #profile h1 {
   font-size: 3rem;
-  color: #fff;
+  color: #ccffff;
+  text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
 }
 
 #profile p {
@@ -291,11 +520,33 @@ body {
   color: #fff;
 }
 
-#profile img {
-  width: 200px;
-  height: 200px;
+#profile #pfpImage {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+#profile a {
+  color: #fff;
+  font-size: 0.8rem;
+  margin: 10px 0;
+  text-decoration: none;
+}
+
+#userPagePost {
+  display: block;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: linear-gradient(180deg, rgba(175, 214, 214, 0.3) 0%, rgba(255, 255, 255, 0.3) 80%);
+  padding: 20px;
+  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+#userPagePost p {
+  font-size: 1.5rem;
+  color: #fff;
 }
 
 #infoContainer {
@@ -306,6 +557,15 @@ body {
   background: rgba(101, 22, 239, 0.3);
   padding: 100px 0;
   text-align: center;
+  border-radius: 20px;
+}
+#infoContainer a {
+  color: #e3e1e1;
+  font-size: 1rem;
+  margin: 10px;
+}
+#infoContainer a:hover {
+  color: #fff;
 }
 
 #infoContainer h1 {
@@ -318,6 +578,31 @@ body {
   margin-bottom: 40px;
   color: #fff;
   padding: 0 20%;
+}
+
+#userFind {
+  display: flex;
+  margin: 1%;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 15px;
+  text-align: left;
+  border-radius: 20px;
+}
+#userFind a {
+  display: flex;
+  align-items: center;
+  color: #ccffff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+  font-size: 2rem;
+  margin-bottom: 0;
+  margin-left: 20px;
+}
+#userFind a:hover {
+  text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
 }
 
 @keyframes changeLogo {
@@ -347,4 +632,5 @@ body {
   margin-right: auto;
   position: relative;
   animation: changeLogo 3.5s infinite;
+  margin-top: 40px;
 }/*# sourceMappingURL=styles.css.map */

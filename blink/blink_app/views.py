@@ -16,12 +16,23 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
 
+def get_time_posted(utc, releaseDate):
+    seconds = (utc.localize(datetime.now()) - releaseDate).seconds
+    if seconds // 3600 > 0:
+        return f"{seconds // 3600} hours ago"
+    elif seconds // 60 > 0:
+        return f"{seconds // 60} minutes ago"
+    else:
+        return f"{seconds} seconds ago"
+
+
 @login_required
 def index(request):
     # get all posts
     postData = Post.objects.order_by('-releaseDate')
     likeData = []
     userLikeData = []
+    timePosted = []
     for post in postData:
         # check if post is within 24h
         utc = pytz.UTC
@@ -30,12 +41,13 @@ def index(request):
         else:
             likeData.append(len(Like.objects.filter(post=post)))    
             userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
+            timePosted.append(get_time_posted(utc, post.releaseDate))
 
     return render(
         request,
         'blink/index.html',
         context={
-            'postAndLikeData': zip(postData, likeData, userLikeData)
+            'postAndLikeData': zip(postData, likeData, userLikeData, timePosted)
         }
     )
 
@@ -122,9 +134,16 @@ def view_user(request, username):
     try:
         userData = User.objects.get(username=username)
         userProfileData = UserProfile.objects.get(user=userData)
-        postData = Post.objects.order_by('-releaseDate')
     except User.DoesNotExist:
         userData = None
+        userProfileData = None
+    
+    try:
+        postData = Post.objects.get(user=userData)
+        timePosted = get_time_posted(pytz.UTC, postData.releaseDate)
+    except Post.DoesNotExist:
+        postData = None
+        timePosted = None
 
     if userData is None:
         return redirect(reverse('blink:index'))
@@ -134,7 +153,8 @@ def view_user(request, username):
         context={
             'userData': userData,
             'userProfileData': userProfileData,
-            'postData': postData
+            'postData': postData,
+            'timePosted': timePosted
         }
     )
 
@@ -202,6 +222,8 @@ def view_post(request, postID):
 
     if postData is None:
         return redirect(reverse('blink:index'))
+    
+    timePosted = get_time_posted(pytz.UTC, postData.releaseDate)
 
     return render(
         request, 'blink/post.html', 
@@ -209,7 +231,8 @@ def view_post(request, postID):
             'postData': postData,
             'commentData': zip(commentData, likeDataComments, userLikedComments),
             'userLiked': len(likeData) > 0,
-            'likeCount': likeCount
+            'likeCount': likeCount,
+            'timePosted': timePosted,
         }
     )
 
@@ -345,7 +368,7 @@ class LikePostView(LikeView):
         post_id = request.GET['post_id']
         post = self.getModel(postID=post_id)
         if post is None:
-            return HttpResponse(-1)
+            return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
         return HttpResponse((likeCount, userLiked, plural))
     
@@ -355,8 +378,9 @@ class LikeCommentView(LikeView):
     def get(self, request):
         comment_id = request.GET['comment_id']
         comment = self.getModel(commentID=comment_id)
+        post = Post.objects.get(postID=comment.post.postID)
         if comment is None:
-            return HttpResponse(-1)
+            return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
         return HttpResponse((likeCount, userLiked, plural))
     
@@ -390,3 +414,25 @@ class SearchView(View):
                 'query': query
             }
         )
+
+
+class DeletePostView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        post_id = request.GET['post_id']
+        try:
+            post = Post.objects.get(postID=post_id)
+            user = post.user
+            userProfile = UserProfile.objects.get(user=user)
+            userProfile.posted = False
+            post.delete()
+            userProfile.save()
+            
+        # do nothing if error, redirect back to index
+        except Post.DoesNotExist:
+            pass
+        except ValueError:
+            pass
+
+        return HttpResponse(reverse('blink:index'))
+        

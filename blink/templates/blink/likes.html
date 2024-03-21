@@ -7,15 +7,22 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Likes</h1>
-	{% if likeData %}
-        {% for like in likeData %}
-            <div>
-                <a href="{% url 'blink:user' like.user.username %}">{{ like.user }}</a><br />
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No likes found.</p>
-    {% endif %}
-    <a href="{% url 'blink:view_post' postID %}">Back to Post</a>
+    <section id="infoContainer">
+        <h1>Likes</h1>
+        {% if likeData %}
+            {% for like in likeData %}
+                <section id="userFind">
+                    {% if like.user.profilePicture %}
+                        <img src="{{ like.user.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                    {% else %}
+                        <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+                    {% endif %}
+                    <br /><a href="{% url 'blink:user' like.user.username %}">{{ like.user }}</a>
+                </section>
+            {% endfor %}
+        {% else %}
+            <p>No likes found.</p>
+        {% endif %}
+        <a href="{% url 'blink:view_post' postID %}">Back to Post</a>
+    </section>
 {% endblock %}

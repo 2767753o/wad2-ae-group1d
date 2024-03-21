@@ -8,11 +8,8 @@
 
 {% block body_block %}
     <section id="login">
-
-        <div class="loading-logo">
-        </div>
-    
-        <br />
+        
+        <div class="loading-logo"></div><br />
         
         <form id="login_form" method="post" action="{% url 'blink:login' %}">
             {% csrf_token %}
