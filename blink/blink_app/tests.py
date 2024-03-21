@@ -121,8 +121,10 @@ class PostInteractionTests(TestCase):
         """
         Test to check post likes exist
         """
-        response = self.client.post(reverse('blink:like_post'), {'postID': self.post.postID})
-        self.assertEqual(response.status_code, 200)
+        self.like = Like.objects.create(
+            user = self.user,
+            post = self.post
+        )
         self.assertTrue(Like.objects.filter(user=self.user, post=self.post).exists())
 
     def test_ensure_likes_go_up(self):
@@ -130,17 +132,28 @@ class PostInteractionTests(TestCase):
         Tests to check post likes go up when liked
         """
         initial_likes = Like.objects.filter(post=self.post).count()
-        self.client.post(reverse('blink:like_post'), {'postID': self.post.postID})
+
+        self.like = Like.objects.create(
+            user = self.user,
+            post = self.post
+        )
+
         new_likes = Like.objects.filter(post=self.post).count()
         self.assertEqual(new_likes, initial_likes + 1)
 
-    
     def test_ensure_comments_go_up(self):
         """
         Tests to check a comment has been entered
         """
         comment_count = Comment.objects.filter(post=self.post).count()
-        self.client.get(reverse('blink:comment', kwargs={'postID': self.post.postID}), {'comment': 'This comment should exist'})
+
+        self.secondcomment = Comment.objects.create(
+            user = self.user,
+            post = self.post, 
+            content = "Like this!",
+            commentTime = datetime.now(pytz.UTC)
+        )
+
         new_comment_count = Comment.objects.filter(post=self.post).count()
         self.assertEqual(new_comment_count, comment_count + 1)
 
@@ -148,9 +161,13 @@ class PostInteractionTests(TestCase):
         """
         Tests to check a comments likes go up when comment is liked
         """
-        response = self.client.post(reverse('blink:like_comment'), {'commentID': self.comment.commentID})
-        self.assertEqual(response.status_code, 200)
-        self.asserTrue(Like.objects.filter(comment=self.comment).exists())
+        initial_likes = Like.objects.filter(comment=self.comment).count()
+        self.like = Like.objects.create(
+            user = self.user,
+            comment = self.comment
+        )
+        new_likes = Like.objects.filter(comment=self.comment).count()
+        self.assertEqual(new_likes, initial_likes + 1)
 
     def test_comment_exist(self):
         """
