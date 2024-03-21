@@ -368,7 +368,7 @@ class LikePostView(LikeView):
         post_id = request.GET['post_id']
         post = self.getModel(postID=post_id)
         if post is None:
-            return HttpResponse(-1)
+            return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
         return HttpResponse((likeCount, userLiked, plural))
     
@@ -378,8 +378,9 @@ class LikeCommentView(LikeView):
     def get(self, request):
         comment_id = request.GET['comment_id']
         comment = self.getModel(commentID=comment_id)
+        post = Post.objects.get(postID=comment.post.postID)
         if comment is None:
-            return HttpResponse(-1)
+            return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
         return HttpResponse((likeCount, userLiked, plural))
     
@@ -426,9 +427,12 @@ class DeletePostView(View):
             userProfile.posted = False
             post.delete()
             userProfile.save()
-            return HttpResponse(reverse('blink:index'))
+            
+        # do nothing if error, redirect back to index
         except Post.DoesNotExist:
-            return HttpResponse(-1)
+            pass
         except ValueError:
-            return HttpResponse(-1)
+            pass
+
+        return HttpResponse(reverse('blink:index'))
         
