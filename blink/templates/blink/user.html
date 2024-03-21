@@ -22,21 +22,17 @@
         <div>
             <h2>Daily Post</h2>
             {% if postData %}
-                {% for post in postData %}
-                    {% if post.user == userData %}
-                        <a href="{% url 'blink:view_post' post.postID %}">
-                            <div>
-                                <section id="userPagePost">
-                                    {% if post.image %}
-                                        <img src="{{ post.image.url }}" alt="Post Image" width="300px">
-                                    {% endif %}
-                                    <p>{{ post.content }}</p>
-                                </section>
-                                <p>{{ post.releaseDate }}</p>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+                <a href="{% url 'blink:view_post' postData.postID %}">
+                    <div>
+                        <section id="userPagePost">
+                            {% if postData.image %}
+                                <img src="{{ postData.image.url }}" alt="Post Image" width="300px">
+                            {% endif %}
+                            <p>{{ postData.content }}</p>
+                        </section>
+                        <p>{{ timePosted }}</p>
+                    </div>
+                </a>
             {% else %}
                 <p>There are no posts.</p>
             {% endif %}

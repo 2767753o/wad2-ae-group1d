@@ -16,12 +16,23 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
 
+def get_time_posted(utc, releaseDate):
+    seconds = (utc.localize(datetime.now()) - releaseDate).seconds
+    if seconds // 3600 > 0:
+        return f"{seconds // 3600} hours ago"
+    elif seconds // 60 > 0:
+        return f"{seconds // 60} minutes ago"
+    else:
+        return f"{seconds} seconds ago"
+
+
 @login_required
 def index(request):
     # get all posts
     postData = Post.objects.order_by('-releaseDate')
     likeData = []
     userLikeData = []
+    timePosted = []
     for post in postData:
         # check if post is within 24h
         utc = pytz.UTC
@@ -30,12 +41,13 @@ def index(request):
         else:
             likeData.append(len(Like.objects.filter(post=post)))    
             userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
+            timePosted.append(get_time_posted(utc, post.releaseDate))
 
     return render(
         request,
         'blink/index.html',
         context={
-            'postAndLikeData': zip(postData, likeData, userLikeData)
+            'postAndLikeData': zip(postData, likeData, userLikeData, timePosted)
         }
     )
 
@@ -122,9 +134,16 @@ def view_user(request, username):
     try:
         userData = User.objects.get(username=username)
         userProfileData = UserProfile.objects.get(user=userData)
-        postData = Post.objects.order_by('-releaseDate')
     except User.DoesNotExist:
         userData = None
+        userProfileData = None
+    
+    try:
+        postData = Post.objects.get(user=userData)
+        timePosted = get_time_posted(pytz.UTC, postData.releaseDate)
+    except Post.DoesNotExist:
+        postData = None
+        timePosted = None
 
     if userData is None:
         return redirect(reverse('blink:index'))
@@ -134,7 +153,8 @@ def view_user(request, username):
         context={
             'userData': userData,
             'userProfileData': userProfileData,
-            'postData': postData
+            'postData': postData,
+            'timePosted': timePosted
         }
     )
 
@@ -191,12 +211,19 @@ def search(request):
         user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
         user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
         user_data = zip(user_results, user_profile_results)
+        time_posted = [get_time_posted(pytz.UTC, post.releaseDate) for post in post_results]
+
+        likeData = []
+        userLikeData = []
+        for post in post_results:
+            likeData.append(len(Like.objects.filter(post=post)))    
+            userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
 
         return render(
             request,
             'blink/search.html',
             context={
-                'post_results': post_results,
+                'post_results': zip(post_results, likeData, userLikeData, time_posted),
                 'user_data': user_data,
                 'query': query
             }
@@ -225,6 +252,8 @@ def view_post(request, postID):
 
     if postData is None:
         return redirect(reverse('blink:index'))
+    
+    timePosted = get_time_posted(pytz.UTC, postData.releaseDate)
 
     return render(
         request, 'blink/post.html', 
@@ -232,7 +261,8 @@ def view_post(request, postID):
             'postData': postData,
             'commentData': zip(commentData, likeDataComments, userLikedComments),
             'userLiked': len(likeData) > 0,
-            'likeCount': likeCount
+            'likeCount': likeCount,
+            'timePosted': timePosted,
         }
     )
 

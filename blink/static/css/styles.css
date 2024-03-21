@@ -291,6 +291,10 @@ body {
   padding: 20px;
 }
 
+#postContent img {
+  width: 40%;
+}
+
 #postBottom {
   display: flex;
   margin: 0 auto;
@@ -428,6 +432,10 @@ body {
   color: #edebeb;
   text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
   margin-left: 10px;
+}
+.commentData {
+  display: flex;
+  align-items: center;
 }
 
 #create {

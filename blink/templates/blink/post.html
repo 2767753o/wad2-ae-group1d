@@ -20,7 +20,7 @@
                     {% endif %}
                     </a>
                     <a href="{% url 'blink:user' postData.user.username %}">{{ postData.user }}</a><br />
-                    <p>{{ postData.releaseDate }}</p>
+                    <p>{{ timePosted }}</p>
                 </section>
 
                 <section id="postContent">	
@@ -63,9 +63,15 @@
 
                 {% if commentData %}
                     {% for comment in commentData %}
-                        <div>
+                        <div class="commentData">
+                            <a href="{% url 'blink:user' comment.0.user.username %}">
+                            {% if userProfileData.profilePicture %}
+                                <img src="{{ userProfileData.profilePicture.url }}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
+                            {% else %}
+                                <img src="{% static 'images/defaultPFP.png' %}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
+                            {% endif %}</a>
                             <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
-                            <p>{{ comment.0.content }}</p>
+                            <p class="commentContent">{{ comment.0.content }}</p>
 
                             {% comment %} COMMENT LIKE LOGIC {% endcomment %}
                             <p class="like_position">

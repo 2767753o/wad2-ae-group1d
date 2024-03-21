@@ -14,36 +14,36 @@
         <div>
             {% if post_results %}
                 {% for post in post_results %}
-                    <div>
+                    <div onclick='location.href="{% url 'blink:view_post' post.0.postID %}";'>
                         <section id="postTop">
-                            <a href="{% url 'blink:user' post.user.username %}">
-                                {% if post.user.profilePicture %}
-                                    <img src="{{ post.user.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                            <a href="{% url 'blink:user' post.0.user.username %}">
+                                {% if post.0.user.profilePicture %}
+                                    <img src="{{ post.0.user.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
                                 {% else %}
                                     <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
                                 {% endif %}
                             </a>
-                            <a href="{% url 'blink:user' post.user.username %}">{{ post.user }}</a>
-                            <p>{{ post.releaseDate }}</p>
+                            <a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a>
+                            <p>{{ post.3 }}</p>
                         </section>
                         <section id="postContent">
-                            {% if post.image %}
-                                <img src="{{ post.image.url }}" alt="Post Image">
+                            {% if post.0.image %}
+                                <img src="{{ post.0.image.url }}" alt="Post Image">
                             {% endif %}
-                            <p>{{ post.content }}</p>
+                            <p>{{ post.0.content }}</p>
                         </section>
                         <section id="postBottom">
                             <div>
                                 {% comment %} LIKE LOGIC {% endcomment %}
-                                <button class="like_button" id="like_button_{{ post.postID }}_post" data-postid="{{ post.postID }}" type="button">
+                                <button class="like_button" id="like_button_{{ post.0.postID }}_post" data-postid="{{ post.0.postID }}" type="button">
                                     {% if post.2 %}
                                         <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like"/>
                                     {% else %}
                                         <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like"/>
                                     {% endif %}
                                 </button>
-                                <a href="{% url 'blink:view_likes_post' post.postID %}">
-                                    <strong class="like_count" id="like_count_{{ post.postID }}_post">{{ post.1 }}
+                                <a href="{% url 'blink:view_likes_post' post.0.postID %}">
+                                    <strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}
                                         {% if post.1 == 1 %}
                                             like
                                         {% else %}
@@ -52,7 +52,7 @@
                                     </strong>
                                 </a>
                             </div>
-                                <a href="{% url 'blink:view_post' post.postID %}">
+                                <a href="{% url 'blink:view_post' post.0.postID %}">
                                     <button>
                                         <img src="{% static 'images/icons/comment.svg' %}" alt="Comment"/>
                                     </button>
@@ -60,10 +60,10 @@
                         </section>
                     </div>
                 {% endfor %}
-            {% elif user_data %}
+            {% endif %}
+            {% if user_data %}
                 {% for user in user_data %}
                     <div>
-                        <h2>Users: </h2>
                         <section id="userFind">
                             {% if user.1.profilePicture %}
                                 <img src="{{ user.1.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
