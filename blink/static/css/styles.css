@@ -512,7 +512,7 @@ body {
   color: #fff;
 }
 
-#profile img {
+#profile #pfpImage {
   width: 150px;
   height: 150px;
   border-radius: 50%;
