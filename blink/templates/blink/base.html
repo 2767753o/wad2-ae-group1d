@@ -64,8 +64,7 @@
                     {% url 'following' as following_url %}
                     <li class="navbar__item">
                         <a href="{{ following_url }}" class="{% if request.get_full_path == following_url %}navbar__link active{% else %}navbar__link{% endif %}">
-                            <span>Following</span>
-                        </a>
+                            <span>Following</span></a>
                     </li>
 
 					<li class="navbar__item">

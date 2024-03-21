@@ -31,6 +31,6 @@ urlpatterns = [
         path('user/<int:user_id>/following/', views.user_following, name='user_following'),
         path('user/<int:user_id>/followed/', views.user_followed, name='user_followed'),
         path('following/', views.following, name='following'),
-
+        path('user/<int:user_id>/toggle_follow/', views.toggle_follow, name='toggle_follow'),
 
 ]

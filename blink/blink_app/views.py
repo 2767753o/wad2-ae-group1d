@@ -16,6 +16,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .models import Friendship
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 def get_time_posted(utc, releaseDate):
@@ -132,6 +134,9 @@ def user_logout(request):
 
 @login_required
 def view_user(request, username):
+    page_user = get_object_or_404(User, username=username)
+    is_self_page = request.user == page_user
+    is_following = Friendship.objects.filter(user=request.user, friend=page_user).exists()
     # get user data of user currently logged in
     try:
         userData = User.objects.get(username=username)
@@ -156,7 +161,10 @@ def view_user(request, username):
             'userData': userData,
             'userProfileData': userProfileData,
             'postData': postData,
-            'timePosted': timePosted
+            'timePosted': timePosted,
+            'page_user': page_user,
+            'is_self_page': is_self_page,
+            'is_following': is_following,
         }
     )
 
@@ -438,3 +446,16 @@ def following(request):
     following_ids = request.user.friends_of.values_list('friend_id', flat=True)
     posts = Post.objects.filter(user__in=following_ids).order_by('-releaseDate')
     return render(request, 'blink/following.html', {'posts': posts})
+
+def toggle_follow(request, user_id):
+    print(f"toggle_follow view has been hit with user_id: {user_id}")
+    if request.method == 'POST':
+        friend = get_object_or_404(User, pk=user_id)
+        if Friendship.objects.filter(user=request.user, friend=friend).exists():
+            Friendship.objects.filter(user=request.user, friend=friend).delete()
+            followed = False
+        else:
+            Friendship.objects.create(user=request.user, friend=friend)
+            followed = True
+        return JsonResponse({'followed': followed})
+    return JsonResponse({'error': 'Invalid request'}, status=400)

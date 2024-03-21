@@ -18,6 +18,16 @@
             <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
         {% endif %}
 
+        {% if not is_self_page %}
+            <button id="follow-toggle" data-following="{{ is_following }}" data-user-id="{{ page_user.id }}">
+            {% if is_following %}
+                Unfollow
+            {% else %}
+                Follow
+            {% endif %}
+            </button>
+        {% endif %}
+
         {% comment %} USER FOLLOWING {% endcomment %}
         <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following</a></h2>
 
