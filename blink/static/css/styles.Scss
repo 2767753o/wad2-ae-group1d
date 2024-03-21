@@ -20,6 +20,7 @@ body {
 .header{
     $ref: &;
     position: sticky;
+    justify-content: center;
     top: 0;
     left: 0;
     right: 0;
@@ -36,6 +37,7 @@ body {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
   margin: 0;
   overflow: hidden;
