@@ -26,6 +26,6 @@ urlpatterns = [
         # path('user/<id:userId>/analytics', views.user_analytics, name='user_analytics'),
         # path('user/<id:userId>/followed', views.user_followed_by, name='user_followed_by'),
         # path('user/<id:userId>/following', views.user_following, name='user_following'),
+        path('delete_post/', views.DeletePostView.as_view(), name='delete_post'),
         path('logout/', views.user_logout, name='logout'),
-
 ]

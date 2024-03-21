@@ -18,28 +18,32 @@
                 <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
             {% endif %}    
 
-            {% comment %} USER'S POSTS {% endcomment %}
-            <div>
-                <h2>Posts</h2>
-                {% if postData %}
-                    {% for post in postData %}
-                        {% if post.user == userData %}
-                            <a href="{% url 'blink:view_post' post.postID %}">
-                                <div>
-                                    <p>{{ post.content }}</p>
-                                    <p>{{ post.releaseDate }}</p>
-                                    {% if post.image %}
-                                        <img src="{{ post.image.url }}" alt="Post Image">
-                                    {% endif %}
-                                </div>
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <p>There are no posts.</p>
-                {% endif %}
-            </div>
-        {% endif %}
-    </div>
-</section>
+        {% comment %} USER'S POSTS {% endcomment %}
+        <div>
+            <h2>Daily Post</h2>
+            {% if postData %}
+                <a href="{% url 'blink:view_post' postData.postID %}">
+                    <div>
+                        <section id="userPagePost">
+                            {% if postData.image %}
+                                <img src="{{ postData.image.url }}" alt="Post Image" width="300px">
+                            {% endif %}
+                            <p>{{ postData.content }}</p>
+                        </section>
+                        <p>{{ timePosted }}</p>
+                    </div>
+                </a>
+
+                {% comment %} POST DELETION {% endcomment %}
+                {% if postData.user == user %}
+                <button class="delete_button" id="delete_button_{{ postData.postID }}" data-postid="{{ postData.postID }}" type="button">
+                    Delete
+                </button>
+            {% endif %}
+            {% else %}
+                <p>There are no posts.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    </section>
 {% endblock %}

@@ -45,6 +45,19 @@ $(document).ready(function () {
                 }
             )
         }
+
+        if ($(this).hasClass("delete_button")) {
+            var postIdVar;
+            postIdVar = $(this).attr("data-postid");
+
+            $.get(
+                '/blink/delete_post/',
+                { 'post_id': postIdVar },
+                function (data) {
+                    window.location.replace(data);
+                }
+            )
+        }
     });
 
     $('#search_input').keyup(function () {
@@ -56,6 +69,10 @@ $(document).ready(function () {
             function (data) {
                 $('#content').html(data);
             })
+    });
+
+    $('div .like_button').click(function(event) {
+        event.stopPropagation();
     });
 
 });

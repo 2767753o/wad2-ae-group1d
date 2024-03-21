@@ -3,26 +3,55 @@
 {% comment %} SEARCH RESULTS {% endcomment %}
 <h1>{{ title }}</em></h1>
 
-{% if query == "" %}
-    <div class="loading-logo">
-    </div>
-{% endif %}
-
 {% comment %} POST RESULTS {% endcomment %}
 <div>
     {% if post_results %}
         {% for post in post_results %}
-            <a href="{% url 'blink:view_post' post.0.postID %}">
-                <div>
-                    {% comment %} POST CONTENTS {% endcomment %}
-                    <p>{{ post.0.content }}</p>
-                    <p>{{ post.0.releaseDate }}</p>
-                    <a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a><br />
+            <div onclick='location.href="{% url 'blink:view_post' post.0.postID %}";'>
+                <section id="postTop">
+                    <a href="{% url 'blink:user' post.0.user.username %}">
+                        {% if post.0.user.profilePicture %}
+                            <img src="{{ post.0.user.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                        {% else %}
+                            <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+                        {% endif %}
+                    </a>
+                    <a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a>
+                    <p>{{ post.3 }}</p>
+                </section>
+                <section id="postContent">
                     {% if post.0.image %}
-                        <img src="{{ post.0.image.url }}" alt="Post Image" width="25%"><br />
+                        <img src="{{ post.0.image.url }}" alt="Post Image">
                     {% endif %}
-                </div>
-            </a>
+                    <p>{{ post.0.content }}</p>
+                </section>
+                <section id="postBottom">
+                    <div>
+                        {% comment %} LIKE LOGIC {% endcomment %}
+                        <button class="like_button" id="like_button_{{ post.0.postID }}_post" data-postid="{{ post.0.postID }}" type="button">
+                            {% if post.2 %}
+                                <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like"/>
+                            {% else %}
+                                <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like"/>
+                            {% endif %}
+                        </button>
+                        <a href="{% url 'blink:view_likes_post' post.0.postID %}">
+                            <strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}
+                                {% if post.1 == 1 %}
+                                    like
+                                {% else %}
+                                    likes
+                                {% endif %}
+                            </strong>
+                        </a>
+                    </div>
+                        <a href="{% url 'blink:view_post' post.0.postID %}">
+                            <button>
+                                <img src="{% static 'images/icons/comment.svg' %}" alt="Comment"/>
+                            </button>
+                        </a>
+                </section>
+            </div>
         {% endfor %}
     {% else %}
         <p>No posts found.</p>
@@ -34,13 +63,17 @@
     {% if user_data %}
         {% for user in user_data %}
             <div>
+                <a href="{% url 'blink:user' user.0.username %}">
                 {% if user.1.profilePicture %}
                     <img src="{{ user.1.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
                 {% else %}
                     <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
                 {% endif %}
-                <br /><a href="{% url 'blink:user' user.0.username %}">{{ user.0.username }}</a>
+                </a><br />
+                <a href="{% url 'blink:user' user.0.username %}">{{ user.0.username }}</a>
             </div>
         {% endfor %}
+    {% else %}
+        <p>No users found.</p>
     {% endif %}
 </div>

@@ -7,69 +7,97 @@
 {% endblock %}
 
 {% block body_block %}
-	{% if postData %}
-    
-        {% comment %} POST CONTENTS {% endcomment %}
-        <p>{{ postData.content }}</p>
-        <p>{{ postData.releaseDate }}</p>
-        <a href="{% url 'blink:user' postData.user.username %}">{{ postData.user }}</a><br />
-        {% if postData.image %}
-            <img src="{{ postData.image.url }}" alt="Post Image"><br />
-        {% endif %}
-
-        {% comment %} LIKE LOGIC {% endcomment %}
-        <button class="like_button" id="like_button_{{ postData.postID }}_post" data-postid="{{ postData.postID }}" type="button">
-            {% if userLiked %}
-                <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
-            {% else %}
-                <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
-            {% endif %}
-        </button>
-        <a href="{% url 'blink:view_likes_post' postData.postID %}">
-            <strong class="like_count" id="like_count_{{ postData.postID }}_post">{{ likeCount }} 
-                {% if likeCount == 1 %}
-                    like
-                {% else %}
-                    likes
-                {% endif %}                
-            </strong>
-        </a>
-
-        {% comment %} COMMENT LOGIC {% endcomment %}
-        <form action="{% url 'blink:comment' postData.postID %}" method="post">
-            {% csrf_token %}
-            <textarea name="comment" rows="4" cols="50"></textarea><br />
-            <input type="submit" value="Comment">
-        </form>
-
-        {% if commentData %}
-            {% for comment in commentData %}
-                <div>
-                    <p>{{ comment.0.content }}</p>
-                    <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
-
-                    {% comment %} COMMENT LIKE LOGIC {% endcomment %}
-                    <button class="like_button" id="like_button_{{ comment.0.commentID }}_comment" data-commentid="{{ comment.0.commentID }}" type="button">
-                        {% if comment.2 %}
-                            <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like" width="20" height="20" />
-                        {% else %}
-                            <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like" width="20" height="20" />
-                        {% endif %}
-                    </button>
-                    <a href="{% url 'blink:view_likes_comment' comment.0.commentID %}">
-                        <strong class="like_count" id="like_count_{{ comment.0.commentID }}_comment">{{ comment.1 }}
-                            {% if comment.1 == 1 %}
-                                like
-                            {% else %}
-                                likes
-                            {% endif %}
-                        </strong>
+    <section id="feed">
+        {% if postData %}
+            <div>
+                {% comment %} POST CONTENTS {% endcomment %}
+                <section id="postTop">
+                    <a href="{% url 'blink:user' postData.user.username %}">
+                    {% if userProfileData.profilePicture %}
+                        <img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                    {% else %}
+                        <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+                    {% endif %}
                     </a>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>There are no comments on this post yet.</p>
-        {% endif %}
+                    <a href="{% url 'blink:user' postData.user.username %}">{{ postData.user }}</a><br />
+                    <p>{{ timePosted }}</p>
+                </section>
 
-    {% endif %}
+                <section id="postContent">	
+                    {% if postData.image %}
+                        <img src="{{ postData.image.url }}" alt="Post Image" width="300px"><br />
+                    {% endif %}
+                    <p>{{ postData.content }}</p>
+                </section>
+
+                <section id="postBottom">
+                    <div>
+                        {% comment %} LIKE LOGIC {% endcomment %}
+                        <button class="like_button" id="like_button_{{ postData.postID }}_post" data-postid="{{ postData.postID }}" type="button">
+                            {% if userLiked %}
+                                <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like"/>
+                            {% else %}
+                                <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like"/>
+                            {% endif %}
+                        </button>
+                        <a href="{% url 'blink:view_likes_post' postData.postID %}">
+                            <strong class="like_count" id="like_count_{{ postData.postID }}_post">{{ likeCount }} 
+                                {% if likeCount == 1 %}
+                                    like
+                                {% else %}
+                                    likes
+                                {% endif %}                
+                            </strong>
+                        </a>
+                    </div>
+                </section>
+            </div>
+
+            <section id="comments">
+                {% comment %} COMMENT LOGIC {% endcomment %}
+                <form action="{% url 'blink:comment' postData.postID %}" method="post">
+                    {% csrf_token %}
+                    <textarea name="comment" rows="4" cols="50" placeholder="..." ></textarea><br />
+                    <input type="submit" value="Comment">
+                </form>
+
+                {% if commentData %}
+                    {% for comment in commentData %}
+                        <div class="commentData">
+                            <a href="{% url 'blink:user' comment.0.user.username %}">
+                            {% if userProfileData.profilePicture %}
+                                <img src="{{ userProfileData.profilePicture.url }}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
+                            {% else %}
+                                <img src="{% static 'images/defaultPFP.png' %}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
+                            {% endif %}</a>
+                            <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
+                            <p class="commentContent">{{ comment.0.content }}</p>
+
+                            {% comment %} COMMENT LIKE LOGIC {% endcomment %}
+                            <p class="like_position">
+                                <button class="like_button" id="like_button_{{ comment.0.commentID }}_comment" data-commentid="{{ comment.0.commentID }}" type="button">
+                                    {% if comment.2 %}
+                                        <img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like">
+                                    {% else %}
+                                        <img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like"/>
+                                    {% endif %}
+                                </button>
+                                <a href="{% url 'blink:view_likes_comment' comment.0.commentID %}">
+                                    <strong class="like_count" id="like_count_{{ comment.0.commentID }}_comment">{{ comment.1 }}
+                                        {% if comment.1 == 1 %}
+                                            like
+                                        {% else %}
+                                            likes
+                                        {% endif %}
+                                    </strong>
+                                </a>
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>There are no comments on this post yet.</p>
+                {% endif %}
+            </section>
+        {% endif %}
+    </section>
 {% endblock %}
