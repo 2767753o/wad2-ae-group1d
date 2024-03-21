@@ -79,9 +79,9 @@ body {
     }
 
     button {
-        background-color: transparent; /* Set background to transparent */
-        color: inherit; /* Inherit text color */
-        border: none; /* Remove border */
+        background-color: transparent;
+        color: inherit;
+        border: none;
         border-radius: 5px;
         cursor: pointer;
     }
@@ -705,4 +705,19 @@ body {
   position: relative; 
   animation: changeLogo 3.5s infinite;
   margin-top: 40px;
+}
+
+#icon {
+  img {
+    width: 30px; 
+    height: 30px;
+  }
+
+  button {
+      background-color: transparent;
+      color: inherit;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
 }
