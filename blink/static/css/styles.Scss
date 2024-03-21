@@ -542,6 +542,16 @@ body {
   padding: 100px 0;
   text-align: center;
   border-radius: 20px;
+  
+  a {
+    color: #e3e1e1;
+    font-size: 1rem;
+    margin: 10px;
+
+    &:hover {
+      color: #fff;
+    }
+  }
 }
 
 #infoContainer h1 {
@@ -554,6 +564,35 @@ body {
   margin-bottom: 40px;
   color: #fff;
   padding: 0 20%;
+}
+
+#userFind {
+  display: flex;
+  margin: 1%;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: rgba(101, 22, 239, 0.3);
+  padding: 15px;
+  text-align: left;
+  border-radius: 20px;
+
+  a {
+    display: flex;
+    align-items: center;
+    color: #Cfff;
+    text-decoration: none;
+    font-weight: bold; // makes the name stand out more
+    transition: color 0.3s;
+    font-size: 2rem;
+    margin-bottom: 0;
+    margin-left: 20px;
+
+    &:hover {
+      text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+    }
+  
+  }
+
 }
 
 
