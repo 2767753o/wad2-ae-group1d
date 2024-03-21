@@ -12,11 +12,13 @@
             <div>
                 {% comment %} POST CONTENTS {% endcomment %}
                 <section id="postTop">
+                    <a href="{% url 'blink:user' postData.user.username %}">
                     {% if userProfileData.profilePicture %}
                         <img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
                     {% else %}
                         <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
                     {% endif %}
+                    </a>
                     <a href="{% url 'blink:user' postData.user.username %}">{{ postData.user }}</a><br />
                     <p>{{ postData.releaseDate }}</p>
                 </section>

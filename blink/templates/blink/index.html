@@ -10,52 +10,52 @@
 	<div>
 		{% if postAndLikeData %}
 			{% for post in postAndLikeData %}
-				<a href="{% url 'blink:view_post' post.0.postID %}">
-					<div>
-						{% comment %} POST CONTENTS {% endcomment %}
-							<section id="postTop">
-								{% if userProfileData.profilePicture %}
-									<img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+				<div onclick='location.href="{% url 'blink:view_post' post.0.postID %}";'>
+					{% comment %} POST CONTENTS {% endcomment %}
+					<section id="postTop">
+						<a href="{% url 'blink:user' post.0.user.username %}">
+						{% if userProfileData.profilePicture %}
+							<img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+						{% else %}
+							<img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+						{% endif %}
+						</a>
+						<a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a><br />
+						<p>{{ post.0.releaseDate }}</p>
+					</section>
+					<section id="postContent">	
+						{% if post.0.image %}
+							<img src="{{ post.0.image.url }}" alt="Post Image" width="300px"><br />
+						{% endif %}
+						<p>{{ post.0.content }}</p>
+					</section>
+					<section id="postBottom">
+						<div>
+							{% comment %} LIKE LOGIC {% endcomment %}
+							<button class="like_button" id="like_button_{{ post.0.postID }}_post" data-postid="{{ post.0.postID }}" type="button">
+								{% if post.2 %}
+									<img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like"/>
 								{% else %}
-									<img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+									<img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like"/>
 								{% endif %}
-								<a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a><br />
-								<p>{{ post.0.releaseDate }}</p>
-							</section>
-						<section id="postContent">	
-							{% if post.0.image %}
-								<img src="{{ post.0.image.url }}" alt="Post Image" width="300px"><br />
-							{% endif %}
-							<p>{{ post.0.content }}</p>
-						</section>
-						<section id="postBottom">
-							<div>
-								{% comment %} LIKE LOGIC {% endcomment %}
-								<button class="like_button" id="like_button_{{ post.0.postID }}_post" data-postid="{{ post.0.postID }}" type="button">
-									{% if post.2 %}
-										<img src="{% static 'images/icons/likeFilled.svg' %}" alt="Like"/>
+							</button>
+							<a href="{% url 'blink:view_likes_post' post.0.postID %}">
+								<strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}
+									{% if post.1 == 1 %}
+										like
 									{% else %}
-										<img src="{% static 'images/icons/likeEmpty.svg' %}" alt="Like"/>
+										likes
 									{% endif %}
-								</button>
-								<a href="{% url 'blink:view_likes_post' post.0.postID %}">
-									<strong class="like_count" id="like_count_{{ post.0.postID }}_post">{{ post.1 }}
-										{% if post.1 == 1 %}
-											like
-										{% else %}
-											likes
-										{% endif %}
-									</strong>
-								</a>
-							</div>
-								<a href="{% url 'blink:view_post' post.0.postID %}">
-									<button>
-										<img src="{% static 'images/icons/comment.svg' %}" alt="Comment"/>
-									</button>
-								</a>
-						</section>
-					</div>
-				</a>
+								</strong>
+							</a>
+						</div>
+						<a href="{% url 'blink:view_post' post.0.postID %}">
+							<button>
+								<img src="{% static 'images/icons/comment.svg' %}" alt="Comment"/>
+							</button>
+						</a>
+					</section>
+				</div>
 			{% endfor %}
 		{% else %}
 			<p>There are no posts in the feed.</p>
