@@ -444,14 +444,47 @@ body {
   color: #fff;
 }
 
-#create input {
-  width: 20%;
-  padding: 10px;
-  margin: 10px 0;
+#createEntry {
+  display: block;
+  margin: 2%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(40, 26, 66, 0.3);
+  padding: 30px 0;
+  text-align: center;
+  border-radius: 20px;
+}
+#createEntry p {
+  font-size: 1.5rem;
+  color: #fff;
+  padding: auto;
+}
+#createEntry a {
+  font-size: 1rem;
+  color: #edebeb;
+}
+#createEntry a:hover {
+  color: #fff;
+}
+#createEntry form {
+  margin-top: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+#createEntry form input[type=submit] {
+  background: #e3e1e1;
+  margin: auto;
+  margin-bottom: 20px;
+  color: #000;
+  font-size: 1.2rem;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  font-size: 1.2rem;
   cursor: pointer;
+}
+#createEntry form input[type=submit]:hover {
+  color: #C4151C;
+  background: #fff;
 }
 
 #profile {
