@@ -63,14 +63,14 @@
 
                 {% if commentData %}
                     {% for comment in commentData %}
-                        <div class="commentData">
-                            <a href="{% url 'blink:user' comment.0.user.username %}">
-                            {% if userProfileData.profilePicture %}
-                                <img src="{{ userProfileData.profilePicture.url }}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
-                            {% else %}
-                                <img src="{% static 'images/defaultPFP.png' %}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
-                            {% endif %}</a>
-                            <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
+                        <div>
+                                <a href="{% url 'blink:user' comment.0.user.username %}">
+                                {% if userProfileData.profilePicture %}
+                                    <img src="{{ userProfileData.profilePicture.url }}" class="commentPfp" alt="Profile Picture" width="50" height="50" />
+                                {% else %}
+                                    <img src="{% static 'images/defaultPFP.png' %}" class="commentPfp" alt="Profile Picture" width="50" height="50" />
+                                {% endif %}</a>
+                                <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
                             <p class="commentContent">{{ comment.0.content }}</p>
 
                             {% comment %} COMMENT LIKE LOGIC {% endcomment %}
