@@ -8,7 +8,7 @@
 {% block body_block %}
 <section id="feed">
 	<div id="content">
-		<h1>Feed</h1>
+		<h1>BLINK</h1>
 		{% if postAndLikeData %}
 			{% for post in postAndLikeData %}
 				<div onclick='location.href="{% url 'blink:view_post' post.0.postID %}";'>

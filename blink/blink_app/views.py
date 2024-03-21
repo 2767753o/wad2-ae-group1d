@@ -402,7 +402,7 @@ class SearchView(View):
         else:
             user_data = None
 
-        title = "Search results for: " + query if query != "" else "Feed"
+        title = "Search results for: " + query if query != "" else "BLINK"
 
         return render(
             request,
