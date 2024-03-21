@@ -33,167 +33,22 @@
 					{% url 'blink:user' user.username as user_url %}
 					{% url 'blink:logout' as logout_url %}
 
-					{% if request.get_full_path == index_url %}
-						<li class="navbar__item">
-							<a href="#" class="navbar__link active">
-								<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-								<span>Home</span> </a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ create_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-								<span>Create Post</span></a>        
-						</li>
-
-						<li class="navbar__item">
-							<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
-								{% csrf_token %}
-								<input type="text" placeholder="Search.." name="search">
-								<button type="submit">
-									<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
-								</button>
-							</form>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ user_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
-								<span>Profile</span></a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ logout_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/logout.svg' %}" alt="Logout Icon">
-								<span>Logout</span></a>        
-						</li>
-
-
-					{% elif request.get_full_path == create_url %}
-						<li class="navbar__item">
-							<a href="{{ index_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-								<span>Home</span> </a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="#" class="navbar__link active">
-								<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-								<span>Create Post</span></a>        
-						</li>
-
-						<li class="navbar__item">
-							<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
-								{% csrf_token %}
-								<input type="text" placeholder="Search.." name="search">
-								<button type="submit">
-									<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
-								</button>
-							</form>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ user_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
-								<span>Profile</span></a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{% url 'blink:logout' %}" class="navbar__link">
-								<img src="{% static 'images/icons/logout.svg' %}" alt="Logout Icon">
-								<span>Logout</span></a>        
-						</li>
-
-					{% elif request.get_full_path == search_url %}
-						<li class="navbar__item">
-							<a href="#" class="navbar__link active">
-								<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-								<span>Home</span> </a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ create_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-								<span>Create Post</span></a>        
-						</li>
-
-						<li class="navbar__item">
-							<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
-								{% csrf_token %}
-								<input type="text" placeholder="Search.." name="search">
-								<button type="submit">
-									<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
-								</button>
-							</form>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ user_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
-								<span>Profile</span></a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ logout_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/logout.svg' %}" alt="Logout Icon">
-								<span>Logout</span></a>        
-						</li>
-
-
-					{% elif request.get_full_path == logout_url %}
-
-						<li class="navbar__item">
-							<a href="{{ index_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-								<span>Home</span> </a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ create_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-								<span>Create Post</span></a>        
-						</li>
-
-						<li class="navbar__item">
-							<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
-								{% csrf_token %}
-								<input type="text" placeholder="Search.." name="search">
-								<button type="submit">
-									<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
-								</button>
-							</form>
-						</li>
-
-						<li class="navbar__item">
-							<a href="{{ user_url }}" class="navbar__link">
-								<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
-								<span>Profile</span></a>
-						</li>
-
-						<li class="navbar__item">
-							<a href="#" class="navbar__link active">
-								<img src="{% static 'images/icons/logout.svg' %}" alt="Logout Icon">
-								<span>Logout</span></a>        
-						</li>
-
-					{% elif request.get_full_path == user_url %}
-						
 					<li class="navbar__item">
-						<a href="{{ index_url }}" class="navbar__link">
+						<a href="{{ index_url }}" class="{% if request.get_full_path == index_url %}navbar__link active{% else %}navbar__link{% endif %}">
 							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
 							<span>Home</span> </a>
 					</li>
 
 					<li class="navbar__item">
-						<a href="{{ create_url }}" class="navbar__link">
+						<a href="{{ create_url }}" class="{% if request.get_full_path == create_url %}navbar__link active{% else %}navbar__link{% endif %}">
 							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
 							<span>Create Post</span></a>        
 					</li>
 
 					<li class="navbar__item">
-						<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
+						<form id="search_form" method="get" class="navbar__search" onsubmit="return false;">
 							{% csrf_token %}
-							<input type="text" placeholder="Search.." name="search">
+							<input type="text" id="search_input" placeholder="Search..." name="search">
 							<button type="submit">
 								<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
 							</button>
@@ -201,56 +56,17 @@
 					</li>
 
 					<li class="navbar__item">
-						<a href="#" class="navbar__link active">
+						<a href="{{ user_url }}" class="{% if request.get_full_path == user_url %}navbar__link active{% else %}navbar__link{% endif %}">
 							<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
 							<span>Profile</span></a>
 					</li>
 
 					<li class="navbar__item">
-						<a href="{{ logout_url }}" class="navbar__link">
+						<a href="{{ logout_url }}" class="{% if request.get_full_path == logout_url %}navbar__link active{% else %}navbar__link{% endif %}">
 							<img src="{% static 'images/icons/logout.svg' %}" alt="Logout Icon">
 							<span>Logout</span></a>        
 					</li>
-
-				{% else %}
-
-					<li class="navbar__item">
-						<a href="{{ index_url }}" class="navbar__link">
-							<img src="{% static 'images/icons/home.svg' %}" alt="Home Icon">
-							<span>Home</span> </a>
-					</li>
-
-					<li class="navbar__item">
-						<a href="{{ create_url }}" class="navbar__link">
-							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-							<span>Create Post</span></a>        
-					</li>
-
-					<li class="navbar__item">
-						<form id="search_form" method="get" action="{{ search_url }}" class="navbar__search">
-							{% csrf_token %}
-							<input type="text" placeholder="Search.." name="search">
-							<button type="submit">
-								<img src="{% static 'images/icons/search.svg' %}" width=30px alt="Search">
-							</button>
-						</form>
-					</li>
-
-					<li class="navbar__item">
-						<a href="{{ user_url }}" class="navbar__link">
-							<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
-							<span>Profile</span></a>
-					</li>
-
-					<li class="navbar__item">
-						<a href="{{ logout_url }}" class="navbar__link">
-							<img src="{% static 'images/icons/logout.svg' %}" alt="Logout Icon">
-							<span>Logout</span></a>        
-					</li>
-
-
 				{% endif %}
-			{% endif %}
 			</ul>
 
 		</nav>

@@ -7,11 +7,11 @@
 
 {% block body_block %}
 <section id="feed">
-	<div>
+	<div id="content">
+		<h1>Feed</h1>
 		{% if postAndLikeData %}
 			{% for post in postAndLikeData %}
 				<div onclick='location.href="{% url 'blink:view_post' post.0.postID %}";'>
-					{% comment %} POST CONTENTS {% endcomment %}
 					<section id="postTop">
 						<a href="{% url 'blink:user' post.0.user.username %}">
 						{% if userProfileData.profilePicture %}

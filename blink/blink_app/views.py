@@ -67,7 +67,7 @@ def user_login(request):
 
                 # check if user has posted in the last 24 hours
                 utc = pytz.UTC
-                if len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+                if (len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now())) or len(user_post_data) == 0:
                     user_profile_data.posted = False
                     user_profile_data.save()
 
@@ -201,36 +201,6 @@ def create(request):
             'post_form': post_form,
         }
     )
-
-@login_required
-def search(request):
-    # search posts and users
-    query = request.GET.get('search')
-    if query != "":
-        post_results = Post.objects.filter(Q(content__icontains=query)).order_by('-releaseDate')
-        user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
-        user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
-        user_data = zip(user_results, user_profile_results)
-        time_posted = [get_time_posted(pytz.UTC, post.releaseDate) for post in post_results]
-
-        likeData = []
-        userLikeData = []
-        for post in post_results:
-            likeData.append(len(Like.objects.filter(post=post)))    
-            userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
-
-        return render(
-            request,
-            'blink/search.html',
-            context={
-                'post_results': zip(post_results, likeData, userLikeData, time_posted),
-                'user_data': user_data,
-                'query': query
-            }
-        )
-    
-    else:
-        return redirect(reverse('blink:index'))
 
 @login_required
 def view_post(request, postID):
@@ -412,3 +382,34 @@ class LikeCommentView(LikeView):
             return HttpResponse(-1)
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
         return HttpResponse((likeCount, userLiked, plural))
+    
+
+class SearchView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        query = request.GET['search_query']
+        post_results = Post.objects.filter(Q(content__icontains=query)).order_by('-releaseDate')
+
+        post_data = post_results
+        like_data = [len(Like.objects.filter(post=post)) for post in post_data]
+        user_like_data = [len(Like.objects.filter(post=post).filter(user=request.user)) > 0 for post in post_data]
+
+        if query != "":
+            user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
+            user_profile_results = UserProfile.objects.filter(Q(user__username__icontains=query)).order_by('user__username')
+            user_data = zip(user_results, user_profile_results)
+        else:
+            user_data = None
+
+        title = "Search results for: " + query if query != "" else "Feed"
+
+        return render(
+            request,
+            "blink/search.html",
+            context={
+                'post_results': zip(post_data, like_data, user_like_data),
+                'user_data': user_data,
+                'title': title,
+                'query': query
+            }
+        )
