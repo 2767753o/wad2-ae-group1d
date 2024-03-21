@@ -265,7 +265,6 @@ body {
   width: 75px;
   height: 75px;
   margin-left: 10px;
-  margin-top: 10px;
 }
 
 #postTop a {
@@ -289,10 +288,6 @@ body {
   margin-right: 20%;
   background: linear-gradient(180deg, rgba(101, 22, 239, 0.3) 0%, rgba(175, 214, 214, 0.3) 50%, rgba(255, 255, 255, 0.3) 80%);
   padding: 20px;
-}
-
-#postContent img {
-  width: 40%;
 }
 
 #postBottom {
@@ -371,7 +366,6 @@ body {
   background: #e3e1e1;
   margin: auto;
   margin-bottom: 20px;
-  margin-top: 10px;
   color: #000;
   font-size: 1.2rem;
   padding: 10px 20px;
@@ -432,10 +426,6 @@ body {
   color: #edebeb;
   text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
   margin-left: 10px;
-}
-.commentData {
-  display: flex;
-  align-items: center;
 }
 
 #create {
@@ -520,7 +510,7 @@ body {
   color: #fff;
 }
 
-#profile #pfpImage {
+#profile img {
   width: 150px;
   height: 150px;
   border-radius: 50%;
