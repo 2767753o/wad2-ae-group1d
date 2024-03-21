@@ -331,7 +331,7 @@ body {
 }
 
 #comments {
-  display: block;
+  display: flex;
   margin: 2%;
   margin-left: 8%;
   margin-right: 8%;
@@ -383,6 +383,13 @@ body {
   margin-right: 20%;
   justify-content: space-between;
   padding: auto;
+}
+#comments div img {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 10px 0;
 }
 #comments div a {
   display: flex;
