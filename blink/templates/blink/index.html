@@ -7,8 +7,6 @@
 
 {% block body_block %}
 <section id="feed">
-	<div class="loading-logo">
-	</div>
 	<div>
 		{% if postAndLikeData %}
 			{% for post in postAndLikeData %}
@@ -63,5 +61,6 @@
 			<p>There are no posts in the feed.</p>
 		{% endif %}
 	</div>
+	<div class="loading-logo"></div>
 </section>
 {% endblock %}

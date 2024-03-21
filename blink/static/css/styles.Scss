@@ -251,7 +251,7 @@ body {
   margin-left: 8%;
   margin-right: 8%;
   background: rgba(101, 22, 239, 0.3);
-  padding: 100px 0;
+  padding: 50px 0;
   text-align: center;
   border-radius: 20px;
 }
@@ -277,7 +277,7 @@ body {
 #postTop{
   display: flex;
   margin: 0 auto;
-  margin-top: 5%;
+  margin-top: 2%;
   margin-left: 20%;
   margin-right: 20%;
   background: rgba(101, 22, 239, 0.3);
@@ -587,4 +587,5 @@ body {
   margin-right: auto;
   position: relative; 
   animation: changeLogo 3.5s infinite;
+  margin-top: 40px;
 }
