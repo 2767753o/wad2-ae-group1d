@@ -11,26 +11,29 @@
     <section id="profile">
 
         {% comment %} USER CONTENTS {% endcomment %}
-        <h1>{{ userData.username }}</h1>
         {% if userProfileData.profilePicture %}
             <img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
         {% else %}
             <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
-        {% endif %}    
+        {% endif %}  
+        <h1>{{ userData.username }}</h1> 
 
         {% comment %} USER'S POSTS {% endcomment %}
         <div>
-            <h2>Posts</h2>
+            <h2>Daily Post</h2>
             {% if postData %}
                 {% for post in postData %}
                     {% if post.user == userData %}
                         <a href="{% url 'blink:view_post' post.postID %}">
                             <div>
-                                <p>{{ post.content }}</p>
+                                <section id="userPagePost">
+                                    {% if post.image %}
+                                        <img src="{{ post.image.url }}" alt="Post Image" width="300px">
+                                    {% endif %}
+                                    <p>{{ post.content }}</p>
+                                </section>
                                 <p>{{ post.releaseDate }}</p>
-                                {% if post.image %}
-                                    <img src="{{ post.image.url }}" alt="Post Image">
-                                {% endif %}
+                                
                             </div>
                         </a>
                     {% endif %}

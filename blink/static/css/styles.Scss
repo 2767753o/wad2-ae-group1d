@@ -507,14 +507,15 @@ body {
   margin-left: 8%;
   margin-right: 8%;
   background: rgba(101, 22, 239, 0.3);
-  padding: 100px 0;
+  padding: 30px 0;
   text-align: center;
   border-radius: 20px;
 }
 
 #profile h1 {
   font-size: 3rem;
-  color: #fff;
+  color: #Cfff;
+  text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
 }
 
 #profile p {
@@ -524,10 +525,34 @@ body {
 }
 
 #profile img {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+#profile a {
+  color: #fff;
+  font-size: 0.8rem;
+  margin: 10px 0;
+  text-decoration: none;
+
+}
+
+#userPagePost {
+  display: block;
+  margin-left: 20%;
+  margin-right: 20%;
+  background: linear-gradient(180deg,rgba(175,214,214,0.3)0%, rgba(255,255,255,0.3) 80%);
+  padding: 20px;
+  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  p {
+    font-size: 1.5rem;
+    color: #fff;
+  }
 }
 
 
