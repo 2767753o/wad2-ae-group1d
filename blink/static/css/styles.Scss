@@ -357,6 +357,123 @@ body {
   color: #fff;
 }
 
+#comments {
+  display: block;
+  margin: 2%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: rgba(40, 26, 66, 0.3);
+  padding: 100px 0;
+  text-align: left;
+  border-radius: 20px;
+
+
+
+  form {
+    margin-top: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    margin-right: 10%;
+
+    textarea {
+      margin-bottom: auto;
+      margin-top: 0 auto;
+      margin-left: 10%;
+      margin-right: 10%;
+      padding: 5px;
+      border: none;
+      border-radius: 4px;
+      resize: vertical;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+
+      &:focus {
+        background: rgba(255, 255, 255, 1);
+      }
+    }
+
+    input[type="submit"] {
+
+      background: #e3e1e1;
+      margin:auto;
+      margin-bottom: 20px;
+      color: #000;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        color: #C4151C;
+        background:#fff;
+      }
+    }
+  }
+
+  div {
+    border-top: 1px solid rgba(0,0,0,0.3);
+    margin-left: 20%;
+    margin-right: 20%;
+    justify-content: space-between;
+    padding: auto;
+
+    a {
+      display: flex;
+      align-items: left;
+      color: #Cfff;
+      text-decoration: none;
+      font-weight: bold; // makes the name stand out more
+      transition: color 0.3s;
+      font-size: 0.9rem;
+      margin-bottom: 0;
+
+      &:hover {
+        text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+      }
+    } 
+
+    p {
+      margin: 8px 0;
+      color: #fff;
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-left: 10px;
+
+      img {
+        width: 20px;
+        height: 20px;
+        filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(80%) contrast(88%);
+
+        &:hover {
+          filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(100%) contrast(88%);
+        }
+      }
+    }
+
+    .like_position {
+      display: flex;
+      align-items: center;
+      justify-content: right;
+    }
+
+    .like_count {
+      color: #edebeb;
+      text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
+      margin-left: 10px;
+    }
+  }
+}
+
+
+
 
 #create {
   display: block;
