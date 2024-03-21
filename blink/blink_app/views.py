@@ -5,8 +5,6 @@ import pytz # timezones
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -57,7 +55,7 @@ def user_login(request):
 
                 # check if user has posted in the last 24 hours
                 utc = pytz.UTC
-                if len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now()):
+                if (len(user_post_data) > 0 and user_post_data[0].releaseDate + timedelta(days=1) < utc.localize(datetime.now())) or len(user_post_data) == 0:
                     user_profile_data.posted = False
                     user_profile_data.save()
 
@@ -72,24 +70,6 @@ def user_login(request):
     
     else:
         return render(request, 'blink/login.html')
-
-def reset_password(request):
-    if request.method == 'POST':
-        form = PasswordResetForm(request.POST)
-        if form.is_valid():
-            form.save(
-                request=request,
-                use_https=request.is_secure(),
-                email_template_name='registration/password_reset_email.html',
-                subject_template_name='registration/password_reset_subject.txt',
-                from_email=None,
-                html_email_template_name=None,
-                extra_email_context=None,
-            )
-            return render(request, 'blink/reset_password_done.html')
-    else:
-        form = PasswordResetForm()
-    return render(request, 'blink/reset_password.html', {'form': form})
 
 
 def register(request):

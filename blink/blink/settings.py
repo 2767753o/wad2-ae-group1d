@@ -136,5 +136,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'wadblink@gmail.com'
-EMAIL_HOST_PASSWORD = 'WADCompSci123'
+EMAIL_HOST_PASSWORD = 'pgbc prjv vxvh crwk'
 EMAIL_USE_TLS = True
