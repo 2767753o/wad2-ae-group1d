@@ -265,6 +265,7 @@ body {
   width: 75px;
   height: 75px;
   margin-left: 10px;
+  margin-top: 10px;
 }
 
 #postTop a {
@@ -366,6 +367,7 @@ body {
   background: #e3e1e1;
   margin: auto;
   margin-bottom: 20px;
+  margin-top: 10px;
   color: #000;
   font-size: 1.2rem;
   padding: 10px 20px;
