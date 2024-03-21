@@ -50,13 +50,10 @@ $(document).ready(function () {
             var postIdVar;
             postIdVar = $(this).attr("data-postid");
 
-            console.log("delete button clicked for post id: " + postIdVar);
-
             $.get(
                 '/blink/delete_post/',
                 { 'post_id': postIdVar },
                 function (data) {
-                    console.log(data);
                     window.location.replace(data);
                 }
             )

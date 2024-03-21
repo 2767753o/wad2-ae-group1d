@@ -419,14 +419,14 @@ class DeletePostView(View):
     @method_decorator(login_required)
     def get(self, request):
         post_id = request.GET['post_id']
-        print(f"trying to deleet post " + post_id)
         try:
             post = Post.objects.get(postID=post_id)
             user = post.user
             userProfile = UserProfile.objects.get(user=user)
             userProfile.posted = False
             post.delete()
-            return reverse('blink:index')
+            userProfile.save()
+            return HttpResponse(reverse('blink:index'))
         except Post.DoesNotExist:
             return HttpResponse(-1)
         except ValueError:
