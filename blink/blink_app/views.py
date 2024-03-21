@@ -14,6 +14,8 @@ from blink_app.models import Post, UserProfile, Like, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from .models import Friendship
+from django.shortcuts import render, get_object_or_404
 
 
 def get_time_posted(utc, releaseDate):
@@ -413,3 +415,26 @@ class SearchView(View):
                 'query': query
             }
         )
+
+def user_following(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    following = Friendship.objects.filter(user=user).select_related('friend')
+    return render(request, 'blink/follow.html', {'follows': following, 'user': user})
+
+def user_followed(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    followers = Friendship.objects.filter(friend=user)
+    return render(request, 'blink/followed.html', {'followers': followers, 'user': user})
+
+def followed(request, user_id):
+    friend = get_object_or_404(User, pk=user_id)
+    if Friendship.objects.filter(user=request.user, friend=friend).exists():
+        return redirect('some-view-name')
+    else:
+        Friendship.objects.create(user=request.user, friend=friend)
+        return redirect('some-view-name')
+
+def following(request):
+    following_ids = request.user.friends_of.values_list('friend_id', flat=True)
+    posts = Post.objects.filter(user__in=following_ids).order_by('-releaseDate')
+    return render(request, 'blink/following.html', {'posts': posts})

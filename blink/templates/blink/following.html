@@ -1,0 +1,19 @@
+{% extends 'blink/base.html' %}
+{% load static %}
+
+{% block title_block %}
+<h2>Following</h2>
+{% endblock %}
+
+{% block body_block %}
+    <h1>Posts from People You Follow</h1>
+    {% for post in posts %}
+        <div>
+            <p>{{ post.user.username }}:</p>
+            <p>{{ post.content }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post image" width="100">
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}

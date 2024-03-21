@@ -1,0 +1,18 @@
+{% extends 'blink/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+<h2>Followers</h2>
+{% endblock %}
+{% block body_block %}
+<ul>
+    {% for friendship in followers %}
+    <li>
+        <a href="{% url 'blink:user' username=friendship.user.username %}">
+            {{ friendship.user.username }}
+        </a>
+    </li>
+    {% empty %}
+    <li>You do not have any followers yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

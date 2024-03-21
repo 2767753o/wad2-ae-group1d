@@ -27,5 +27,10 @@ urlpatterns = [
         # path('user/<id:userId>/followed', views.user_followed_by, name='user_followed_by'),
         # path('user/<id:userId>/following', views.user_following, name='user_following'),
         path('logout/', views.user_logout, name='logout'),
+        path('follow/', views.followed, name='follow'),
+        path('user/<int:user_id>/following/', views.user_following, name='user_following'),
+        path('user/<int:user_id>/followed/', views.user_followed, name='user_followed'),
+        path('following/', views.following, name='following'),
+
 
 ]
