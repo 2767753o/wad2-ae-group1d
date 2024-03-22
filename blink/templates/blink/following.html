@@ -14,9 +14,9 @@
                 <section id="postTop">
                     <a href="{% url 'blink:user' post.0.user.username %}">
                     {% if post.4.profilePicture %}
-                        <img src="{{ post.4.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                        <img src="{{ post.4.profilePicture.url }}" class="PFP" alt="Profile Picture" width="75" height="75" />
                     {% else %}
-                        <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+                        <img src="{% static 'images/defaultPFP.png' %}" class="PFP" alt="Profile Picture" width="75" height="75" />
                     {% endif %}
                     </a>
                     <a href="{% url 'blink:user' post.0.user.username %}">{{ post.0.user }}</a><br />
@@ -57,5 +57,6 @@
             </div>
         {% endfor %}
     </div>
+    <div class="loading-logo"></div>
 </section>
 {% endblock %}

@@ -389,7 +389,7 @@ class LikePostView(LikeView):
         if post is None:
             return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
-        return HttpResponse((likeCount, userLiked, plural))
+        return HttpResponse((userLiked, plural, likeCount))
     
 
 class LikeCommentView(LikeView):
@@ -401,7 +401,7 @@ class LikeCommentView(LikeView):
         if comment is None:
             return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
-        return HttpResponse((likeCount, userLiked, plural))
+        return HttpResponse((userLiked, plural, likeCount))
     
 
 class SearchView(View):
@@ -413,6 +413,8 @@ class SearchView(View):
         post_data = post_results
         like_data = [len(Like.objects.filter(post=post)) for post in post_data]
         user_like_data = [len(Like.objects.filter(post=post).filter(user=request.user)) > 0 for post in post_data]
+        timePosted = [get_time_posted(pytz.UTC, post.releaseDate) for post in post_data]
+        userProfileData = [UserProfile.objects.get(user=post.user) for post in post_data]
 
         if query != "":
             user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
@@ -427,7 +429,7 @@ class SearchView(View):
             request,
             "blink/search.html",
             context={
-                'post_results': zip(post_data, like_data, user_like_data),
+                'post_results': zip(post_data, like_data, user_like_data, timePosted, userProfileData),
                 'user_data': user_data,
                 'title': title,
                 'query': query
