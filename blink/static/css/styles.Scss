@@ -575,6 +575,7 @@ body {
   font-size: 3rem;
   color: #Cfff;
   text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+  margin-bottom: 0;
 }
 
 #profile p {
@@ -588,6 +589,7 @@ body {
   height: 150px;
   border-radius: 50%;
   margin: 10px 0;
+  margin-bottom: 0;
 }
 
 #profile a {
@@ -735,3 +737,38 @@ body {
   border-radius: 50%;
   margin: 10px 0;
 }
+
+#followingOrFollowed {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+  gap: 50px;
+}
+
+#followSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+
+  input[type="submit"] {
+    background: #e3e1e1;
+    width: 6%;
+    padding: 8px;
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      color: #C4151C;
+      background:#fff;
+    }
+  }
+}
+
