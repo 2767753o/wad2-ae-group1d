@@ -26,11 +26,19 @@ from .models import User, Friendship
 def get_time_posted(utc, releaseDate):
     seconds = (utc.localize(datetime.now()) - releaseDate).seconds
     if seconds // 3600 > 0:
-        return f"{seconds // 3600} hours ago"
+        res = f"{seconds // 3600} hour"
+        if seconds // 3600 != 1:
+            res += "s"
     elif seconds // 60 > 0:
-        return f"{seconds // 60} minutes ago"
+        res = f"{seconds // 60} minute"
+        if seconds // 60 != 1:
+            res += "s"
     else:
-        return f"{seconds} seconds ago"
+        res = f"{seconds} second"
+        if seconds != 1:
+            res += "s"
+
+    return res + " ago"
 
 
 @login_required

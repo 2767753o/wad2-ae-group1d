@@ -2,6 +2,8 @@
 
 $(document).ready(function () {
 
+    console.log("ajax.js loaded");
+
     $('button').click(function () {
         if ($(this).hasClass("like_button")) {
             var postIdVar;

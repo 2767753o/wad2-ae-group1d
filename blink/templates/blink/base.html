@@ -40,15 +40,14 @@
 							<span>Home</span> </a>
 					</li>
 
-					
-          <li class="navbar__item">
-            <a href="{{ following_url }}" class="{% if request.get_full_path == following_url %}navbar__link active{% else %}navbar__link{% endif %}">
-							<img src="{% static 'images/icons/friendsFeed.svg' %}" alt="Following Icon">
-              <span>Following</span></a>
-          </li>
+					<li class="navbar__item">
+						<a href="{{ following_url }}" class="{% if request.get_full_path == following_url %}navbar__link active{% else %}navbar__link{% endif %}">
+										<img src="{% static 'images/icons/friendsFeed.svg' %}" alt="Following Icon">
+						<span>Following</span></a>
+					</li>
 
 					<li class="navbar__item">
-						<form id="search_form" method="get" class="navbar__search" onsubmit="return false;">
+						<form id="search_form" method="get" class="navbar__search" action"{% url 'blink:search' %}">
 							{% csrf_token %}
 							<input type="text" id="search_input" placeholder="Search..." name="search">
 							<button type="submit">
