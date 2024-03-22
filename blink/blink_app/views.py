@@ -437,12 +437,25 @@ class SearchView(View):
 def user_following(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     following = Friendship.objects.filter(user=user).select_related('friend')
-    return render(request, 'blink/follow.html', {'follows': following, 'user': user})
+    userProfileData = [
+        UserProfile.objects.get(user=f.friend) for f in following
+    ]
+    return render(request, 'blink/follow.html', {
+        'follows': zip(following, userProfileData), 
+        'user': user
+    })
 
 def user_followed(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     followers = Friendship.objects.filter(friend=user)
-    return render(request, 'blink/followed.html', {'followers': followers, 'user': user})
+    userProfileData = [
+        UserProfile.objects.get(user=f.user) for f in followers
+    ]
+
+    return render(request, 'blink/followed.html', {
+        'followers': zip(followers, userProfileData), 
+        'user': user
+    })
 
 def followed(request, user_id):
     friend = get_object_or_404(User, pk=user_id)

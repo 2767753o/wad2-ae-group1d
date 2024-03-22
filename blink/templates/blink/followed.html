@@ -1,18 +1,28 @@
 {% extends 'blink/base.html' %}
 {% load staticfiles %}
+
 {% block title_block %}
-<h2>Followers</h2>
+Followers
 {% endblock %}
+
 {% block body_block %}
-<ul>
-    {% for friendship in followers %}
-    <li>
-        <a href="{% url 'blink:user' username=friendship.user.username %}">
-            {{ friendship.user.username }}
-        </a>
-    </li>
-    {% empty %}
-    <li>You do not have any followers yet.</li>
-    {% endfor %}
-</ul>
+<div id="follow">
+    <h1>Followers</h1>
+    <section id="userFind">
+        {% for friendship in followers %}
+            <a href="{% url 'blink:user' username=friendship.0.user.username %}">
+                {% if friendship.1.profilePicture %}
+                    <img src="{{ friendship.1.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                {% else %}
+                    <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+                {% endif %}
+            </a><br />
+            <a href="{% url 'blink:user' username=friendship.0.user.username %}">
+                {{ friendship.0.user.username }}
+            </a>
+        {% empty %}
+            <p>This user does not have any followers yet.</p>
+        {% endfor %}
+    </section>
+</div>
 {% endblock %}
