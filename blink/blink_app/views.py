@@ -298,7 +298,7 @@ def comment(request, postID):
         if len(comment) > 0:
             # comment must be non-empty
             userData = User.objects.get(username=request.user.get_username())
-            commentInstance = Comment(user=userData, post=postData, content=comment, commentTime=datetime.now())
+            commentInstance = Comment(user=userData, post=postData, content=comment)
             commentInstance.save()
         
     return redirect(reverse('blink:view_post', args=(postID, )))
