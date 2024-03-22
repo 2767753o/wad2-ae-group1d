@@ -13,8 +13,8 @@
                 {% comment %} POST CONTENTS {% endcomment %}
                 <section id="postTop">
                     <a href="{% url 'blink:user' postData.user.username %}">
-                    {% if userProfileData.profilePicture %}
-                        <img src="{{ userProfileData.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                    {% if userProfile.profilePicture %}
+                        <img src="{{ userProfile.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
                     {% else %}
                         <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
                     {% endif %}
@@ -63,12 +63,12 @@
 
                 {% if commentData %}
                     {% for comment in commentData %}
-                        <div class="commentData">
+                        <div>
                             <a href="{% url 'blink:user' comment.0.user.username %}">
-                            {% if userProfileData.profilePicture %}
-                                <img src="{{ userProfileData.profilePicture.url }}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
+                            {% if comment.3.profilePicture %}
+                                <img src="{{ comment.3.profilePicture.url }}" class="commentPfp" alt="Profile Picture" width="50" height="50" />
                             {% else %}
-                                <img src="{% static 'images/defaultPFP.png' %}" class="commentPfp" alt="Profile Picture" width="75" height="75" />
+                                <img src="{% static 'images/defaultPFP.png' %}" class="commentPfp" alt="Profile Picture" width="50" height="50" />
                             {% endif %}</a>
                             <a href="{% url 'blink:user' comment.0.user.username %}">{{ comment.0.user }}</a><br />
                             <p class="commentContent">{{ comment.0.content }}</p>

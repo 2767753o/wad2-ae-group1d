@@ -18,6 +18,7 @@ body {
 
 .header {
   position: sticky;
+  justify-content: center;
   top: 0;
   left: 0;
   right: 0;
@@ -34,6 +35,7 @@ body {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -74,9 +76,9 @@ body {
   height: 30px;
 }
 .navbar__search button {
-  background-color: transparent; /* Set background to transparent */
-  color: inherit; /* Inherit text color */
-  border: none; /* Remove border */
+  background-color: transparent;
+  color: inherit;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -331,7 +333,8 @@ body {
 }
 
 #comments {
-  display: block;
+  display: flex;
+  flex-direction: column;
   margin: 2%;
   margin-left: 8%;
   margin-right: 8%;
@@ -623,4 +626,16 @@ body {
   position: relative;
   animation: changeLogo 3.5s infinite;
   margin-top: 40px;
+}
+
+#icon img {
+  width: 30px;
+  height: 30px;
+}
+#icon button {
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }/*# sourceMappingURL=styles.css.map */

@@ -39,6 +39,7 @@ def index(request):
     likeData = []
     userLikeData = []
     timePosted = []
+    userProfileData = []
     for post in postData:
         # check if post is within 24h
         utc = pytz.UTC
@@ -48,12 +49,13 @@ def index(request):
             likeData.append(len(Like.objects.filter(post=post)))    
             userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
             timePosted.append(get_time_posted(utc, post.releaseDate))
+            userProfileData.append(UserProfile.objects.get(user=post.user))
 
     return render(
         request,
         'blink/index.html',
         context={
-            'postAndLikeData': zip(postData, likeData, userLikeData, timePosted)
+            'data': zip(postData, likeData, userLikeData, timePosted, userProfileData)
         }
     )
 
@@ -218,7 +220,8 @@ def create(request):
 def view_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
-        commentData = Comment.objects.filter(post=postData).order_by('-commentTime')
+        userProfile = UserProfile.objects.get(user=postData.user)
+        commentData = Comment.objects.filter(post=postData).order_by('commentTime')
         likeData = Like.objects.filter(post=postData).filter(user=request.user)
         
         likeDataComments = [
@@ -226,6 +229,9 @@ def view_post(request, postID):
         ]
         userLikedComments = [
             len(Like.objects.filter(comment=comment).filter(user=request.user)) > 0 for comment in commentData
+        ]
+        userProfileComments = [
+            UserProfile.objects.get(user=comment.user) for comment in commentData
         ]
         
         likeCount = len(Like.objects.filter(post=postData))
@@ -241,7 +247,8 @@ def view_post(request, postID):
         request, 'blink/post.html', 
         context={
             'postData': postData,
-            'commentData': zip(commentData, likeDataComments, userLikedComments),
+            'userProfile': userProfile,
+            'commentData': zip(commentData, likeDataComments, userLikedComments, userProfileComments),
             'userLiked': len(likeData) > 0,
             'likeCount': likeCount,
             'timePosted': timePosted,
@@ -303,7 +310,7 @@ def comment(request, postID):
         if len(comment) > 0:
             # comment must be non-empty
             userData = User.objects.get(username=request.user.get_username())
-            commentInstance = Comment(user=userData, post=postData, content=comment, commentTime=datetime.now())
+            commentInstance = Comment(user=userData, post=postData, content=comment)
             commentInstance.save()
         
     return redirect(reverse('blink:view_post', args=(postID, )))
@@ -380,7 +387,7 @@ class LikePostView(LikeView):
         post_id = request.GET['post_id']
         post = self.getModel(postID=post_id)
         if post is None:
-            return HttpResponse(-1)
+            return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
         return HttpResponse((likeCount, userLiked, plural))
     
@@ -390,8 +397,9 @@ class LikeCommentView(LikeView):
     def get(self, request):
         comment_id = request.GET['comment_id']
         comment = self.getModel(commentID=comment_id)
+        post = Post.objects.get(postID=comment.post.postID)
         if comment is None:
-            return HttpResponse(-1)
+            return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
         return HttpResponse((likeCount, userLiked, plural))
     
@@ -413,7 +421,7 @@ class SearchView(View):
         else:
             user_data = None
 
-        title = "Search results for: " + query if query != "" else "Feed"
+        title = "Search results for: " + query if query != "" else "BLINK"
 
         return render(
             request,
@@ -460,3 +468,26 @@ def toggle_follow(request, user_id):
         followed = True
     # Redirect to the profile page of the user who was followed or unfollowed
     return redirect('blink:user', username=user_to_follow.username)
+
+
+
+class DeletePostView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        post_id = request.GET['post_id']
+        try:
+            post = Post.objects.get(postID=post_id)
+            user = post.user
+            userProfile = UserProfile.objects.get(user=user)
+            userProfile.posted = False
+            post.delete()
+            userProfile.save()
+            
+        # do nothing if error, redirect back to index
+        except Post.DoesNotExist:
+            pass
+        except ValueError:
+            pass
+
+        return HttpResponse(reverse('blink:index'))
+        
