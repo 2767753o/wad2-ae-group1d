@@ -5,7 +5,6 @@ import django
 django.setup()
 from blink_app.models import Post, UserProfile, Comment, Like, Friendship
 from django.contrib.auth.models import User
-from django.db.models import Q
 
 import json
 import datetime

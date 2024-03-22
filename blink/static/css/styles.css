@@ -51,7 +51,7 @@ body {
   width: 10rem;
   color: #000;
   text-decoration: none;
-  width: 10rem;
+  width: 9rem;
   text-transform: uppercase;
   margin: auto;
   padding: 0 9rem;
@@ -98,7 +98,7 @@ body {
   width: 10rem;
   color: #000;
   text-decoration: none;
-  width: 10rem;
+  width: 9rem;
   text-transform: uppercase;
 }
 .navbar__link img {
@@ -176,12 +176,10 @@ body {
   text-align: center;
   border-radius: 20px;
 }
-
 #login h1 {
   font-size: 3rem;
   color: #fff;
 }
-
 #login input {
   width: 20%;
   padding: 10px;
@@ -191,13 +189,11 @@ body {
   font-size: 1.2rem;
   cursor: auto;
 }
-
 #login a {
   color: #fff;
   font-size: 0.8rem;
   margin: 10px 0;
 }
-
 #login [type=submit] {
   background: #e3e1e1;
   color: #000;
@@ -231,18 +227,21 @@ body {
   text-align: center;
   border-radius: 20px;
 }
-
 #feed h1 {
   font-size: 3rem;
   color: #fff;
 }
-
+#feed .PFP {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 10px 0;
+}
 #feed p {
   font-size: 1.2rem;
   margin-bottom: 40px;
   color: #fff;
 }
-
 #feed a {
   color: #fff;
   font-size: 0.8rem;
@@ -262,20 +261,17 @@ body {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
-
 #postTop img {
   width: 75px;
   height: 75px;
   margin-left: 10px;
 }
-
 #postTop a {
   font-size: 1.2rem;
   color: #ccffff;
   text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
   margin-left: 20px;
 }
-
 #postTop p {
   font-size: 1rem;
   color: #fff;
@@ -303,7 +299,15 @@ body {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
-
+#postBottom a {
+  font-size: 1rem;
+  color: #edebeb;
+  text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
+  text-align: center;
+}
+#postBottom a:hover {
+  color: #fff;
+}
 #postBottom button {
   background: transparent;
   width: 75px;
@@ -311,13 +315,11 @@ body {
   margin-left: 10px;
   border: none;
 }
-
 #postBottom button img {
   width: 50px;
   height: 50px;
 }
-
-#postBottom button img:hover {
+#postBottom button:hover {
   filter: invert(47%) sepia(98%) saturate(7381%) hue-rotate(320deg) brightness(100%) contrast(88%);
 }
 
@@ -327,7 +329,6 @@ body {
   text-shadow: 0 0 5px rgba(196, 21, 28, 0.8);
   text-align: center;
 }
-
 #postBottom a:hover {
   color: #fff;
 }
@@ -342,6 +343,12 @@ body {
   padding: 100px 0;
   text-align: left;
   border-radius: 20px;
+}
+#comments #PFP {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 10px 0;
 }
 #comments form {
   margin-top: 0 auto;
@@ -441,7 +448,6 @@ body {
   text-align: center;
   border-radius: 20px;
 }
-
 #create h1 {
   font-size: 3rem;
   color: #fff;
@@ -500,26 +506,24 @@ body {
   text-align: center;
   border-radius: 20px;
 }
-
 #profile h1 {
   font-size: 3rem;
   color: #ccffff;
   text-shadow: 0 0 5px rgba(204, 255, 255, 0.5);
+  margin-bottom: 0;
 }
-
 #profile p {
   font-size: 1.2rem;
   margin-bottom: 40px;
   color: #fff;
 }
-
-#profile img {
+#profile .PFP {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   margin: 10px 0;
+  margin-bottom: 0;
 }
-
 #profile a {
   color: #fff;
   font-size: 0.8rem;
@@ -560,17 +564,15 @@ body {
 #infoContainer a:hover {
   color: #fff;
 }
-
-#infoContainer h1 {
-  font-size: 3rem;
-  color: #fff;
-}
-
 #infoContainer p {
   font-size: 1.2rem;
   margin-bottom: 40px;
   color: #fff;
   padding: 0 20%;
+}
+#infoContainer h1 {
+  font-size: 3rem;
+  color: #fff;
 }
 
 #userFind {
@@ -638,4 +640,48 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+#follow {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+#follow .PFP {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 10px 0;
+}
+
+#followersOrFollowed {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+  gap: 50px;
+}
+
+#followSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+#followSection input[type=submit] {
+  background: #e3e1e1;
+  width: 6%;
+  padding: 8px;
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#followSection input[type=submit]:hover {
+  color: #C4151C;
+  background: #fff;
 }/*# sourceMappingURL=styles.css.map */

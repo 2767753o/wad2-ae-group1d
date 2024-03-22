@@ -32,6 +32,7 @@
 					{% url 'blink:search' as search_url %}
 					{% url 'blink:user' user.username as user_url %}
 					{% url 'blink:logout' as logout_url %}
+					{% url 'blink:following' as following_url %}
 
 					<li class="navbar__item">
 						<a href="{{ index_url }}" class="{% if request.get_full_path == index_url %}navbar__link active{% else %}navbar__link{% endif %}">
@@ -40,13 +41,13 @@
 					</li>
 
 					<li class="navbar__item">
-						<a href="{{ create_url }}" class="{% if request.get_full_path == create_url %}navbar__link active{% else %}navbar__link{% endif %}">
-							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
-							<span>Create Post</span></a>        
+						<a href="{{ following_url }}" class="{% if request.get_full_path == following_url %}navbar__link active{% else %}navbar__link{% endif %}">
+										<img src="{% static 'images/icons/friendsFeed.svg' %}" alt="Following Icon">
+						<span>Following</span></a>
 					</li>
 
 					<li class="navbar__item">
-						<form id="search_form" method="get" class="navbar__search" onsubmit="return false;">
+						<form id="search_form" method="get" class="navbar__search" action"{% url 'blink:search' %}">
 							{% csrf_token %}
 							<input type="text" id="search_input" placeholder="Search..." name="search">
 							<button type="submit">
@@ -56,16 +57,16 @@
 					</li>
 
 					<li class="navbar__item">
+						<a href="{{ create_url }}" class="{% if request.get_full_path == create_url %}navbar__link active{% else %}navbar__link{% endif %}">
+							<img src="{% static 'images/icons/create.svg' %}" alt="Create Icon">
+							<span>Create Post</span></a>        
+					</li>
+
+					<li class="navbar__item">
 						<a href="{{ user_url }}" class="{% if request.get_full_path == user_url %}navbar__link active{% else %}navbar__link{% endif %}">
 							<img src="{% static 'images/icons/profile.svg' %}" alt="Profile Icon">
 							<span>Profile</span></a>
 					</li>
-
-                    {% url 'blink:following' as following_url %}
-                    <li class="navbar__item">
-                        <a href="{{ following_url }}" class="{% if request.get_full_path == following_url %}navbar__link active{% else %}navbar__link{% endif %}">
-                            <span>Following</span></a>
-                    </li>
 
 					<li class="navbar__item">
 						<a href="{{ logout_url }}" class="{% if request.get_full_path == logout_url %}navbar__link active{% else %}navbar__link{% endif %}">

@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 
 from blink_app.forms import UserForm, UserProfileForm, CreateForm
 from blink_app.models import Post, UserProfile, Like, Comment
@@ -25,11 +26,19 @@ from .models import User, Friendship
 def get_time_posted(utc, releaseDate):
     seconds = (utc.localize(datetime.now()) - releaseDate).seconds
     if seconds // 3600 > 0:
-        return f"{seconds // 3600} hours ago"
+        res = f"{seconds // 3600} hour"
+        if seconds // 3600 != 1:
+            res += "s"
     elif seconds // 60 > 0:
-        return f"{seconds // 60} minutes ago"
+        res = f"{seconds // 60} minute"
+        if seconds // 60 != 1:
+            res += "s"
     else:
-        return f"{seconds} seconds ago"
+        res = f"{seconds} second"
+        if seconds != 1:
+            res += "s"
+
+    return res + " ago"
 
 
 @login_required
@@ -80,13 +89,15 @@ def user_login(request):
                     user_profile_data.save()
 
                 login(request, user)
+                messages.success(request, f'You are now successfully logged in.')
                 return redirect(reverse('blink:index'))
             else:
-                return HttpResponse("Your account is disabled.")
+                messages.error(request, f'This account is disabled.')
+                return redirect(reverse('blink:login'))
             
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            messages.error(request, f'Invalid login details supplied.')
+            return redirect(reverse('blink:login'))
     
     else:
         return render(request, 'blink/login.html')
@@ -275,7 +286,6 @@ def view_likes_post(request, postID):
         context={
             'postData': postData,
             'likeData': likeData,
-            'postID': postID
         }
     )
 
@@ -321,24 +331,6 @@ def comment(request, postID):
 
 def friends(request):
     return render(request, 'blink/friends.html')
-
-def settings(request):
-    return render(request, 'blink/settings.html')
-
-def about(request):
-    return render(request, 'blink/about.html')
-
-def help(request):
-    return render(request, 'blink/help.html')
-
-def user_analytics(request):
-    return render(request, 'blink/analytics.html')
-
-def user_followed_by(request):
-    return render(request, 'blink/followed_by.html')
-
-def user_following(request):
-    return render(request, 'blink/following.html')
 
 
 class LikeView(View):
@@ -388,24 +380,24 @@ class LikeView(View):
 class LikePostView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
-        post_id = request.GET['post_id']
-        post = self.getModel(postID=post_id)
+        postID = request.GET['post_id']
+        post = self.getModel(postID=postID)
         if post is None:
             return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
-        return HttpResponse((likeCount, userLiked, plural))
+        return HttpResponse((userLiked, plural, likeCount))
     
 
 class LikeCommentView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
-        comment_id = request.GET['comment_id']
-        comment = self.getModel(commentID=comment_id)
+        commentID = request.GET['comment_id']
+        comment = self.getModel(commentID=commentID)
         post = Post.objects.get(postID=comment.post.postID)
         if comment is None:
             return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
-        return HttpResponse((likeCount, userLiked, plural))
+        return HttpResponse((userLiked, plural, likeCount))
     
 
 class SearchView(View):
@@ -417,6 +409,8 @@ class SearchView(View):
         post_data = post_results
         like_data = [len(Like.objects.filter(post=post)) for post in post_data]
         user_like_data = [len(Like.objects.filter(post=post).filter(user=request.user)) > 0 for post in post_data]
+        timePosted = [get_time_posted(pytz.UTC, post.releaseDate) for post in post_data]
+        userProfileData = [UserProfile.objects.get(user=post.user) for post in post_data]
 
         if query != "":
             user_results = User.objects.filter(Q(username__icontains=query)).order_by('username')
@@ -431,7 +425,7 @@ class SearchView(View):
             request,
             "blink/search.html",
             context={
-                'post_results': zip(post_data, like_data, user_like_data),
+                'post_results': zip(post_data, like_data, user_like_data, timePosted, userProfileData),
                 'user_data': user_data,
                 'title': title,
                 'query': query
@@ -505,9 +499,9 @@ def toggle_follow(request, user_id):
 class DeletePostView(View):
     @method_decorator(login_required)
     def get(self, request):
-        post_id = request.GET['post_id']
+        postID = request.GET['post_id']
         try:
-            post = Post.objects.get(postID=post_id)
+            post = Post.objects.get(postID=postID)
             user = post.user
             userProfile = UserProfile.objects.get(user=user)
             userProfile.posted = False
@@ -522,3 +516,9 @@ class DeletePostView(View):
 
         return HttpResponse(reverse('blink:index'))
         
+
+def about(request):
+    return render(request, 'blink/about.html')
+
+def help(request):
+    return render(request, 'blink/help.html')

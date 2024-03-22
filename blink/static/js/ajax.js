@@ -1,7 +1,8 @@
+// https://code.jquery.com/jquery-3.3.1.min.js
+
 $(document).ready(function () {
 
     $('button').click(function () {
-        console.log("button clicked");
         if ($(this).hasClass("like_button")) {
             var postIdVar;
             postIdVar = $(this).attr("data-postid");
@@ -26,9 +27,9 @@ $(document).ready(function () {
                 url,
                 context_dict,
                 function (data) {
-                    var likeCountData = data[0];
+                    var likeCountData = data.substring(2, );
                     // pluralisation
-                    if (data[2] == "T") {
+                    if (data[1] == "T") {
                         likeCountData += " likes";
                     } else {
                         likeCountData += " like";
@@ -36,7 +37,7 @@ $(document).ready(function () {
 
                     // like count
                     $("#like_count_" + id + "_" + type).html(likeCountData);
-                    if (data[1] == "F") {
+                    if (data[0] == "F") {
                         var imageType = "likeEmpty";
                     } else {
                         var imageType = "likeFilled";
