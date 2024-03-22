@@ -70,15 +70,15 @@ def index(request):
 
 def user_login(request):
     if request.method == "POST":
-        username = request.POST.get('username')
+        username_slug = request.POST.get('username_slug')
         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(slug=username_slug, password=password)
 
         if user:
             if user.is_active:
                 # update posted by checking when user last posted
-                user_data = User.objects.get(username=username)
+                user_data = User.objects.get(slug=username_slug)
                 user_profile_data = UserProfile.objects.get(user=user_data)
                 user_post_data = Post.objects.filter(user=user_data).order_by('-releaseDate')
 
