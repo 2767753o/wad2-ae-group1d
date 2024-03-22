@@ -1,7 +1,5 @@
 {% extends 'blink/base.html' %}
 {% load staticfiles %}
-
-
 {% block title_block %}
 	User Profile
 {% endblock %}
@@ -19,13 +17,15 @@
         {% endif %}
 
         {% if not is_self_page %}
-            <button id="follow-toggle" data-following="{{ is_following }}" data-user-id="{{ page_user.id }}">
+            <form action="{% url 'blink:toggle_follow' user_id=page_user.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ page_user.id }}">
             {% if is_following %}
-                Unfollow
+                <input type="submit" value="Unfollow">
             {% else %}
-                Follow
+                <input type="submit" value="Follow">
             {% endif %}
-            </button>
+            </form>
         {% endif %}
 
         {% comment %} USER FOLLOWING {% endcomment %}

@@ -36,6 +36,5 @@ class Like(models.Model):
 class Friendship(models.Model):
     user = models.ForeignKey(User, related_name= 'friends_of', on_delete= models.CASCADE)
     friend = models.ForeignKey(User, related_name= 'friends', on_delete= models.CASCADE)
-
     class Meta:
         unique_together = ('user', 'friend')

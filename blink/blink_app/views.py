@@ -14,10 +14,12 @@ from blink_app.models import Post, UserProfile, Like, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .models import Friendship
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from .models import User, Friendship
 
 
 def get_time_posted(utc, releaseDate):
@@ -447,15 +449,14 @@ def following(request):
     posts = Post.objects.filter(user__in=following_ids).order_by('-releaseDate')
     return render(request, 'blink/following.html', {'posts': posts})
 
+@require_POST
 def toggle_follow(request, user_id):
-    print(f"toggle_follow view has been hit with user_id: {user_id}")
-    if request.method == 'POST':
-        friend = get_object_or_404(User, pk=user_id)
-        if Friendship.objects.filter(user=request.user, friend=friend).exists():
-            Friendship.objects.filter(user=request.user, friend=friend).delete()
-            followed = False
-        else:
-            Friendship.objects.create(user=request.user, friend=friend)
-            followed = True
-        return JsonResponse({'followed': followed})
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+    user_to_follow = get_object_or_404(User, pk=user_id)
+    if Friendship.objects.filter(user=request.user, friend=user_to_follow).exists():
+        Friendship.objects.filter(user=request.user, friend=user_to_follow).delete()
+        followed = False
+    else:
+        Friendship.objects.create(user=request.user, friend=user_to_follow)
+        followed = True
+    # Redirect to the profile page of the user who was followed or unfollowed
+    return redirect('blink:user', username=user_to_follow.username)

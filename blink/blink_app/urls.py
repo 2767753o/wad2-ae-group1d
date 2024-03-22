@@ -24,7 +24,7 @@ urlpatterns = [
         path('user/<str:username>/', views.view_user, name='user'),
         # path('user/<id:userId>/settings', views.user_settings, name='user_settings'),
         # path('user/<id:userId>/analytics', views.user_analytics, name='user_analytics'),
-        # path('user/<id:userId>/followed', views.user_followed_by, name='user_followed_by'),
+        # path('user/<id:userId>/followed', views.user_follblink:owed_by, name='user_followed_by'),
         # path('user/<id:userId>/following', views.user_following, name='user_following'),
         path('logout/', views.user_logout, name='logout'),
         path('follow/', views.followed, name='follow'),
@@ -32,5 +32,5 @@ urlpatterns = [
         path('user/<int:user_id>/followed/', views.user_followed, name='user_followed'),
         path('following/', views.following, name='following'),
         path('user/<int:user_id>/toggle_follow/', views.toggle_follow, name='toggle_follow'),
-
 ]
+
