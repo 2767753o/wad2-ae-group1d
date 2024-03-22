@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 
 from blink_app.forms import UserForm, UserProfileForm, CreateForm
 from blink_app.models import Post, UserProfile, Like, Comment
@@ -80,13 +81,15 @@ def user_login(request):
                     user_profile_data.save()
 
                 login(request, user)
+                messages.success(request, f'You are now successfully logged in.')
                 return redirect(reverse('blink:index'))
             else:
-                return HttpResponse("Your account is disabled.")
+                messages.error(request, f'This account is disabled.')
+                return redirect(reverse('blink:login'))
             
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            messages.error(request, f'Invalid login details supplied.')
+            return redirect(reverse('blink:login'))
     
     else:
         return render(request, 'blink/login.html')

@@ -9,6 +9,13 @@
 <section id="feed">
 	<div id="content">
 		<h1>BLINK</h1>
+		{% if messages %}
+			{% for message in messages %}
+				<div class={{ message.tags }}>
+					<p>{{ message }}</p>
+				</div>
+			{% endfor %}
+		{% endif %}
 		{% if data %}
 			{% for post in data %}
 				<div onclick='location.href="{% url 'blink:view_post' post.0.postID %}";'>
