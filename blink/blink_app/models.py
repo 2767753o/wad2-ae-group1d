@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Post(models.Model):    
     postID = models.AutoField(primary_key=True)
     releaseDate = models.DateTimeField(default=datetime.now)
+    views = models.IntegerField(default=0)
     content = models.CharField(max_length=280)
     image = models.ImageField(upload_to='post_pictures', null=True, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)

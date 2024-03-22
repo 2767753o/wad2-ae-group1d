@@ -19,6 +19,7 @@ def addUser(username, password, firstName, lastName, emailAddress, profilePictur
         last_name = lastName,
         password = password,
         email = emailAddress,
+        last_login = datetime.datetime.now()
     )
     user.is_staff = isStaff
     user.is_superuser = isStaff
