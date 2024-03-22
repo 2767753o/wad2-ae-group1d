@@ -10,9 +10,9 @@
     {% if userProfileData %}
         {% comment %} USER CONTENTS {% endcomment %}
         <h1>{{ userData.username }}</h1>
-        <section id="followingOrFollowed">
+        <section id="followersOrFollowed">
             {% comment %} USER FOLLOWING {% endcomment %}
-            <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following</a></h2>
+            <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Followers</a></h2>
 
             {% comment %} User FOLLOWED{% endcomment %}
             <h2><a href="{% url 'blink:user_followed' user_id=userData.id %}">Followed</a></h2>

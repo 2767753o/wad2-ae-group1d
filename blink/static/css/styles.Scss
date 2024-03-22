@@ -730,6 +730,11 @@ body {
   }
 }
 
+#follow {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
 
 #follow .PFP {
   width: 100px;
@@ -738,7 +743,7 @@ body {
   margin: 10px 0;
 }
 
-#followingOrFollowed {
+#followersOrFollowed {
   display: flex;
   flex-direction: row;
   justify-content: center;
