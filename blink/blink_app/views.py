@@ -137,13 +137,13 @@ def user_logout(request):
     return redirect(reverse('blink:login'))
 
 @login_required
-def view_user(request, username):
-    page_user = get_object_or_404(User, username=username)
+def view_user(request, username_slug):
+    page_user = get_object_or_404(User, slug=username_slug)
     is_self_page = request.user == page_user
     is_following = Friendship.objects.filter(user=request.user, friend=page_user).exists()
     # get user data of user currently logged in
     try:
-        userData = User.objects.get(username=username)
+        userData = User.objects.get(username=username_slug)
         userProfileData = UserProfile.objects.get(user=userData)
     except User.DoesNotExist:
         userData = None
@@ -217,9 +217,9 @@ def create(request):
     )
 
 @login_required
-def view_post(request, postID):
+def view_post(request, post_id):
     try:
-        postData = Post.objects.get(postID=postID)
+        postData = Post.objects.get(id=post_id)
         userProfile = UserProfile.objects.get(user=postData.user)
         commentData = Comment.objects.filter(post=postData).order_by('commentTime')
         likeData = Like.objects.filter(post=postData).filter(user=request.user)
@@ -256,9 +256,9 @@ def view_post(request, postID):
     )
 
 @login_required
-def view_likes_post(request, postID):
+def view_likes_post(request, post_id):
     try:
-        postData = Post.objects.get(postID=postID)
+        postData = Post.objects.get(id=post_id)
         likeData = Like.objects.filter(post=postData)
     except Post.DoesNotExist:
         postData = None
@@ -271,14 +271,13 @@ def view_likes_post(request, postID):
         context={
             'postData': postData,
             'likeData': likeData,
-            'postID': postID
         }
     )
 
 @login_required
-def view_likes_comment(request, commentID):
+def view_likes_comment(request, comment_id):
     try:
-        commentData = Comment.objects.get(commentID=commentID)
+        commentData = Comment.objects.get(id=comment_id)
         likeData = Like.objects.filter(comment=commentData)
     except Comment.DoesNotExist:
         commentData = None
@@ -291,14 +290,14 @@ def view_likes_comment(request, commentID):
         context={
             'commentData': commentData,
             'likeData': likeData,
-            'postID': commentData.post.postID
+            'post_id': commentData.post.id
         }
     )
 
 @login_required
-def comment(request, postID):
+def comment(request, post_id):
     try:
-        postData = Post.objects.get(postID=postID)
+        postData = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
         postData = None
 
@@ -313,7 +312,7 @@ def comment(request, postID):
             commentInstance = Comment(user=userData, post=postData, content=comment)
             commentInstance.save()
         
-    return redirect(reverse('blink:view_post', args=(postID, )))
+    return redirect(reverse('blink:view_post', args=(id, )))
 
 def friends(request):
     return render(request, 'blink/friends.html')
@@ -338,18 +337,18 @@ def user_following(request):
 
 
 class LikeView(View):
-    def getModel(self, postID=None, commentID=None):
-        if postID:
+    def getModel(self, post_id=None, comment_id=None):
+        if post_id:
             try:
-                return Post.objects.get(postID=postID)
+                return Post.objects.get(id=post_id)
             except Post.DoesNotExist:
                 return None
             except ValueError:
                 return None
             
-        elif commentID:
+        elif comment_id:
             try:
-                return Comment.objects.get(commentID=commentID)
+                return Comment.objects.get(id=comment_id)
             except Comment.DoesNotExist:
                 return None
             except ValueError:
@@ -385,7 +384,7 @@ class LikePostView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
         post_id = request.GET['post_id']
-        post = self.getModel(postID=post_id)
+        post = self.getModel(id=post_id)
         if post is None:
             return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
@@ -396,10 +395,10 @@ class LikeCommentView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
         comment_id = request.GET['comment_id']
-        comment = self.getModel(commentID=comment_id)
-        post = Post.objects.get(postID=comment.post.postID)
+        comment = self.getModel(id=comment_id)
+        post = Post.objects.get(id=comment.post.id)
         if comment is None:
-            return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
+            return HttpResponse(reverse('blink:view_post', args=(post.id,)))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
         return HttpResponse((userLiked, plural, likeCount))
     
@@ -505,7 +504,7 @@ class DeletePostView(View):
     def get(self, request):
         post_id = request.GET['post_id']
         try:
-            post = Post.objects.get(postID=post_id)
+            post = Post.objects.get(id=post_id)
             user = post.user
             userProfile = UserProfile.objects.get(user=user)
             userProfile.posted = False
