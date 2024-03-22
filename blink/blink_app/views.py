@@ -208,6 +208,7 @@ def create(request):
 def view_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
+        userProfile = UserProfile.objects.get(user=postData.user)
         commentData = Comment.objects.filter(post=postData).order_by('-commentTime')
         likeData = Like.objects.filter(post=postData).filter(user=request.user)
         
@@ -216,6 +217,9 @@ def view_post(request, postID):
         ]
         userLikedComments = [
             len(Like.objects.filter(comment=comment).filter(user=request.user)) > 0 for comment in commentData
+        ]
+        userProfileComments = [
+            UserProfile.objects.get(user=comment.user) for comment in commentData
         ]
         
         likeCount = len(Like.objects.filter(post=postData))
@@ -231,7 +235,8 @@ def view_post(request, postID):
         request, 'blink/post.html', 
         context={
             'postData': postData,
-            'commentData': zip(commentData, likeDataComments, userLikedComments),
+            'userProfile': userProfile,
+            'commentData': zip(commentData, likeDataComments, userLikedComments, userProfileComments),
             'userLiked': len(likeData) > 0,
             'likeCount': likeCount,
             'timePosted': timePosted,
