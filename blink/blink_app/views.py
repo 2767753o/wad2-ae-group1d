@@ -332,24 +332,6 @@ def comment(request, postID):
 def friends(request):
     return render(request, 'blink/friends.html')
 
-def settings(request):
-    return render(request, 'blink/settings.html')
-
-def about(request):
-    return render(request, 'blink/about.html')
-
-def help(request):
-    return render(request, 'blink/help.html')
-
-def user_analytics(request):
-    return render(request, 'blink/analytics.html')
-
-def user_followed_by(request):
-    return render(request, 'blink/followed_by.html')
-
-def user_following(request):
-    return render(request, 'blink/following.html')
-
 
 class LikeView(View):
     def getModel(self, postID=None, commentID=None):
@@ -399,7 +381,7 @@ class LikePostView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
         postID = request.GET['post_id']
-        post = self.getModel(id=postID)
+        post = self.getModel(postID=postID)
         if post is None:
             return HttpResponse(reverse('blink:index'))
         likeCount, userLiked, plural = self.processLike(request, post=post)
@@ -410,8 +392,8 @@ class LikeCommentView(LikeView):
     @method_decorator(login_required)
     def get(self, request):
         commentID = request.GET['comment_id']
-        comment = self.getModel(id=commentID)
-        post = Post.objects.get(id=comment.post.postID)
+        comment = self.getModel(commentID=commentID)
+        post = Post.objects.get(postID=comment.post.postID)
         if comment is None:
             return HttpResponse(reverse('blink:view_post', args=(post.postID, )))
         likeCount, userLiked, plural = self.processLike(request, comment=comment)
@@ -534,3 +516,9 @@ class DeletePostView(View):
 
         return HttpResponse(reverse('blink:index'))
         
+
+def about(request):
+    return render(request, 'blink/about.html')
+
+def help(request):
+    return render(request, 'blink/help.html')
