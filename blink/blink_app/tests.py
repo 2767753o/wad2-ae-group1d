@@ -77,7 +77,7 @@ class BlinkPostTests(TestCase):
         )
         
         self.client.get(reverse('blink:index'))
-        self.assertFalse(Post.objects.filter(id = deletion_post.id).exists())
+        self.assertFalse(Post.objects.filter(postID = deletion_post.postID).exists())
 
 class UserProfileTests(TestCase):
     """
