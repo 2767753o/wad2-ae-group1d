@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 
 from blink_app.forms import UserForm, UserProfileForm, CreateForm
 from blink_app.models import Post, UserProfile, Like, Comment
@@ -80,13 +81,15 @@ def user_login(request):
                     user_profile_data.save()
 
                 login(request, user)
+                messages.success(request, f'You are now successfully logged in.')
                 return redirect(reverse('blink:index'))
             else:
-                return HttpResponse("Your account is disabled.")
+                messages.error(request, f'This account is disabled.')
+                return redirect(reverse('blink:login'))
             
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            messages.error(request, f'Invalid login details supplied.')
+            return redirect(reverse('blink:login'))
     
     else:
         return render(request, 'blink/login.html')
@@ -142,6 +145,8 @@ def view_user(request, username_slug):
     is_self_page = request.user == page_user
     is_following = Friendship.objects.filter(user=request.user, friend=page_user).exists()
     # get user data of user currently logged in
+    following_count = Friendship.objects.filter(user=page_user).count()
+    followers_count = Friendship.objects.filter(friend=page_user).count()
     try:
         userData = User.objects.get(username=username_slug)
         userProfileData = UserProfile.objects.get(user=userData)
@@ -169,6 +174,8 @@ def view_user(request, username_slug):
             'page_user': page_user,
             'is_self_page': is_self_page,
             'is_following': is_following,
+            'following_count': following_count,
+            'followers_count': followers_count,
         }
     )
 

@@ -10,6 +10,13 @@
     {% if userProfileData %}
         {% comment %} USER CONTENTS {% endcomment %}
         <h1>{{ userData.username }}</h1>
+        <section id="followersOrFollowed">
+            {% comment %} USER FOLLOWING {% endcomment %}
+            <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following({{ following_count }})</a></h2>
+    
+            {% comment %} User FOLLOWED{% endcomment %}
+            <h2><a href="{% url 'blink:user_followed' user_id=userData.id %}">Followers({{ followers_count }})</a></h2>
+        </section>
         {% if userProfileData.profilePicture %}
             <img src="{{ userProfileData.profilePicture.url }}" class="PFP" alt="Profile Picture" width="75" height="75" />
         {% else %}
@@ -20,19 +27,15 @@
             <form action="{% url 'blink:toggle_follow' user_id=page_user.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="user_id" value="{{ page_user.id }}">
-            {% if is_following %}
-                <input type="submit" value="Unfollow">
-            {% else %}
-                <input type="submit" value="Follow">
-            {% endif %}
+            <section id="followSection">
+                {% if is_following %}
+                        <input type="submit" value="Unfollow">
+                {% else %}
+                    <input type="submit" value="Follow">
+                {% endif %}
+            </section>
             </form>
         {% endif %}
-
-        {% comment %} USER FOLLOWING {% endcomment %}
-        <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following</a></h2>
-
-        {% comment %} User FOLLOWED{% endcomment %}
-        <h2><a href="{% url 'blink:user_followed' user_id=userData.id %}">Followed</a></h2>
 
         {% comment %} USER'S POSTS {% endcomment %}
         <div>

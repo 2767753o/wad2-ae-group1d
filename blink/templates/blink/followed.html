@@ -6,23 +6,22 @@ Followers
 {% endblock %}
 
 {% block body_block %}
-<div id="follow">
-    <h1>Followers</h1>
-    <section id="userFind">
+    <section id="infoContainer">
+        <h1>Followed</h1>
         {% for friendship in followers %}
-            <a href="{% url 'blink:user' username=friendship.0.user.username %}">
-                {% if friendship.1.profilePicture %}
-                    <img src="{{ friendship.1.profilePicture.url }}" class="PFP" alt="Profile Picture" width="75" height="75" />
-                {% else %}
-                    <img src="{% static 'images/defaultPFP.png' %}" class="PFP" alt="Profile Picture" width="75" height="75" />
-                {% endif %}
-            </a><br />
-            <a href="{% url 'blink:user' username=friendship.0.user.username %}">
-                {{ friendship.0.user.username }}
-            </a>
+            <section id="userFind">
+                <a href="{% url 'blink:user' username=friendship.0.user.username %}">
+                    {% if friendship.1.profilePicture %}
+                        <img src="{{ friendship.1.profilePicture.url }}" class="PFP" alt="Profile Picture" width="75" height="75" />
+                    {% else %}
+                        <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
+                    {% endif %}
+                </a>
+                <br /><a href="{% url 'blink:user' username=friendship.0.user.username %}">{{ friendship.0.user.username }}</a>
+            </section>
+
         {% empty %}
-            <p>This user does not have any followers yet.</p>
+            <p>This user does not follow anybody.</p>
         {% endfor %}
     </section>
-</div>
 {% endblock %}
