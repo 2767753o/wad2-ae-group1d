@@ -209,7 +209,7 @@ def view_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
         userProfile = UserProfile.objects.get(user=postData.user)
-        commentData = Comment.objects.filter(post=postData).order_by('-commentTime')
+        commentData = Comment.objects.filter(post=postData).order_by('commentTime')
         likeData = Like.objects.filter(post=postData).filter(user=request.user)
         
         likeDataComments = [
