@@ -33,6 +33,7 @@ def index(request):
     likeData = []
     userLikeData = []
     timePosted = []
+    userProfileData = []
     for post in postData:
         # check if post is within 24h
         utc = pytz.UTC
@@ -42,12 +43,13 @@ def index(request):
             likeData.append(len(Like.objects.filter(post=post)))    
             userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
             timePosted.append(get_time_posted(utc, post.releaseDate))
+            userProfileData.append(UserProfile.objects.get(user=post.user))
 
     return render(
         request,
         'blink/index.html',
         context={
-            'postAndLikeData': zip(postData, likeData, userLikeData, timePosted)
+            'data': zip(postData, likeData, userLikeData, timePosted, userProfileData)
         }
     )
 
