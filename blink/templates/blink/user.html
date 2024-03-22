@@ -12,10 +12,10 @@
         <h1>{{ userData.username }}</h1>
         <section id="followingOrFollowed">
             {% comment %} USER FOLLOWING {% endcomment %}
-            <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following</a></h2>
-
+            <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following({{ following_count }})</a></h2>
+    
             {% comment %} User FOLLOWED{% endcomment %}
-            <h2><a href="{% url 'blink:user_followed' user_id=userData.id %}">Followed</a></h2>
+            <h2><a href="{% url 'blink:user_followed' user_id=userData.id %}">Followers({{ followers_count }})</a></h2>
         </section>
         {% if userProfileData.profilePicture %}
             <img src="{{ userProfileData.profilePicture.url }}" class="PFP" alt="Profile Picture" width="75" height="75" />
@@ -36,12 +36,6 @@
             </section>
             </form>
         {% endif %}
-
-        {% comment %} USER FOLLOWING {% endcomment %}
-        <h2><a href="{% url 'blink:user_following' user_id=userData.id %}">Following({{ following_count }})</a></h2>
-
-        {% comment %} User FOLLOWED{% endcomment %}
-        <h2><a href="{% url 'blink:user_followed' user_id=userData.id %}">Followers({{ followers_count }})</a></h2>
 
         {% comment %} USER'S POSTS {% endcomment %}
         <div>
