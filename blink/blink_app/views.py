@@ -275,6 +275,9 @@ def view_likes_post(request, postID):
     try:
         postData = Post.objects.get(postID=postID)
         likeData = Like.objects.filter(post=postData)
+        userProfileData = [
+            UserProfile.objects.get(user=like.user) for like in likeData
+        ]
     except Post.DoesNotExist:
         postData = None
 
@@ -284,8 +287,8 @@ def view_likes_post(request, postID):
     return render(
         request, 'blink/likes.html',
         context={
-            'postData': postData,
-            'likeData': likeData,
+            'likeData': zip(likeData, userProfileData),
+            'postID': postID
         }
     )
 
@@ -294,6 +297,9 @@ def view_likes_comment(request, commentID):
     try:
         commentData = Comment.objects.get(commentID=commentID)
         likeData = Like.objects.filter(comment=commentData)
+        userProfileData = [
+            UserProfile.objects.get(user=like.user) for like in likeData
+        ]
     except Comment.DoesNotExist:
         commentData = None
 
@@ -303,8 +309,7 @@ def view_likes_comment(request, commentID):
     return render(
         request, 'blink/likes.html',
         context={
-            'commentData': commentData,
-            'likeData': likeData,
+            'likeData': zip(likeData, userProfileData),
             'postID': commentData.post.postID
         }
     )

@@ -12,12 +12,12 @@
         {% if likeData %}
             {% for like in likeData %}
                 <section id="userFind">
-                    {% if like.user.profilePicture %}
-                        <img src="{{ like.user.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
+                    {% if like.1.profilePicture %}
+                        <img src="{{ like.1.profilePicture.url }}" alt="Profile Picture" width="75" height="75" />
                     {% else %}
                         <img src="{% static 'images/defaultPFP.png' %}" alt="Profile Picture" width="75" height="75" />
                     {% endif %}
-                    <br /><a href="{% url 'blink:user' like.user.username %}">{{ like.user }}</a>
+                    <br /><a href="{% url 'blink:user' like.1.user.username %}">{{ like.1.user.username }}</a>
                 </section>
             {% endfor %}
         {% else %}
