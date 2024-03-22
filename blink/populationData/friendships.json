@@ -1,0 +1,173 @@
+[
+    {
+        "username": "adaLovelace",
+        "friendname": "alanTuring"
+    },
+    {
+        "username": "adaLovelace",
+        "friendname": "graceHopper"
+    },
+    {
+        "username": "adaLovelace",
+        "friendname": "charlesBabbage"
+    },
+    {
+        "username": "adaLovelace",
+        "friendname": "johnVonNeumann"
+    },
+
+    {
+        "username": "alanTuring",
+        "friendname": "adaLovelace"
+    },
+    {
+        "username": "alanTuring",
+        "friendname": "graceHopper"
+    },
+    {
+        "username": "alanTuring",
+        "friendname": "charlesBabbage"
+    },
+    {
+        "username": "alanTuring",
+        "friendname": "johnVonNeumann"
+    },
+
+    {
+        "username": "graceHopper",
+        "friendname": "adaLovelace"
+    },
+    {
+        "username": "graceHopper",
+        "friendname": "alanTuring"
+    },
+    {
+        "username": "graceHopper",
+        "friendname": "charlesBabbage"
+    },
+    {
+        "username": "graceHopper",
+        "friendname": "johnVonNeumann"
+    },
+
+    {
+        "username": "charlesBabbage",
+        "friendname": "adaLovelace"
+    },
+    {
+        "username": "charlesBabbage",
+        "friendname": "alanTuring"
+    },
+    {
+        "username": "charlesBabbage",
+        "friendname": "graceHopper"
+    },
+    {
+        "username": "charlesBabbage",
+        "friendname": "johnVonNeumann"
+    },
+
+    {
+        "username": "johnVonNeumann",
+        "friendname": "adaLovelace"
+    },
+    {
+        "username": "johnVonNeumann",
+        "friendname": "alanTuring"
+    },
+    {
+        "username": "johnVonNeumann",
+        "friendname": "graceHopper"
+    },
+    {
+        "username": "johnVonNeumann",
+        "friendname": "charlesBabbage"
+    },
+
+
+    {
+        "username": "zermeloE",
+        "friendname": "georgCantor"
+    },
+    {
+        "username": "zermeloE",
+        "friendname": "leonhardEuler"
+    },
+    {
+        "username": "zermeloE",
+        "friendname": "pythagoras"
+    },
+    {
+        "username": "zermeloE",
+        "friendname": "srinivasaRamanujan"
+    },
+
+    {
+        "username": "georgCantor",
+        "friendname": "zermeloE"
+    },
+    {
+        "username": "georgCantor",
+        "friendname": "leonhardEuler"
+    },
+    {
+        "username": "georgCantor",
+        "friendname": "pythagoras"
+    },
+    {
+        "username": "georgCantor",
+        "friendname": "srinivasaRamanujan"
+    },
+
+    {
+        "username": "leonhardEuler",
+        "friendname": "zermeloE"
+    },
+    {
+        "username": "leonhardEuler",
+        "friendname": "georgCantor"
+    },
+    {
+        "username": "leonhardEuler",
+        "friendname": "pythagoras"
+    },
+    {
+        "username": "leonhardEuler",
+        "friendname": "srinivasaRamanujan"
+    },
+
+    {
+        "username": "pythagoras",
+        "friendname": "zermeloE"
+    },
+    {
+        "username": "pythagoras",
+        "friendname": "georgCantor"
+    },
+    {
+        "username": "pythagoras",
+        "friendname": "leonhardEuler"
+    },
+    {
+        "username": "pythagoras",
+        "friendname": "srinivasaRamanujan"
+    },
+
+    {
+        "username": "srinivasaRamanujan",
+        "friendname": "zermeloE"
+    },
+    {
+        "username": "srinivasaRamanujan",
+        "friendname": "georgCantor"
+    },
+    {
+        "username": "srinivasaRamanujan",
+        "friendname": "leonhardEuler"
+    },
+    {
+        "username": "srinivasaRamanujan",
+        "friendname": "pythagoras"
+    }
+
+]

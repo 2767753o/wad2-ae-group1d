@@ -81,6 +81,17 @@ def addLike(username, poster, commentContent):
     return like
 
 
+def addFriendship(username, friendname):
+    user = User.objects.get(username=username)
+    friend = User.objects.get(username=friendname)
+    friendship = Friendship.objects.get_or_create(
+        user = user,
+        friend = friend
+    )[0]
+    friendship.save()
+    return friendship
+
+
 def getData():
     with open("populationData/users.json") as f:
         users = json.load(f)
@@ -94,10 +105,13 @@ def getData():
     with open("populationData/likes.json") as f:
         likes = json.load(f)
 
-    return users, posts, comments, likes
+    with open("populationData/friendships.json") as f:
+        friendships = json.load(f)
+
+    return users, posts, comments, likes, friendships
 
 
-def populate(users, posts, comments, likes):
+def populate(users, posts, comments, likes, friendships):
     for user in users:
         addUser(
             user['username'],
@@ -132,17 +146,24 @@ def populate(users, posts, comments, likes):
             like['commentContent']
         )
 
+    for friendship in friendships:
+        addFriendship(
+            friendship['username'],
+            friendship['friendname']
+        )
+
 
 def printResults():
     print(f"Users: {len(User.objects.all())}")
     print(f"Posts: {len(Post.objects.all())}")
     print(f"Comments: {len(Comment.objects.all())}")
     print(f"Likes: {len(Like.objects.all())}")
+    print(f"Friendships: {len(Friendship.objects.all())}")
 
 
 def main():
-    users, posts, comments, likes = getData()
-    populate(users, posts, comments, likes)
+    users, posts, comments, likes, friendships = getData()
+    populate(users, posts, comments, likes, friendships)
     printResults()
 
 
