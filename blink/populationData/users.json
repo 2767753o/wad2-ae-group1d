@@ -1,0 +1,110 @@
+[
+    {
+        "username": "root",
+        "password": "toor",
+        "firstName": "admin",
+        "lastName": "admin",
+        "emailAddress": "2734861K@student.gla.ac.uk",
+        "profilePicture": null,
+        "isStaff": true
+    },
+    {
+        "username": "alanTuring",
+        "password": "amgine123",
+        "firstName": "Alan",
+        "lastName": "Turing",
+        "emailAddress": "alan.turing@gmail.com",
+        "profilePicture": "profile_pictures/alanTuring.png",
+        "isStaff": false
+    },
+    {
+        "username": "adaLovelace",
+        "password": "helloWorld!123",
+        "firstName": "Ada",
+        "lastName": "Lovelace",
+        "emailAddress": "aLovelace@gmail.com",
+        "profilePicture": "profile_pictures/adaLovelace.png",
+        "isStaff": false
+    },
+    {
+        "username": "charlesBabbage",
+        "password": "differenceEngine321",
+        "firstName": "Charles",
+        "lastName": "Babbage",
+        "emailAddress": "charlesBabbage@gmail.com",
+        "profilePicture": "profile_pictures/charlesBabbage.png",
+        "isStaff": false
+    },
+    {
+        "username": "graceHopper",
+        "password": "bug99",
+        "firstName": "Grace",
+        "lastName": "Hopper",
+        "emailAddress": "graceHopper@outlook.com",
+        "profilePicture": "profile_pictures/graceHopper.png",
+        "isStaff": false
+    },
+    {
+        "username": "johnVonNeumann",
+        "password": "architecture77",
+        "firstName": "John",
+        "lastName": "Von Neumann",
+        "emailAddress": "neumannJohn@hotmail.com",
+        "profilePicture": "profile_pictures/johnVonNeumann.png",
+        "isStaff": false
+    },
+    {
+        "username": "leonhardEuler",
+        "password": "eitheta123",
+        "firstName": "Leonhard",
+        "lastName": "Euler",
+        "emailAddress": "leonhardE@gmail.com",
+        "profilePicture": "profile_pictures/leonhardEuler.png",
+        "isStaff": false
+    },
+    {
+        "username": "srinivasaRamanujan",
+        "password": "infinity9999",
+        "firstName": "Srinivasa",
+        "lastName": "Ramanujan",
+        "emailAddress": "srinivasaRam@gmail.com",
+        "profilePicture": "profile_pictures/ramanujan.png",
+        "isStaff": false
+    },
+    {
+        "username": "pythagoras",
+        "password": "a2b2c2",
+        "firstName": "Pythagoras",
+        "lastName": "",
+        "emailAddress": "pythSamos@hotmail.com",
+        "profilePicture": "profile_pictures/pythagoras.png",
+        "isStaff": false
+    },
+    {
+        "username": "zermeloE",
+        "password": "axiomaticSet0",
+        "firstName": "Ernst",
+        "lastName": "Zermelo",
+        "emailAddress": "eZermelo@outlook.com",
+        "profilePicture": "profile_pictures/ernstZermelo.png",
+        "isStaff": false
+    },
+    {
+        "username": "georgCantor",
+        "password": "cantorSetIsEmpty!",
+        "firstName": "Georg",
+        "lastName": "Cantor",
+        "emailAddress": "georg.cantor@gmail.com",
+        "profilePicture": "profile_pictures/georgCantor.png",
+        "isStaff": false
+    },
+    {
+        "username": "anonymous",
+        "password": "weAreAnonymous",
+        "firstName": "Anonymous",
+        "lastName": "",
+        "emailAddress": "anonymous@gmail.com",
+        "profilePicture": null,
+        "isStaff": false
+    }
+]

@@ -1,0 +1,66 @@
+[
+    {
+        "content": "Yessss, so excited to see what you'll do!",
+        "username": "charlesBabbage",
+        "poster": "adaLovelace",
+        "hoursAgo": 0.75
+    },
+    {
+        "content": "Wow, very cool, looking forward to the end product.",
+        "username": "alanTuring",
+        "poster": "adaLovelace",
+        "hoursAgo": 0.23
+    },
+
+    {
+        "content": "Me too man, me too.",
+        "username": "zermeloE",
+        "poster": "pythagoras",
+        "hoursAgo": 0.44
+    },
+    {
+        "content": "Don't we all? :)",
+        "username": "srinivasaRamanujan",
+        "poster": "pythagoras",
+        "hoursAgo": 0.12
+    },
+
+    {
+        "content": "Uhhhhh, should we be worried????",
+        "username": "adaLovelace",
+        "poster": "anonymous",
+        "hoursAgo": 14.29
+    },
+
+    {
+        "content": "Can't wait for that one time when it's not correct",
+        "username": "johnVonNeumann",
+        "poster": "leonhardEuler",
+        "hoursAgo": 16.75
+    },
+
+    {
+        "content": "What is a computer?",
+        "username": "pythagoras",
+        "poster": "graceHopper",
+        "hoursAgo": 0.4
+    },
+    {
+        "content": "It's a really fancy machine that can do maths very quickly. I believe Babbage and Lovelace are cooking something up.",
+        "username": "graceHopper",
+        "poster": "graceHopper",
+        "hoursAgo": 0.3
+    },
+    {
+        "content": "That is so cool. I can't wait to use a computer.",
+        "username": "pythagoras",
+        "poster": "graceHopper",
+        "hoursAgo": 0.28
+    },
+    {
+        "content": "I'm sure you will use a computer soon enough :)",
+        "username": "graceHopper",
+        "poster": "graceHopper",
+        "hoursAgo": 0.17
+    }
+]
