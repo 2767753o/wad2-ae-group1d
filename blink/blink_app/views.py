@@ -142,6 +142,8 @@ def view_user(request, username):
     is_self_page = request.user == page_user
     is_following = Friendship.objects.filter(user=request.user, friend=page_user).exists()
     # get user data of user currently logged in
+    following_count = Friendship.objects.filter(user=page_user).count()
+    followers_count = Friendship.objects.filter(friend=page_user).count()
     try:
         userData = User.objects.get(username=username)
         userProfileData = UserProfile.objects.get(user=userData)
@@ -169,6 +171,8 @@ def view_user(request, username):
             'page_user': page_user,
             'is_self_page': is_self_page,
             'is_following': is_following,
+            'following_count': following_count,
+            'followers_count': followers_count,
         }
     )
 
