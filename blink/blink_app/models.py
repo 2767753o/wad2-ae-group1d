@@ -22,7 +22,7 @@ class UserProfile(models.Model):
     
 class Comment(models.Model):
     commentID = models.AutoField(primary_key=True)
-    commentTime = models.DateTimeField()
+    commentTime = models.DateTimeField(default=datetime.now)
     content = models.CharField(max_length=280)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     post = models.ForeignKey(Post, on_delete= models.CASCADE)
