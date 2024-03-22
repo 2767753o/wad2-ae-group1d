@@ -455,7 +455,21 @@ def followed(request, user_id):
 def following(request):
     following_ids = request.user.friends_of.values_list('friend_id', flat=True)
     posts = Post.objects.filter(user__in=following_ids).order_by('-releaseDate')
-    return render(request, 'blink/following.html', {'posts': posts})
+    
+    likeData = []
+    userLikeData = []
+    timePosted = []
+    userProfileData = []
+
+    for post in posts:
+        likeData.append(len(Like.objects.filter(post=post)))    
+        userLikeData.append(len(Like.objects.filter(post=post).filter(user=request.user))>0)
+        timePosted.append(get_time_posted(pytz.UTC, post.releaseDate))
+        userProfileData.append(UserProfile.objects.get(user=post.user))
+
+    return render(request, 'blink/following.html', {
+        'data': zip(posts, likeData, userLikeData, timePosted, userProfileData)
+    })
 
 @require_POST
 def toggle_follow(request, user_id):
