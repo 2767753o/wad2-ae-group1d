@@ -70,15 +70,15 @@ def index(request):
 
 def user_login(request):
     if request.method == "POST":
-        username_slug = request.POST.get('username_slug')
+        username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(slug=username_slug, password=password)
+        user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
                 # update posted by checking when user last posted
-                user_data = User.objects.get(slug=username_slug)
+                user_data = User.objects.get(user=user_data)
                 user_profile_data = UserProfile.objects.get(user=user_data)
                 user_post_data = Post.objects.filter(user=user_data).order_by('-releaseDate')
 
@@ -156,7 +156,7 @@ def view_user(request, username_slug):
     following_count = Friendship.objects.filter(user=page_user).count()
     followers_count = Friendship.objects.filter(friend=page_user).count()
     try:
-        userData = User.objects.get(username=username_slug)
+        userData = User.objects.get(slug=username_slug)
         userProfileData = UserProfile.objects.get(user=userData)
     except User.DoesNotExist:
         userData = None
